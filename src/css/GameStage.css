@@ -1,0 +1,55 @@
+.game-container {
+  display: flex;
+  position: relative; /* Para o posicionamento do botão */
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Evita barras de rolagem indesejadas */
+}
+
+.stage-container {
+  flex-grow: 1; /* Faz o palco ocupar o espaço disponível */
+}
+
+.side-menu {
+  background-color: #f4f4f4;
+  border-left: 2px solid #ddd;
+  padding: 15px;
+  box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-item {
+  background-color: #87ceeb; /* Mesma cor da bola */
+  color: black;
+  padding: 20px;
+  border-radius: 50%; /* Faz parecer uma bola */
+  text-align: center;
+  cursor: grab;
+  user-select: none; /* Impede a seleção de texto ao arrastar */
+  font-weight: bold;
+  border: 2px solid #333;
+}
+
+.menu-item:active {
+  cursor: grabbing;
+}
+
+.menu-toggle-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

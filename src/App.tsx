@@ -1,74 +1,51 @@
-import React, { useState } from "react";
-import { Circle, Stage, Layer } from "react-konva";
-import Konva from 'konva';
+// src/App.tsx
 
-interface Position {
-    x: number;
-    y: number;
-}
+import React, { useState, useEffect } from 'react';
+import type { GameData } from './types';
+import GameStage from './components/gameStage';
 
 const App: React.FC = () => {
-    const [position, setPosition] = useState<Position>({
-        x: 30,
-        y: 30
-    });
+  const [gameData, setGameData] = useState<GameData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-    const stageWidth: number = 500;
-    const stageHeight: number = 500;
-    const circleRadius: number = 30;
-
-    const limitSpaceDrager = (e: Konva.KonvaEventObject<DragEvent>) => {
-        const node = e.target;
-        let newX: number = node.x();
-        let newY: number = node.y();
-
-        const minX: number = circleRadius;
-        const maxX: number = stageWidth - circleRadius;
-        const minY: number = circleRadius;
-        const maxY: number = stageHeight - circleRadius;
-
-        if (newX < minX) {
-            newX = minX;
-        } else if (newX > maxX) {
-            newX = maxX;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // O ficheiro está em /public, por isso o fetch é a partir da raiz.
+        const response = await fetch('../game-data.json');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        if (newY < minY) {
-            newY = minY;
-        } else if (newY > maxY) {
-            newY = maxY;
-        }
-
-        node.x(newX);
-        node.y(newY);
+        const data: GameData = await response.json();
+        setGameData(data);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100">
-            <Stage
-                width={stageWidth}
-                height={stageHeight}
-                className="bg-white border border-gray-300 rounded-md shadow-lg"
-            >
-                <Layer>
-                    <Circle
-                        x={position.x}
-                        y={position.y}
-                        draggable
-                        radius={circleRadius}
-                        fill='blue'
-                        onDragMove={limitSpaceDrager}
-                        onDragEnd={(e: Konva.KonvaEventObject<DragEvent>) => {
-                            setPosition({
-                                x: e.target.x(),
-                                y: e.target.y()
-                            });
-                        }}
-                    />
-                </Layer>
-            </Stage>
-        </div>
-    );
+    fetchData();
+  }, []); // O array vazio [] garante que o efeito corre apenas uma vez.
+
+  if (isLoading) {
+    return <div>Carregando dados do jogo...</div>;
+  }
+
+  if (error) {
+    return <div>Erro ao carregar dados: {error}</div>;
+  }
+
+  if (!gameData) {
+    return <div>Nenhum dado de jogo encontrado.</div>;
+  }
+
+  return (
+    <div className="app-container">
+        <GameStage clans={gameData.clans} initialItems={gameData.items}/>
+    </div>
+  );
 };
 
 export default App;
