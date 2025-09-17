@@ -1,9 +1,9 @@
 // --- CONFIGURAÇÕES GERAIS DO JOGO ---
-export const TAMANHO_LOTE = 5; // Itens por rodada
+export const TAMANHO_LOTE = 8; // Itens por rodada
 
 // --- DIMENSÕES DO LAYOUT ---
 export const ITEM_TRAY_WIDTH = 200; // Largura da barra lateral de itens
-export const HEADER_HEIGHT = 70;    // Altura aproximada do cabeçalho
+export const HEADER_HEIGHT = 70; // Altura aproximada do cabeçalho
 
 // --- CÁLCULOS DA ÁREA DE JOGO ---
 // Calcula a área disponível para o palco com base no tamanho da janela e nas barras

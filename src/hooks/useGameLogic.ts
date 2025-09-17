@@ -1,13 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import type { Clan, Item } from "../types";
-import {
-  TAMANHO_LOTE,
-  CENTRO_X,
-  CENTRO_Y,
-  RAIO_PALCO,
-  GAME_AREA_HEIGHT,
-  HEADER_HEIGHT,
-} from "../config/layoutConstants";
+import { CENTRO_X, CENTRO_Y, RAIO_PALCO } from "../config/layoutConstants";
 
 // --- TIPOS ESPECÍFICOS PARA ESTE ESTADO ---
 
@@ -51,7 +44,9 @@ const getDistance = (
 
 export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
   // --- ESTADOS DO JOGO ---
-  const [remainingItems, setRemainingItems] = useState<Item[]>([]);
+  const [remainingItemsByClan, setRemainingItemsByClan] = useState<
+    Map<string, Item[]>
+  >(new Map());
   const [isGameOver, setIsGameOver] = useState(false);
   const [stageItems, setStageItems] = useState<Item[]>([]);
   const [menuItems, setMenuItems] = useState<Item[]>([]);
@@ -64,7 +59,6 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
 
   // --- CÁLCULOS DE PREPARAÇÃO ---
   const clanTargets = useMemo(() => {
-    // Lógica para calcular a posição dos alvos (inalterada)
     const newTargets: { [key: string]: { x: number; y: number } } = {};
     const targetRingRadius = RAIO_PALCO * 0.75;
     const tugoaregeClans = clans.filter(
@@ -98,28 +92,54 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
   }, [clans, initialItems]);
 
   // --- FUNÇÕES DE CONTROLE DE JOGO ---
-  const loadNextBatch = (items: Item[]) => {
-    if (items.length === 0) {
+  const loadNextBatch = (currentItemsByClan: Map<string, Item[]>) => {
+    const newBatch: Item[] = [];
+    const newRemainingMap = new Map(currentItemsByClan);
+    let canCreateNextBatch = true;
+
+    newRemainingMap.forEach((items) => {
+      if (items.length === 0) {
+        canCreateNextBatch = false;
+        return;
+      }
+      const nextItem = items.shift();
+      if (nextItem) {
+        newBatch.push(nextItem);
+      }
+    });
+
+    if (!canCreateNextBatch) {
       setIsGameOver(true);
       return;
     }
-    const nextBatch = items.slice(0, TAMANHO_LOTE);
-    const stillRemaining = items.slice(TAMANHO_LOTE);
-    setMenuItems(nextBatch);
-    setRemainingItems(stillRemaining);
+
+    setMenuItems(shuffleArray(newBatch));
+    setRemainingItemsByClan(newRemainingMap);
     setStageItems([]);
   };
 
   useEffect(() => {
-    if (
-      initialItems.length > 0 &&
-      menuItems.length === 0 &&
-      remainingItems.length === 0
-    ) {
-      const shuffledItems = shuffleArray(initialItems);
-      loadNextBatch(shuffledItems);
+    if (initialItems.length > 0 && remainingItemsByClan.size === 0) {
+      const itemsByClan = new Map<string, Item[]>();
+      initialItems.forEach((item) => {
+        const clanItems = itemsByClan.get(item.correct_clan_id) || [];
+        clanItems.push(item);
+        itemsByClan.set(item.correct_clan_id, clanItems);
+      });
+
+      itemsByClan.forEach((items, clanId) => {
+        itemsByClan.set(clanId, shuffleArray(items));
+      });
+
+      // Filtra clãs que não têm itens para não quebrar a lógica de 'loadNextBatch'
+      const filteredItemsByClan = new Map(
+        [...itemsByClan].filter(([items]) => items.length > 0)
+      );
+
+      setRemainingItemsByClan(filteredItemsByClan);
+      loadNextBatch(filteredItemsByClan);
     }
-  }, [initialItems, menuItems, remainingItems]);
+  }, [initialItems]);
 
   const showFeedback = (msg: string, duration: number = 2000) => {
     setMessage(msg);
@@ -183,18 +203,29 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
 
     if (targetClan && item.correct_clan_id === targetClan.id) {
       showFeedback("Correto!", 1500);
-      setFeedbackPulse({ ...dropPos, color: "correct", key: Date.now() });
-      const newItemForStage: Item = { ...item, initial_pos: dropPos };
+      const targetCenterPos = clanTargets[targetClan.id];
+      setFeedbackPulse({
+        ...targetCenterPos,
+        color: "correct",
+        key: Date.now(),
+      });
+      const newItemForStage: Item = { ...item, initial_pos: targetCenterPos };
       setStageItems((prev) => [...prev, newItemForStage]);
       const newMenuItems = menuItems.filter((i) => i.id !== item.id);
       setMenuItems(newMenuItems);
       setDraggingItemId(null);
 
-      if (newMenuItems.length === 0 && remainingItems.length > 0) {
-        showFeedback("Rodada Completa!", 2500);
-        setTimeout(() => loadNextBatch(remainingItems), 2500);
-      } else if (newMenuItems.length === 0 && remainingItems.length === 0) {
-        setTimeout(() => setIsGameOver(true), 500);
+      if (newMenuItems.length === 0) {
+        const hasRemainingItems = Array.from(
+          remainingItemsByClan.values()
+        ).some((arr) => arr.length > 0);
+        if (hasRemainingItems) {
+          showFeedback("Rodada Completa!", 2500);
+          // CORREÇÃO: Passa o estado correto para a próxima rodada
+          setTimeout(() => loadNextBatch(remainingItemsByClan), 2500);
+        } else {
+          setTimeout(() => setIsGameOver(true), 500);
+        }
       }
     } else {
       showFeedback("Incorreto. Tente novamente.", 1500);
@@ -208,6 +239,7 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
     setDraggedItemInfo(null);
   };
 
+  // --- VALORES RETORNADOS PELO HOOK ---
   return {
     isGameOver,
     stageItems,
