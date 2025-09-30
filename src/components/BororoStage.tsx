@@ -1,18 +1,18 @@
 import React from "react";
-import { Stage, Layer, Circle as KonvaCircle, Arc, Line } from "react-konva";
+import {
+  Stage,
+  Layer,
+  Circle as KonvaCircle,
+  Arc,
+  Line,
+  Star,
+} from "react-konva";
 import type { Clan, Item, PulseState, ReturningItemState } from "../types";
 import ClanTarget from "./ClanTarget";
 import ItemBall from "./ItemBall";
 import FeedbackPulse from "./FeedbackPulse";
 import ReturningItem from "./ReturningItem";
-import {
-  GAME_AREA_WIDTH,
-  GAME_AREA_HEIGHT,
-  HEADER_HEIGHT,
-  CENTRO_X,
-  CENTRO_Y,
-  RAIO_PALCO,
-} from "../config/layoutConstants";
+import { HEADER_HEIGHT } from "../config/layoutConstants";
 
 interface BororoStageProps {
   clans: Clan[];
@@ -20,6 +20,13 @@ interface BororoStageProps {
   stageItems: Item[];
   feedbackPulse: PulseState;
   returningItem: ReturningItemState;
+  layout: {
+    gameAreaWidth: number;
+    gameAreaHeight: number;
+    centroX: number;
+    centroY: number;
+    raioPalco: number;
+  };
   onDragOver: (e: React.DragEvent) => void;
   onDrop: (e: React.DragEvent) => void;
   onPulseComplete: () => void;
@@ -32,6 +39,7 @@ const BororoStage = ({
   stageItems,
   feedbackPulse,
   returningItem,
+  layout,
   onDragOver,
   onDrop,
   onPulseComplete,
@@ -39,80 +47,117 @@ const BororoStage = ({
 }: BororoStageProps) => {
   return (
     <main className="game-area" onDragOver={onDragOver} onDrop={onDrop}>
-      <Stage width={GAME_AREA_WIDTH} height={GAME_AREA_HEIGHT - HEADER_HEIGHT}>
+      <Stage
+        width={layout.gameAreaWidth}
+        height={layout.gameAreaHeight - HEADER_HEIGHT}
+      >
         <Layer>
-          {/* --- CENÁRIO DE FUNDO --- */}
+          {/* --- FUNDO DO PALCO (cartoon com borda grossa) --- */}
           <KonvaCircle
-            x={CENTRO_X}
-            y={CENTRO_Y - HEADER_HEIGHT / 2}
-            radius={RAIO_PALCO}
-            fillRadialGradientStartPoint={{ x: 0, y: 0 }}
-            fillRadialGradientStartRadius={0}
-            fillRadialGradientEndPoint={{ x: 0, y: 0 }}
-            fillRadialGradientEndRadius={RAIO_PALCO}
-            fillRadialGradientColorStops={[0, "#6e6d5a", 1, "#4a493a"]}
-            stroke="#f5f5f5"
-            strokeWidth={4}
-            shadowColor="black"
-            shadowBlur={20}
-            shadowOpacity={0.5}
+            x={layout.centroX}
+            y={layout.centroY - HEADER_HEIGHT / 2}
+            radius={layout.raioPalco}
+            fillLinearGradientStartPoint={{
+              x: -layout.raioPalco,
+              y: -layout.raioPalco,
+            }}
+            fillLinearGradientEndPoint={{
+              x: layout.raioPalco,
+              y: layout.raioPalco,
+            }}
+            fillLinearGradientColorStops={[
+              0,
+              "#7a7860",
+              0.5,
+              "#5c5b46",
+              1,
+              "#3d3b2e",
+            ]}
+            stroke="#2a2a2a"
+            strokeWidth={6} // borda grossa cartoon
+            shadowColor="#000"
+            shadowBlur={15}
+            shadowOpacity={0.4}
           />
+
+          {/* --- METADE VERMELHA E PRETA (mas cartoon, cores chapadas com opacidade) --- */}
           <Arc
-            x={CENTRO_X}
-            y={CENTRO_Y - HEADER_HEIGHT / 2}
+            x={layout.centroX}
+            y={layout.centroY - HEADER_HEIGHT / 2}
             innerRadius={0}
-            outerRadius={RAIO_PALCO}
+            outerRadius={layout.raioPalco}
             angle={180}
-            fill="rgba(181, 35, 35, 0.2)"
+            fill="rgba(220, 60, 60, 0.3)"
             rotation={-90}
+            stroke="#2a2a2a"
+            strokeWidth={3}
           />
           <Arc
-            x={CENTRO_X}
-            y={CENTRO_Y - HEADER_HEIGHT / 2}
+            x={layout.centroX}
+            y={layout.centroY - HEADER_HEIGHT / 2}
             innerRadius={0}
-            outerRadius={RAIO_PALCO}
+            outerRadius={layout.raioPalco}
             angle={180}
-            fill="rgba(0, 0, 0, 0.2)"
+            fill="rgba(40, 40, 40, 0.3)"
             rotation={90}
+            stroke="#2a2a2a"
+            strokeWidth={3}
           />
+
+          {/* --- CÍRCULO INTERNO (como uma borda cartoon decorativa) --- */}
           <KonvaCircle
-            x={CENTRO_X}
-            y={CENTRO_Y - HEADER_HEIGHT / 2}
-            radius={RAIO_PALCO * 0.25}
-            stroke="#f5f5f5"
-            strokeWidth={2}
-            opacity={0.8}
+            x={layout.centroX}
+            y={layout.centroY - HEADER_HEIGHT / 2}
+            radius={layout.raioPalco * 0.25}
+            stroke="#2a2a2a"
+            strokeWidth={4}
+            fill="rgba(255,255,255,0.05)"
+            shadowColor="#fff"
+            shadowBlur={10}
+            dash={[12, 6]}
           />
+
+          {/* --- LINHA CENTRAL (cartoon tracejada) --- */}
           <Line
             points={[
-              CENTRO_X,
-              CENTRO_Y - HEADER_HEIGHT / 2 - RAIO_PALCO,
-              CENTRO_X,
-              CENTRO_Y - HEADER_HEIGHT / 2 + RAIO_PALCO,
+              layout.centroX,
+              layout.centroY - HEADER_HEIGHT / 2 - layout.raioPalco,
+              layout.centroX,
+              layout.centroY - HEADER_HEIGHT / 2 + layout.raioPalco,
             ]}
-            stroke="#f5f5f5"
-            strokeWidth={2}
-            opacity={0.8}
-            dash={[10, 6]}
+            stroke="#2a2a2a"
+            strokeWidth={3}
+            dash={[15, 8]}
+            opacity={0.9}
           />
+
+          {/* --- RAIOS PARA OS CLÃS (bem estilizados) --- */}
           {Object.keys(clanTargets).map((clanId) => {
             const pos = clanTargets[clanId];
-            const angle = Math.atan2(pos.y - CENTRO_Y, pos.x - CENTRO_X);
-            const startX = CENTRO_X + RAIO_PALCO * 0.25 * Math.cos(angle);
+            const angle = Math.atan2(
+              pos.y - layout.centroY,
+              pos.x - layout.centroX
+            );
+            const startX =
+              layout.centroX + layout.raioPalco * 0.25 * Math.cos(angle);
             const startY =
-              CENTRO_Y -
+              layout.centroY -
               HEADER_HEIGHT / 2 +
-              RAIO_PALCO * 0.25 * Math.sin(angle);
-            const endX = CENTRO_X + RAIO_PALCO * Math.cos(angle);
+              layout.raioPalco * 0.25 * Math.sin(angle);
+            const endX = layout.centroX + layout.raioPalco * Math.cos(angle);
             const endY =
-              CENTRO_Y - HEADER_HEIGHT / 2 + RAIO_PALCO * Math.sin(angle);
+              layout.centroY -
+              HEADER_HEIGHT / 2 +
+              layout.raioPalco * Math.sin(angle);
+
             return (
               <Line
                 key={`line-${clanId}`}
                 points={[startX, startY, endX, endY]}
-                stroke="#f5f5f5"
-                strokeWidth={1}
-                opacity={0.5}
+                stroke="#2a2a2a"
+                strokeWidth={2}
+                dash={[10, 5]}
+                opacity={0.6}
               />
             );
           })}
@@ -128,9 +173,11 @@ const BororoStage = ({
                 clanName={clan.name}
                 x={pos.x}
                 y={pos.y - HEADER_HEIGHT / 2}
+                stageRadius={layout.raioPalco}
               />
             );
           })}
+
           {stageItems.map((item) => (
             <ItemBall
               key={item.id}
@@ -143,7 +190,7 @@ const BororoStage = ({
             />
           ))}
 
-          {/* --- ANIMAÇÕES DE FEEDBACK --- */}
+          {/* --- FEEDBACKS E ANIMAÇÕES --- */}
           {feedbackPulse && (
             <FeedbackPulse
               key={feedbackPulse.key}

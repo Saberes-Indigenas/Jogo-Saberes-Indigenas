@@ -28,10 +28,11 @@ const ReturningItem = ({
         x: endPos.x,
         y: endPos.y,
         opacity: 1, // O item deve ficar visível no final
-        scaleX: 0.1, // Anima para um tamanho pequeno antes de sumir
-        scaleY: 0.1,
+        scaleX: 1, // Anima para um tamanho pequeno antes de sumir
+        scaleY: 1,
         duration: 0.5, // Duração da animação em segundos
         easing: Konva.Easings.EaseOut,
+
         onFinish: () => {
           // Esconde o grupo antes de chamar o onComplete
           if (groupRef.current) {

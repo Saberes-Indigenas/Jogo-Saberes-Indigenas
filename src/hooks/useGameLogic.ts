@@ -1,6 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import type { Clan, Item } from "../types";
-import { CENTRO_X, CENTRO_Y, RAIO_PALCO } from "../config/layoutConstants";
+
+// 1. A importação das constantes de layout foi REMOVIDA daqui.
+// O hook não conhece mais o layout de forma estática.
 
 // --- TIPOS ESPECÍFICOS PARA ESTE ESTADO ---
 
@@ -16,6 +18,8 @@ type ReturningItemState = {
   startPos: { x: number; y: number };
   endPos: { x: number; y: number };
 } | null;
+
+type MessageType = "success" | "error" | "roundComplete";
 
 type DraggedItemInfo = {
   item: Item;
@@ -42,16 +46,26 @@ const getDistance = (
 
 // --- O HOOK PRINCIPAL ---
 
-export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
+// 2. A assinatura do hook foi alterada para RECEBER o objeto `layout`.
+export const useGameLogic = (
+  clans: Clan[],
+  initialItems: Item[],
+  layout: { centroX: number; centroY: number; raioPalco: number }
+) => {
   // --- ESTADOS DO JOGO ---
   const [remainingItemsByClan, setRemainingItemsByClan] = useState<
     Map<string, Item[]>
   >(new Map());
+  // No início do hook useGameLogic, junto com os outros 'useState'
+
+  // Adicione este tipo para garantir que apenas valores válidos sejam usados
+
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<MessageType>("success"); // <-- ADICIONE ESTA LINHA
+  const [isMessageVisible, setIsMessageVisible] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [stageItems, setStageItems] = useState<Item[]>([]);
   const [menuItems, setMenuItems] = useState<Item[]>([]);
-  const [message, setMessage] = useState("");
-  const [isMessageVisible, setIsMessageVisible] = useState(false);
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
   const [feedbackPulse, setFeedbackPulse] = useState<PulseState>(null);
   const [returningItem, setReturningItem] = useState<ReturningItemState>(null);
@@ -60,7 +74,8 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
   // --- CÁLCULOS DE PREPARAÇÃO ---
   const clanTargets = useMemo(() => {
     const newTargets: { [key: string]: { x: number; y: number } } = {};
-    const targetRingRadius = RAIO_PALCO * 0.75;
+    // 3. Os cálculos agora usam os valores dinâmicos recebidos via props.
+    const targetRingRadius = layout.raioPalco * 0.75;
     const tugoaregeClans = clans.filter(
       (c) =>
         initialItems.find((i) => i.correct_clan_id === c.id)?.color ===
@@ -76,20 +91,22 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
       const angle =
         ((index + 1) / (tugoaregeClans.length + 1)) * Math.PI - Math.PI / 2;
       newTargets[clan.id] = {
-        x: CENTRO_X + targetRingRadius * Math.cos(angle),
-        y: CENTRO_Y + targetRingRadius * Math.sin(angle),
+        x: layout.centroX + targetRingRadius * Math.cos(angle),
+        y: layout.centroY + targetRingRadius * Math.sin(angle),
       };
     });
     eceraeClans.forEach((clan, index) => {
       const angle =
         ((index + 1) / (eceraeClans.length + 1)) * Math.PI + Math.PI / 2;
       newTargets[clan.id] = {
-        x: CENTRO_X + targetRingRadius * Math.cos(angle),
-        y: CENTRO_Y + targetRingRadius * Math.sin(angle),
+        x: layout.centroX + targetRingRadius * Math.cos(angle),
+        y: layout.centroY + targetRingRadius * Math.sin(angle),
       };
     });
     return newTargets;
-  }, [clans, initialItems]);
+    // 4. O `layout` é adicionado como uma dependência para que os alvos
+    //    sejam recalculados se o tamanho da tela mudar.
+  }, [clans, initialItems, layout]);
 
   // --- FUNÇÕES DE CONTROLE DE JOGO ---
   const loadNextBatch = (currentItemsByClan: Map<string, Item[]>) => {
@@ -133,16 +150,21 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
 
       // Filtra clãs que não têm itens para não quebrar a lógica de 'loadNextBatch'
       const filteredItemsByClan = new Map(
-        [...itemsByClan].filter(([items]) => items.length > 0)
+        [...itemsByClan].filter(([, items]) => items.length > 0)
       );
 
       setRemainingItemsByClan(filteredItemsByClan);
       loadNextBatch(filteredItemsByClan);
     }
-  }, [initialItems]);
+  }, [initialItems, remainingItemsByClan.size]);
 
-  const showFeedback = (msg: string, duration: number = 2000) => {
+  const showFeedback = (
+    msg: string,
+    type: MessageType,
+    duration: number = 2000
+  ) => {
     setMessage(msg);
+    setMessageType(type); // Define o tipo da mensagem
     setIsMessageVisible(true);
     setTimeout(() => setIsMessageVisible(false), duration);
   };
@@ -150,6 +172,7 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
   const findNearestClan = (dropPos: { x: number; y: number }): Clan | null => {
     let nearestClan: Clan | null = null;
     let minDistance = Infinity;
+
     Object.keys(clanTargets).forEach((clanId) => {
       const clan = clans.find((c) => c.id === clanId);
       const targetPos = clanTargets[clanId];
@@ -161,6 +184,9 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
         }
       }
     });
+
+    // A área de "snap" também poderia ser dinâmica, se desejado.
+    // Por exemplo: minDistance < layout.raioPalco * 0.1
     return minDistance < 50 ? nearestClan : null;
   };
 
@@ -202,7 +228,7 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
     const targetClan = findNearestClan(dropPos);
 
     if (targetClan && item.correct_clan_id === targetClan.id) {
-      showFeedback("Correto!", 1500);
+      showFeedback("Correto!", "success", 1500);
       const targetCenterPos = clanTargets[targetClan.id];
       setFeedbackPulse({
         ...targetCenterPos,
@@ -220,15 +246,14 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
           remainingItemsByClan.values()
         ).some((arr) => arr.length > 0);
         if (hasRemainingItems) {
-          showFeedback("Rodada Completa!", 2500);
-          // CORREÇÃO: Passa o estado correto para a próxima rodada
+          showFeedback("Rodada Completa!", "roundComplete", 2500);
           setTimeout(() => loadNextBatch(remainingItemsByClan), 2500);
         } else {
           setTimeout(() => setIsGameOver(true), 500);
         }
       }
     } else {
-      showFeedback("Incorreto. Tente novamente.", 1500);
+      showFeedback("Incorreto. Tente novamente.", "error", 1500);
       setFeedbackPulse({ ...dropPos, color: "incorrect", key: Date.now() });
       const endPos = {
         x: initialRect.left - stageRect.left + initialRect.width / 2,
@@ -245,6 +270,7 @@ export const useGameLogic = (clans: Clan[], initialItems: Item[]) => {
     stageItems,
     menuItems,
     message,
+    messageType,
     isMessageVisible,
     clanTargets,
     draggingItemId,

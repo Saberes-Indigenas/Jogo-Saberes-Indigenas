@@ -1,3 +1,5 @@
+/* Arquivo: App.css (ou seu CSS principal) */
+
 /* Reset básico e fontes */
 body {
   margin: 0;
@@ -15,27 +17,14 @@ body {
   flex-direction: row; /* MUDANÇA: de column para row */
   width: 100vw;
   height: 100vh;
+  align-items: center;
   background-color: #3b3a30;
   color: #f5f5f5;
   position: relative;
 }
 
 /* Bandeja de itens agora é uma BARRA LATERAL */
-.item-tray {
-  display: flex;
-  flex-direction: column; /* Organiza os itens verticalmente */
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1rem;
-  background-color: #2c2b23; /* Cor de fundo da periferia */
-  border-right: 2px solid #5a5948; /* Borda para separar do palco */
-  width: 200px; /* Largura fixa para a barra lateral */
-  height: 100vh;
-  box-sizing: border-box;
-  z-index: 10;
-  overflow-y: auto; /* Permite rolar se houver muitos itens */
-}
+/* ... (se você tiver estilos para a bandeja, eles ficam aqui) ... */
 
 /* O cabeçalho agora fica dentro da área de jogo para não interferir no layout */
 .game-area-wrapper {
@@ -57,6 +46,8 @@ body {
 .game-area {
   flex-grow: 1;
   position: relative;
+  align-content: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
 }
@@ -90,65 +81,7 @@ body {
   text-shadow: 1px 1px 2px #000;
 }
 
-/* Mensagem de feedback (Correto/Incorreto) */
-.feedback-message {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(20, 20, 20, 0.9);
-  color: #fff;
-  padding: 1.5rem 3rem;
-  border-radius: 12px;
-  border: 2px solid #f5f5f5;
-  font-size: 1.8rem;
-  font-weight: bold;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  z-index: 100;
-  pointer-events: none; /* Não interfere com cliques/arrastos */
-}
-
-/* ... (todo o seu CSS anterior) ... */
-
-/* TELA DE FIM DE JOGO */
-.game-over-screen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  z-index: 200;
-  text-align: center;
-}
-
-.game-over-screen h1 {
-  font-size: 4rem;
-  color: #f39c12;
-}
-
-.game-over-screen p {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.game-over-screen button {
-  background-color: #f39c12;
-  color: #2c2b23;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.game-over-screen button:hover {
-  background-color: #e67e22;
-}
+/*
+  OS ESTILOS PARA '.feedback-message' E '.game-over-screen'
+  FORAM REMOVIDOS DESTE ARQUIVO E MOVIDOS PARA 'GameModals.module.css'
+*/

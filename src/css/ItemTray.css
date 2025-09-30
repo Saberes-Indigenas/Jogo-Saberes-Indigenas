@@ -1,0 +1,109 @@
+/* Importa a fonte 'Nunito' do Google Fonts para um visual mais amigável */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+
+/* ---- BANDEJA DE ITENS (ITEM TRAY) - DESIGN DE MADEIRA RÚSTICA ---- */
+/* ---- BANDEJA DE ITENS (ITEM TRAY) - DESIGN DE MADEIRA MÁGICA ESTILO CARTOON ---- */
+.item-tray {
+  /* --- Layout Interno (mantido do original) --- */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-content: center; /* Alinha itens ao topo para preencher de cima para baixo */
+  gap: 2rem 0.2rem;
+  width: 300px;
+  height: 700px;
+  overflow-y: auto;
+  z-index: 10;
+  position: relative; /* Mantido para elementos futuros */
+  
+  /* --- Novo Estilo Cartoon --- */
+  
+  /* Um padding um pouco maior para acomodar a borda grossa */
+  padding: 2.5rem 2rem;
+  margin-left: 4rem; 
+
+  /* Fundo com gradientes para um efeito de madeira polida e mágica */
+  background-color: #6B4226; /* Cor base caso o gradiente falhe */
+  background-image: 
+    /* Um brilho sutil no centro para dar um toque mágico */
+    radial-gradient(ellipse at center, rgba(255, 220, 150, 0.2) 0%, transparent 70%),
+    /* Gradiente linear para a textura principal da madeira */
+    linear-gradient(to bottom, #8a5a3a 0%, #6B4226 100%);
+
+  /* Borda grossa e escura para um contorno forte, típico de desenhos */
+  border: 10px solid #4a2c1a;
+  
+  /* Cantos bem arredondados para um visual mais suave e amigável */
+  border-radius: 30px; 
+  
+  /* Sombras para dar profundidade e destacar o elemento */
+  box-shadow: 
+    /* Sombra interna: faz a área dos itens parecer mais funda */
+    inset 0 0 20px rgba(0, 0, 0, 0.5), 
+    /* Sombra externa: faz a bandeja "flutuar" na página */
+    0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+
+
+/* ---- ITENS ARRASTÁVEIS (DRAGGABLE ITEM) - ESTILO REFINADO ---- */
+.draggable-item {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Mantém o formato circular */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  position: relative; /* Necessário para o posicionamento do nome */
+
+  /* ESTILO VISUAL TEMÁTICO */
+  font-family: 'Nunito', sans-serif; /* Fonte mais amigável */
+  border: 3px solid #5a5948; /* Borda com a cor do tema */
+  
+  /* Sombra interna para dar profundidade e uma sombra externa sutil */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 
+              0 4px 8px rgba(0, 0, 0, 0.4);
+
+  /* Transição suave para todas as propriedades */
+
+}
+
+/* EFEITO HOVER MELHORADO */
+.draggable-item:hover {
+  transform: scale(1.1) translateY(-5px); /* Efeito de flutuar */
+  border-color: #f39c12; /* Borda fica com a cor de destaque ao passar o mouse */
+  
+  /* A sombra externa ganha um brilho com a cor de destaque */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 
+              0 0 20px -5px #f39c12;
+}
+
+/* Feedback visual ao arrastar o item */
+.draggable-item:active {
+  cursor: grabbing;
+  transform: scale(0.95); /* Efeito de "pressionar" */
+
+}
+
+/* ---- NOME DO ITEM ---- */
+.item-name {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #f0f0f0;
+  text-shadow: 1px 1px 3px #000;
+
+  position: absolute;
+  bottom: -25px; /* Posição abaixo do círculo */
+  width: 120px;
+  text-align: center;
+  pointer-events: none; /* Evita que o texto atrapalhe o arrastar */
+}
+
+/* ---- ÍCONE DENTRO DO ITEM ---- */
+.item-icon {
+    font-size: 2rem;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
