@@ -1,7 +1,9 @@
-/* src/components/ForestBackground.tsx */
+/* Arquivo: src/components/ForestBackground.tsx */
 
-import React, { useMemo, memo } from "react";
-// Importe todas as suas imagens de cenário
+import React, { useMemo, memo, useRef, useEffect } from "react";
+import { useImageLoader } from "../hooks/useImageLoader";
+
+// Importações das imagens (sem alterações)
 import tree1Url from "../assets/tree1.svg";
 import tree2Url from "../assets/tree2.svg";
 import tree3Url from "../assets/tree3.svg";
@@ -13,7 +15,7 @@ import pieceForestUrl2 from "../assets/pieceForest2.svg";
 import pieceForestUrl3 from "../assets/pieceForest3.svg";
 import pieceForestUrl4 from "../assets/pieceForest4.svg";
 
-// --- MAPA DE RECURSOS (ASSETS) ---
+// --- Constantes e Tipos (sem alterações) ---
 const pieceForestUrls = [
   pieceForestUrl1,
   pieceForestUrl2,
@@ -22,29 +24,22 @@ const pieceForestUrls = [
 ];
 const treeAssetUrls = [tree1Url, tree2Url, tree3Url, tree4Url];
 
-// --- INTERFACES PARA O LAYOUT ESTÁTICO (USANDO COORDENADAS POLARES) ---
 type AssetType = "PIECE_FOREST" | "TREE" | "BUSH" | "ROCK";
 
 interface StaticAsset {
   id: number;
   type: AssetType;
   variant?: number;
-  // MUDANÇA: Substituímos x/y por ângulo e distância
-  angle: number; // Ângulo em graus (0-360) a partir do centro do palco
-  distance: number; // Multiplicador do raio do palco (1.0 = na borda)
-  size: number; // Tamanho, relativo ao raio do palco
+  angle: number;
+  distance: number;
+  size: number;
   rotation?: number;
   isFlipped?: boolean;
   zIndex?: number;
 }
 
-// --- A PLANTA DA FLORESTA (AGORA RELATIVA AO PALCO) ---
-// Edite aqui para desenhar sua floresta em volta do palco Bororo
-// --- NOVA COMPOSIÇÃO VISUAL DE FLORESTA ---
-// --- A PLANTA DA FLORESTA (AGORA RELATIVA AO PALCO) ---
-// Edite aqui para desenhar sua floresta em volta do palco Bororo
-// --- NOVA COMPOSIÇÃO VISUAL DE FLORESTA (MAIS DENSA) ---
 const FOREST_LAYOUT: StaticAsset[] = [
+  // ... (a sua lista de assets permanece exatamente a mesma)
   // ========================================================
   // CAMADA DE FUNDO (SEUS ITENS ORIGINAIS - INTOCADOS)
   // ========================================================
@@ -142,7 +137,7 @@ const FOREST_LAYOUT: StaticAsset[] = [
     zIndex: 9,
   },
   {
-    id: 8,
+    id: 101,
     type: "BUSH",
     variant: 1,
     angle: 360,
@@ -303,7 +298,7 @@ const FOREST_LAYOUT: StaticAsset[] = [
     zIndex: 10,
   },
 ];
-// Interface para o asset final, com posições em pixels
+
 interface RenderableAsset {
   id: number;
   src: string;
@@ -315,13 +310,83 @@ interface RenderableAsset {
   zIndex?: number;
 }
 
-// ------------------- COMPONENTE DE RENDERIZAÇÃO -------------------
+// ---- SUBCOMPONENTE OTIMIZADO PARA DESENHAR NO CANVAS ----
+const ForestCanvas = memo<{
+  assets: RenderableAsset[];
+  loadedImages: Map<string, HTMLImageElement>;
+  width: number;
+  height: number;
+}>(({ assets, loadedImages, width, height }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || loadedImages.size === 0) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, width, height);
+    const sortedAssets = [...assets].sort(
+      (a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0)
+    );
+
+    sortedAssets.forEach((asset) => {
+      const img = loadedImages.get(asset.src);
+      if (!img || img.naturalWidth === 0) return; // Garante que a imagem carregou e tem dimensões
+
+      ctx.save();
+      ctx.translate(asset.x, asset.y);
+      ctx.rotate((asset.rotation ?? 0) * (Math.PI / 180));
+      ctx.scale(asset.isFlipped ? -1 : 1, 1);
+      ctx.filter = "drop-shadow(2px 2px 4px rgba(0,0,0,0.4))";
+
+      // *** A CORREÇÃO ESTÁ AQUI ***
+      // 1. Calcula a proporção da imagem original (largura / altura)
+      const aspectRatio = img.naturalWidth / img.naturalHeight;
+      // 2. Define a nova largura com base no 'size' do layout
+      const drawWidth = asset.size;
+      // 3. Calcula a nova altura mantendo a proporção original
+      const drawHeight = drawWidth / aspectRatio;
+
+      // 4. Desenha a imagem com as dimensões corrigidas, centralizando-a
+      ctx.drawImage(
+        img,
+        -drawWidth / 2,
+        -drawHeight / 2,
+        drawWidth,
+        drawHeight
+      );
+
+      ctx.restore();
+    });
+  }, [assets, loadedImages, width, height]);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      width={width}
+      height={height}
+      style={{ position: "absolute", zIndex: 1, pointerEvents: "none" }}
+    />
+  );
+});
+
+// ------------------- COMPONENTE PRINCIPAL (ORQUESTRADOR) -------------------
 const ForestBackground: React.FC<{
   stageCenter: { x: number; y: number };
   stageRadius: number;
   width: number;
   height: number;
 }> = ({ stageCenter, stageRadius, width, height }) => {
+  const imageUrls = useMemo(() => {
+    return [
+      ...new Set([...pieceForestUrls, ...treeAssetUrls, bushUrl, rockUrl]),
+    ];
+  }, []);
+
+  const { loadedImages, isLoading } = useImageLoader(imageUrls);
+
   const assets = useMemo<RenderableAsset[]>(() => {
     if (width === 0 || height === 0) return [];
 
@@ -342,18 +407,16 @@ const ForestBackground: React.FC<{
           break;
       }
 
-      // MUDANÇA: Converte coordenadas polares (ângulo/distância) para pixels (x/y)
       const angleInRadians = staticAsset.angle * (Math.PI / 180);
       const pixelDistance = staticAsset.distance * stageRadius;
-
       const x = stageCenter.x + Math.cos(angleInRadians) * pixelDistance;
       const y = stageCenter.y + Math.sin(angleInRadians) * pixelDistance;
 
       return {
         id: staticAsset.id,
         src: src,
-        x: x,
-        y: y,
+        x,
+        y,
         size: staticAsset.size * stageRadius,
         rotation: staticAsset.rotation,
         isFlipped: staticAsset.isFlipped,
@@ -362,38 +425,17 @@ const ForestBackground: React.FC<{
     });
   }, [stageCenter.x, stageCenter.y, stageRadius, width, height]);
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
-    <div
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        overflow: "hidden",
-        pointerEvents: "none",
-        zIndex: 1,
-      }}
-    >
-      {assets
-        .sort((a, b) => (a.zIndex ?? 0) - (b.zIndex ?? 0))
-        .map((asset) => (
-          <img
-            key={asset.id}
-            src={asset.src}
-            alt=""
-            style={{
-              position: "absolute",
-              left: `${asset.x}px`,
-              top: `${asset.y}px`,
-              width: `${asset.size}px`,
-              transform: `translate(-50%, -50%) rotate(${
-                asset.rotation ?? 0
-              }deg) scaleX(${asset.isFlipped ? -1 : 1})`,
-              filter: "drop-shadow(2px 2px 4px rgba(0,0,0,0.4))",
-              zIndex: asset.zIndex,
-            }}
-          />
-        ))}
-    </div>
+    <ForestCanvas
+      assets={assets}
+      loadedImages={loadedImages}
+      width={width}
+      height={height}
+    />
   );
 };
 

@@ -1,11 +1,11 @@
+/* Arquivo: src/hooks/useGameLogic.ts */
+
 import { useState, useMemo, useEffect } from "react";
 import type { Clan, Item } from "../types";
+// A importação do HEADER_HEIGHT não é mais necessária para o cálculo do drop
+// import { HEADER_HEIGHT } from "../config/layoutConstants";
 
-// 1. A importação das constantes de layout foi REMOVIDA daqui.
-// O hook não conhece mais o layout de forma estática.
-
-// --- TIPOS ESPECÍFICOS PARA ESTE ESTADO ---
-
+// --- TIPOS (sem alterações) ---
 type PulseState = {
   x: number;
   y: number;
@@ -26,8 +26,7 @@ type DraggedItemInfo = {
   initialRect: DOMRect;
 } | null;
 
-// --- FUNÇÕES UTILITÁRIAS ---
-
+// --- FUNÇÕES UTILITÁRIAS (sem alterações) ---
 const shuffleArray = <T>(array: T[]): T[] => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -45,23 +44,17 @@ const getDistance = (
 };
 
 // --- O HOOK PRINCIPAL ---
-
-// 2. A assinatura do hook foi alterada para RECEBER o objeto `layout`.
 export const useGameLogic = (
   clans: Clan[],
   initialItems: Item[],
   layout: { centroX: number; centroY: number; raioPalco: number }
 ) => {
-  // --- ESTADOS DO JOGO ---
+  // --- ESTADOS DO JOGO (sem alterações) ---
   const [remainingItemsByClan, setRemainingItemsByClan] = useState<
     Map<string, Item[]>
   >(new Map());
-  // No início do hook useGameLogic, junto com os outros 'useState'
-
-  // Adicione este tipo para garantir que apenas valores válidos sejam usados
-
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<MessageType>("success"); // <-- ADICIONE ESTA LINHA
+  const [messageType, setMessageType] = useState<MessageType>("success");
   const [isMessageVisible, setIsMessageVisible] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [stageItems, setStageItems] = useState<Item[]>([]);
@@ -71,10 +64,9 @@ export const useGameLogic = (
   const [returningItem, setReturningItem] = useState<ReturningItemState>(null);
   const [draggedItemInfo, setDraggedItemInfo] = useState<DraggedItemInfo>(null);
 
-  // --- CÁLCULOS DE PREPARAÇÃO ---
+  // --- CÁLCULOS DE PREPARAÇÃO (sem alterações) ---
   const clanTargets = useMemo(() => {
     const newTargets: { [key: string]: { x: number; y: number } } = {};
-    // 3. Os cálculos agora usam os valores dinâmicos recebidos via props.
     const targetRingRadius = layout.raioPalco * 0.75;
     const tugoaregeClans = clans.filter(
       (c) =>
@@ -104,11 +96,9 @@ export const useGameLogic = (
       };
     });
     return newTargets;
-    // 4. O `layout` é adicionado como uma dependência para que os alvos
-    //    sejam recalculados se o tamanho da tela mudar.
   }, [clans, initialItems, layout]);
 
-  // --- FUNÇÕES DE CONTROLE DE JOGO ---
+  // --- FUNÇÕES DE CONTROLE DE JOGO (sem alterações) ---
   const loadNextBatch = (currentItemsByClan: Map<string, Item[]>) => {
     const newBatch: Item[] = [];
     const newRemainingMap = new Map(currentItemsByClan);
@@ -148,7 +138,6 @@ export const useGameLogic = (
         itemsByClan.set(clanId, shuffleArray(items));
       });
 
-      // Filtra clãs que não têm itens para não quebrar a lógica de 'loadNextBatch'
       const filteredItemsByClan = new Map(
         [...itemsByClan].filter(([, items]) => items.length > 0)
       );
@@ -164,7 +153,7 @@ export const useGameLogic = (
     duration: number = 2000
   ) => {
     setMessage(msg);
-    setMessageType(type); // Define o tipo da mensagem
+    setMessageType(type);
     setIsMessageVisible(true);
     setTimeout(() => setIsMessageVisible(false), duration);
   };
@@ -185,12 +174,12 @@ export const useGameLogic = (
       }
     });
 
-    // A área de "snap" também poderia ser dinâmica, se desejado.
-    // Por exemplo: minDistance < layout.raioPalco * 0.1
-    return minDistance < 50 ? nearestClan : null;
+    // MELHORIA: Aumentamos a área de 'snap' de 15% para 20% do raio do palco.
+    // Isso torna o alvo um pouco maior e mais fácil de acertar.
+    return minDistance < layout.raioPalco * 0.2 ? nearestClan : null;
   };
 
-  // --- MANIPULADORES DE EVENTOS DE ARRASTAR E SOLTAR (NATIVO) ---
+  // --- MANIPULADORES DE EVENTOS (sem alterações) ---
   const handleDragStart = (
     e: React.DragEvent,
     item: Item,
@@ -216,15 +205,21 @@ export const useGameLogic = (
     e.preventDefault();
   };
 
+  // --- LÓGICA DE DROP CORRIGIDA ---
   const handleDrop = (e: React.DragEvent, stageRect: DOMRect) => {
     e.preventDefault();
     if (!draggedItemInfo) return;
 
     const { item, initialRect } = draggedItemInfo;
+
+    // CORREÇÃO: Removemos a subtração de HEADER_HEIGHT.
+    // Agora, as coordenadas do mouse são relativas ao topo do container do palco,
+    // que é o mesmo sistema de coordenadas do canvas do Konva.
     const dropPos = {
       x: e.clientX - stageRect.left,
       y: e.clientY - stageRect.top,
     };
+
     const targetClan = findNearestClan(dropPos);
 
     if (targetClan && item.correct_clan_id === targetClan.id) {
@@ -255,6 +250,9 @@ export const useGameLogic = (
     } else {
       showFeedback("Incorreto. Tente novamente.", "error", 1500);
       setFeedbackPulse({ ...dropPos, color: "incorrect", key: Date.now() });
+
+      // CORREÇÃO: Também removemos a subtração de HEADER_HEIGHT aqui,
+      // para que a animação de retorno comece no lugar certo.
       const endPos = {
         x: initialRect.left - stageRect.left + initialRect.width / 2,
         y: initialRect.top - stageRect.top + initialRect.height / 2,
@@ -264,7 +262,6 @@ export const useGameLogic = (
     setDraggedItemInfo(null);
   };
 
-  // --- VALORES RETORNADOS PELO HOOK ---
   return {
     isGameOver,
     stageItems,

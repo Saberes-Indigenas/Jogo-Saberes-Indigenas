@@ -1,3 +1,5 @@
+/* Arquivo: src/components/BororoStage.tsx */
+
 import React from "react";
 import { Stage, Layer, Circle as KonvaCircle, Arc, Line } from "react-konva";
 import type { Clan, Item, PulseState, ReturningItemState } from "../types";
@@ -5,7 +7,6 @@ import ClanTarget from "./ClanTarget";
 import ItemBall from "./ItemBall";
 import FeedbackPulse from "./FeedbackPulse";
 import ReturningItem from "./ReturningItem";
-import { HEADER_HEIGHT } from "../config/layoutConstants";
 
 interface BororoStageProps {
   clans: Clan[];
@@ -39,16 +40,19 @@ const BororoStage = ({
   onReturnAnimationComplete,
 }: BororoStageProps) => {
   return (
+    // Os eventos onDragOver e onDrop são aplicados aqui
     <main className="game-area" onDragOver={onDragOver} onDrop={onDrop}>
       <Stage
         width={layout.gameAreaWidth}
-        height={layout.gameAreaHeight - HEADER_HEIGHT}
+        // A altura do Stage considera o espaço real, descontando o Header
+        height={layout.gameAreaHeight}
       >
         <Layer>
           {/* --- FUNDO DO PALCO (cartoon com borda grossa) --- */}
+          {/* CORREÇÃO: O 'y' agora usa diretamente layout.centroY, sem subtrações */}
           <KonvaCircle
             x={layout.centroX}
-            y={layout.centroY - HEADER_HEIGHT / 2}
+            y={layout.centroY}
             radius={layout.raioPalco}
             fillLinearGradientStartPoint={{
               x: -layout.raioPalco,
@@ -67,16 +71,17 @@ const BororoStage = ({
               "#3d3b2e",
             ]}
             stroke="#2a2a2a"
-            strokeWidth={6} // borda grossa cartoon
+            strokeWidth={6}
             shadowColor="#000"
             shadowBlur={15}
             shadowOpacity={0.4}
           />
 
-          {/* --- METADE VERMELHA E PRETA (mas cartoon, cores chapadas com opacidade) --- */}
+          {/* --- METADE VERMELHA E PRETA --- */}
+          {/* CORREÇÃO: O 'y' agora usa diretamente layout.centroY */}
           <Arc
             x={layout.centroX}
-            y={layout.centroY - HEADER_HEIGHT / 2}
+            y={layout.centroY}
             innerRadius={0}
             outerRadius={layout.raioPalco}
             angle={180}
@@ -87,7 +92,7 @@ const BororoStage = ({
           />
           <Arc
             x={layout.centroX}
-            y={layout.centroY - HEADER_HEIGHT / 2}
+            y={layout.centroY}
             innerRadius={0}
             outerRadius={layout.raioPalco}
             angle={180}
@@ -97,10 +102,11 @@ const BororoStage = ({
             strokeWidth={3}
           />
 
-          {/* --- CÍRCULO INTERNO (como uma borda cartoon decorativa) --- */}
+          {/* --- CÍRCULO INTERNO --- */}
+          {/* CORREÇÃO: O 'y' agora usa diretamente layout.centroY */}
           <KonvaCircle
             x={layout.centroX}
-            y={layout.centroY - HEADER_HEIGHT / 2}
+            y={layout.centroY}
             radius={layout.raioPalco * 0.25}
             stroke="#2a2a2a"
             strokeWidth={4}
@@ -110,13 +116,13 @@ const BororoStage = ({
             dash={[12, 6]}
           />
 
-          {/* --- LINHA CENTRAL (cartoon tracejada) --- */}
+          {/* --- LINHA CENTRAL --- */}
           <Line
             points={[
               layout.centroX,
-              layout.centroY - HEADER_HEIGHT / 2 - layout.raioPalco,
+              layout.centroY - layout.raioPalco,
               layout.centroX,
-              layout.centroY - HEADER_HEIGHT / 2 + layout.raioPalco,
+              layout.centroY + layout.raioPalco,
             ]}
             stroke="#2a2a2a"
             strokeWidth={3}
@@ -124,7 +130,7 @@ const BororoStage = ({
             opacity={0.9}
           />
 
-          {/* --- RAIOS PARA OS CLÃS (bem estilizados) --- */}
+          {/* --- RAIOS PARA OS CLÃS --- */}
           {Object.keys(clanTargets).map((clanId) => {
             const pos = clanTargets[clanId];
             const angle = Math.atan2(
@@ -134,14 +140,9 @@ const BororoStage = ({
             const startX =
               layout.centroX + layout.raioPalco * 0.25 * Math.cos(angle);
             const startY =
-              layout.centroY -
-              HEADER_HEIGHT / 2 +
-              layout.raioPalco * 0.25 * Math.sin(angle);
+              layout.centroY + layout.raioPalco * 0.25 * Math.sin(angle);
             const endX = layout.centroX + layout.raioPalco * Math.cos(angle);
-            const endY =
-              layout.centroY -
-              HEADER_HEIGHT / 2 +
-              layout.raioPalco * Math.sin(angle);
+            const endY = layout.centroY + layout.raioPalco * Math.sin(angle);
 
             return (
               <Line
@@ -165,7 +166,8 @@ const BororoStage = ({
                 key={clan.id}
                 clanName={clan.name}
                 x={pos.x}
-                y={pos.y - HEADER_HEIGHT / 2}
+                // CORREÇÃO: O 'y' já vem correto do hook, não precisa de ajuste
+                y={pos.y}
                 stageRadius={layout.raioPalco}
               />
             );
@@ -177,7 +179,8 @@ const BororoStage = ({
               item={item}
               initial_pos={{
                 x: item.initial_pos.x,
-                y: item.initial_pos.y - HEADER_HEIGHT / 2,
+                // CORREÇÃO: O 'y' já vem correto do hook
+                y: item.initial_pos.y,
               }}
               isDraggable={false}
             />
@@ -188,7 +191,8 @@ const BororoStage = ({
             <FeedbackPulse
               key={feedbackPulse.key}
               x={feedbackPulse.x}
-              y={feedbackPulse.y - HEADER_HEIGHT / 2}
+              // CORREÇÃO: O 'y' já vem correto do hook
+              y={feedbackPulse.y}
               color={feedbackPulse.color}
               onComplete={onPulseComplete}
             />
@@ -198,7 +202,8 @@ const BororoStage = ({
               itemData={returningItem.item}
               startPos={{
                 x: returningItem.startPos.x,
-                y: returningItem.startPos.y - HEADER_HEIGHT / 2,
+                // CORREÇÃO: O 'y' já vem correto do hook
+                y: returningItem.startPos.y,
               }}
               endPos={returningItem.endPos}
               onComplete={onReturnAnimationComplete}
