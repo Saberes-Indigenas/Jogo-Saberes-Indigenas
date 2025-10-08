@@ -41,6 +41,7 @@
     {
       "id": "item_ararapiranga_boe_etuiedagamage",
       "name": "ararapiranga",
+      "name_boe": "Nabure",
       "icon": "🦜",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -49,6 +50,7 @@
     {
       "id": "item_biguá_boe_etuiedagamage",
       "name": "biguá",
+      "name_boe": "Batagaje",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -57,6 +59,7 @@
     {
       "id": "item_papagaio_verdadeiro_boe_etuiedagamage",
       "name": "papagaio verdadeiro",
+      "name_boe": "Korao",
       "icon": "🦜",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -65,6 +68,7 @@
     {
       "id": "item_gavião_requinta_boe_etuiedagamage",
       "name": "gavião requinta",
+      "name_boe": "Bakuguma",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -73,6 +77,7 @@
     {
       "id": "item_pomba_boe_etuiedagamage",
       "name": "pomba",
+      "name_boe": "Metugo",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -81,6 +86,7 @@
     {
       "id": "item_pato_boe_etuiedagamage",
       "name": "pato",
+      "name_boe": "Turubare",
       "icon": "🦆",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -89,6 +95,7 @@
     {
       "id": "item_kanao_kigadureu_boe_etuiedagamage",
       "name": "Kanao Kigadureu",
+      "name_boe": "Kanao Kigadureu",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -97,6 +104,7 @@
     {
       "id": "item_gavião_boe_etuiedagamage",
       "name": "gavião",
+      "name_boe": "Mano",
       "icon": "🦅",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -105,6 +113,7 @@
     {
       "id": "item_anhuma_boe_etuiedagamage",
       "name": "anhuma",
+      "name_boe": "Tamigi",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -113,6 +122,7 @@
     {
       "id": "item_queixada_boe_etuiedagamage",
       "name": "queixada",
+      "name_boe": "Jugo",
       "icon": "🐗",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -121,6 +131,7 @@
     {
       "id": "item_caititu_boe_etuiedagamage",
       "name": "caititu",
+      "name_boe": "Jui",
       "icon": "🐖",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -129,6 +140,7 @@
     {
       "id": "item_lobinho_boe_etuiedagamage",
       "name": "lobinho",
+      "name_boe": "Okwa",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -137,6 +149,7 @@
     {
       "id": "item_papa_mel_boe_etuiedagamage",
       "name": "papa mel",
+      "name_boe": "Ipocereu",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -145,6 +158,7 @@
     {
       "id": "item_furão_boe_etuiedagamage",
       "name": "furão",
+      "name_boe": "Meridabo",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -153,6 +167,7 @@
     {
       "id": "item_cachorro_do_mato_boe_etuiedagamage",
       "name": "cachorro do mato",
+      "name_boe": "Moribo",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -161,6 +176,7 @@
     {
       "id": "item_quati_boe_etuiedagamage",
       "name": "quati",
+      "name_boe": "Kudobo",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -169,6 +185,7 @@
     {
       "id": "item_ariranha_boe_etuiedagamage",
       "name": "ariranha",
+      "name_boe": "Ipie",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -177,6 +194,7 @@
     {
       "id": "item_lontra_boe_etuiedagamage",
       "name": "lontra",
+      "name_boe": "Jomo",
       "icon": "🦦",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -185,6 +203,7 @@
     {
       "id": "item_mão_pelada_boe_etuiedagamage",
       "name": "mão pelada",
+      "name_boe": "Ierarai",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -193,6 +212,7 @@
     {
       "id": "item_lontra_boe_etuiedagamage",
       "name": "lontra",
+      "name_boe": "Aokurumodu",
       "icon": "🦦",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -201,6 +221,7 @@
     {
       "id": "item_cobra_coral_boe_etuiedagamage",
       "name": "cobra coral",
+      "name_boe": "Bakorororeu",
       "icon": "🐍",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -209,6 +230,7 @@
     {
       "id": "item_cobra_coral_boe_etuiedagamage",
       "name": "cobra coral",
+      "name_boe": "Arori",
       "icon": "🐍",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -217,6 +239,7 @@
     {
       "id": "item_larva_de_borboleta_boe_etuiedagamage",
       "name": "larva de borboleta",
+      "name_boe": "Aroro",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -225,6 +248,7 @@
     {
       "id": "item_lavra_de_borboleta_amarelo_boe_etuiedagamage",
       "name": "lavra de borboleta amarelo",
+      "name_boe": "Aroro Ekureu",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -233,6 +257,7 @@
     {
       "id": "item_aroro_ewagureu_boe_etuiedagamage",
       "name": "Aroro Ewagureu",
+      "name_boe": "Aroro Ewagureu",
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
@@ -241,6 +266,7 @@
     {
       "id": "item_capivara_iwagududoge",
       "name": "capivara",
+      "name_boe": "Akiwa",
       "icon": "🦫",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -249,6 +275,7 @@
     {
       "id": "item_rato_iwagududoge",
       "name": "rato",
+      "name_boe": "Akiwareu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -257,6 +284,7 @@
     {
       "id": "item_preá_iwagududoge",
       "name": "preá",
+      "name_boe": "Kurugo",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -265,6 +293,7 @@
     {
       "id": "item_lobo_iwagududoge",
       "name": "lobo",
+      "name_boe": "Rie",
       "icon": "🐺",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -273,6 +302,7 @@
     {
       "id": "item_cachorro_preto_iwagududoge",
       "name": "cachorro preto",
+      "name_boe": "Arigao coreu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -281,6 +311,7 @@
     {
       "id": "item_piraputanga_iwagududoge",
       "name": "piraputanga",
+      "name_boe": "Araru",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -289,6 +320,7 @@
     {
       "id": "item_tipo_de_lambari_iwagududoge",
       "name": "tipo de lambari",
+      "name_boe": "Ararureuge",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -297,6 +329,7 @@
     {
       "id": "item_bagre_pequeno_iwagududoge",
       "name": "bagre pequeno",
+      "name_boe": "Jarudo Biagareu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -305,6 +338,7 @@
     {
       "id": "item_mutum_fêmea_iwagududoge",
       "name": "mutum fêmea",
+      "name_boe": "Kujekadureu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -313,6 +347,7 @@
     {
       "id": "item_gavião_fumaça_iwagududoge",
       "name": "gavião fumaça",
+      "name_boe": "Ceje",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -321,6 +356,7 @@
     {
       "id": "item_gavião_fumaça_castanho_iwagududoge",
       "name": "gavião fumaça castanho",
+      "name_boe": "Keago",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -329,6 +365,7 @@
     {
       "id": "item_keago_kigadureu_iwagududoge",
       "name": "Keago Kigadureu",
+      "name_boe": "Keago Kigadureu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -337,6 +374,7 @@
     {
       "id": "item_curiango_iwagududoge",
       "name": "curiango",
+      "name_boe": "Mukureabo",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -345,6 +383,7 @@
     {
       "id": "item_andorinha_iwagududoge",
       "name": "andorinha",
+      "name_boe": "Piroje",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -353,6 +392,7 @@
     {
       "id": "item_beija_flor_iwagududoge",
       "name": "beija flor",
+      "name_boe": "Piududu",
       "icon": "🐦",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -361,6 +401,7 @@
     {
       "id": "item_beija_flor_parecido_com_arara_azul_iwagududoge",
       "name": "beija flor parecido com arara azul",
+      "name_boe": "Piududu Kudorereu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -369,6 +410,7 @@
     {
       "id": "item_piuguriwu_iwagududoge",
       "name": "Piuguriwu",
+      "name_boe": "Piuguriwu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -377,6 +419,7 @@
     {
       "id": "item_ciwajereu_iwagududoge",
       "name": "Ciwajereu",
+      "name_boe": "Ciwajereu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -385,6 +428,7 @@
     {
       "id": "item_variedade_de_gavião_iwagududoge",
       "name": "variedade de gavião",
+      "name_boe": "Warinogo",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -393,6 +437,7 @@
     {
       "id": "item_periquito_iwagududoge",
       "name": "periquito",
+      "name_boe": "Kido",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -401,6 +446,7 @@
     {
       "id": "item_periquito_vassourinha_iwagududoge",
       "name": "periquito vassourinha",
+      "name_boe": "Kidetumana",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -409,6 +455,7 @@
     {
       "id": "item_grainha_iwagududoge",
       "name": "grainha",
+      "name_boe": "Keao-Keao Kigadureu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -417,6 +464,7 @@
     {
       "id": "item_cucu_iwagududoge",
       "name": "Cucu",
+      "name_boe": "Cucu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -425,6 +473,7 @@
     {
       "id": "item_sanhaço_iwagududoge",
       "name": "sanhaço",
+      "name_boe": "Kidoreu",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -433,6 +482,7 @@
     {
       "id": "item_karao_iwagududoge",
       "name": "Karao",
+      "name_boe": "Karao",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -441,6 +491,7 @@
     {
       "id": "item_mãe_da_lua_iwagududoge",
       "name": "mãe da lua",
+      "name_boe": "Aere",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -449,6 +500,7 @@
     {
       "id": "item_pogubo_iwagududoge",
       "name": "Pogubo",
+      "name_boe": "Pogubo",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -457,6 +509,7 @@
     {
       "id": "item_urubu_iwagududoge",
       "name": "urubu",
+      "name_boe": "Pobureu",
       "icon": "🦅",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -465,6 +518,7 @@
     {
       "id": "item_urubu_cangaia_iwagududoge",
       "name": "urubu cangaia",
+      "name_boe": "Ciwaje",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -473,6 +527,7 @@
     {
       "id": "item_gralhão_iwagududoge",
       "name": "gralhão",
+      "name_boe": "Cenao Taotao",
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
@@ -481,6 +536,7 @@
     {
       "id": "item_gavião_real_apiborege",
       "name": "gavião real",
+      "name_boe": "Aroe Eceba",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -489,6 +545,7 @@
     {
       "id": "item_gavião_apiborege",
       "name": "gavião",
+      "name_boe": "Kuruguga",
       "icon": "🦅",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -497,6 +554,7 @@
     {
       "id": "item_torowa_apiborege",
       "name": "Torowa",
+      "name_boe": "Torowa",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -505,6 +563,7 @@
     {
       "id": "item_kuruguga_porireu_apiborege",
       "name": "Kuruguga Porireu",
+      "name_boe": "Kuruguga Porireu",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -513,6 +572,7 @@
     {
       "id": "item_kuruguga_awarare_apiborege",
       "name": "Kuruguga Awarare",
+      "name_boe": "Kuruguga Awarare",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -521,6 +581,7 @@
     {
       "id": "item_kuruguga_kudagodoreu_apiborege",
       "name": "Kuruguga Kudagodoreu",
+      "name_boe": "Kuruguga Kudagodoreu",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -529,6 +590,7 @@
     {
       "id": "item_kurugugabokwadiare_apiborege",
       "name": "Kurugugabokwadiare",
+      "name_boe": "Kurugugabokwadiare",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -537,6 +599,7 @@
     {
       "id": "item_gaivota_apiborege",
       "name": "gaivota",
+      "name_boe": "Tawie",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -545,6 +608,7 @@
     {
       "id": "item_caburé_apiborege",
       "name": "caburé",
+      "name_boe": "Tudu",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -553,6 +617,7 @@
     {
       "id": "item_siriema_apiborege",
       "name": "siriema",
+      "name_boe": "Beo",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -561,6 +626,7 @@
     {
       "id": "item_tucaninho_apiborege",
       "name": "tucaninho",
+      "name_boe": "Cugui",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -569,6 +635,7 @@
     {
       "id": "item_ikuiemana_apiborege",
       "name": "Ikuiemana",
+      "name_boe": "Ikuiemana",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -577,6 +644,7 @@
     {
       "id": "item_jabuti_apiborege",
       "name": "jabuti",
+      "name_boe": "Atomoio",
       "icon": "🐢",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -585,6 +653,7 @@
     {
       "id": "item_bakuie_apiborege",
       "name": "Bakuie",
+      "name_boe": "Bakuie",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -593,6 +662,7 @@
     {
       "id": "item_sinimbu_apiborege",
       "name": "sinimbu",
+      "name_boe": "Irui",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -601,6 +671,7 @@
     {
       "id": "item_jaguatirica_apiborege",
       "name": "jaguatirica",
+      "name_boe": "Aipoboreu",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -609,6 +680,7 @@
     {
       "id": "item_curimbatá_apiborege",
       "name": "curimbatá",
+      "name_boe": "Roko",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -617,6 +689,7 @@
     {
       "id": "item_pacu_peba_apiborege",
       "name": "pacu peba",
+      "name_boe": "Akurara",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -625,6 +698,7 @@
     {
       "id": "item_savá_apiborege",
       "name": "savá",
+      "name_boe": "Buruwo",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -633,6 +707,7 @@
     {
       "id": "item_tipo_de_lambari_pequeno_apiborege",
       "name": "tipo de lambari pequeno",
+      "name_boe": "Apuie",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -641,6 +716,7 @@
     {
       "id": "item_lambari_apiborege",
       "name": "lambari",
+      "name_boe": "Tubore",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -649,6 +725,7 @@
     {
       "id": "item_metoe_apiborege",
       "name": "Metoe",
+      "name_boe": "Metoe",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -657,6 +734,7 @@
     {
       "id": "item_sardinha_apiborege",
       "name": "sardinha",
+      "name_boe": "Motoreu",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -665,6 +743,7 @@
     {
       "id": "item_koduraka_apiborege",
       "name": "Koduraka",
+      "name_boe": "Koduraka",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -673,6 +752,7 @@
     {
       "id": "item_madre_pérola_apiborege",
       "name": "madre pérola",
+      "name_boe": "Atu",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -681,6 +761,7 @@
     {
       "id": "item_aturebo_apiborege",
       "name": "Aturebo",
+      "name_boe": "Aturebo",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -689,6 +770,7 @@
     {
       "id": "item_atunabo_apiborege",
       "name": "Atunabo",
+      "name_boe": "Atunabo",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -697,6 +779,7 @@
     {
       "id": "item_bakororo_kuidabireu_apiborege",
       "name": "Bakororo kuidabireu",
+      "name_boe": "Bakororo kuidabireu",
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
@@ -705,6 +788,7 @@
     {
       "id": "item_arara_amarelo_paiwoe",
       "name": "arara amarelo",
+      "name_boe": "Kuido",
       "icon": "🦜",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -713,6 +797,7 @@
     {
       "id": "item_ararinha_paiwoe",
       "name": "ararinha",
+      "name_boe": "Keakorogu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -721,6 +806,7 @@
     {
       "id": "item_papagaio_campeiro_paiwoe",
       "name": "papagaio campeiro",
+      "name_boe": "Kuno",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -729,6 +815,7 @@
     {
       "id": "item_periquito_estrela_paiwoe",
       "name": "periquito estrela",
+      "name_boe": "Ore",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -737,6 +824,7 @@
     {
       "id": "item_gavião_paiwoe",
       "name": "gavião",
+      "name_boe": "Kugu",
       "icon": "🦅",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -745,6 +833,7 @@
     {
       "id": "item_bokurowodo_paiwoe",
       "name": "Bokurowodo",
+      "name_boe": "Bokurowodo",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -753,6 +842,7 @@
     {
       "id": "item_kurutui_paiwoe",
       "name": "Kurutui",
+      "name_boe": "Kurutui",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -761,6 +851,7 @@
     {
       "id": "item_variedade_de_ararinha_paiwoe",
       "name": "variedade de ararinha",
+      "name_boe": "Manopa",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -769,6 +860,7 @@
     {
       "id": "item_piabo_paiwoe",
       "name": "Piabo",
+      "name_boe": "Piabo",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -777,6 +869,7 @@
     {
       "id": "item_guachão_paiwoe",
       "name": "guachão",
+      "name_boe": "Ciwabo",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -785,6 +878,7 @@
     {
       "id": "item_chechéu_paiwoe",
       "name": "chechéu",
+      "name_boe": "Ciwabo Batarea Keadureu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -793,6 +887,7 @@
     {
       "id": "item_mergulhão_bivá_paiwoe",
       "name": "mergulhão bivá",
+      "name_boe": "Batagaje",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -801,6 +896,7 @@
     {
       "id": "item_tipo_de_bivá_paiwoe",
       "name": "tipo de bivá",
+      "name_boe": "Aturuwareu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -809,6 +905,7 @@
     {
       "id": "item_acuã_paiwoe",
       "name": "acuã",
+      "name_boe": "Makao",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -817,6 +914,7 @@
     {
       "id": "item_coruja_paiwoe",
       "name": "coruja",
+      "name_boe": "Tagogo",
       "icon": "🦉",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -825,6 +923,7 @@
     {
       "id": "item_papagaio_urubuzinho_paiwoe",
       "name": "papagaio urubuzinho",
+      "name_boe": "Curui",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -833,6 +932,7 @@
     {
       "id": "item_pato_preto_paiwoe",
       "name": "pato preto",
+      "name_boe": "Turubare coreu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -841,6 +941,7 @@
     {
       "id": "item_bugio_preto_paiwoe",
       "name": "bugio preto",
+      "name_boe": "Paicoreu",
       "icon": "🐒",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -849,6 +950,7 @@
     {
       "id": "item_bugio_de_peito_avermelhado_paiwoe",
       "name": "bugio de peito avermelhado",
+      "name_boe": "Paiparagujagureu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -857,6 +959,7 @@
     {
       "id": "item_ouriço_paiwoe",
       "name": "ouriço",
+      "name_boe": "Iwe",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -865,6 +968,7 @@
     {
       "id": "item_macaco_barriga_paiwoe",
       "name": "macaco barriga",
+      "name_boe": "Meaibo",
       "icon": "🐒",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -873,6 +977,7 @@
     {
       "id": "item_lobo_guará_paiwoe",
       "name": "lobo guará",
+      "name_boe": "Rie",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -881,6 +986,7 @@
     {
       "id": "item_jabuti_paiwoe",
       "name": "jabuti",
+      "name_boe": "Jerigige",
       "icon": "🐢",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -889,6 +995,7 @@
     {
       "id": "item_jabuti_grande_da_mata_paiwoe",
       "name": "jabuti grande da mata",
+      "name_boe": "Ato",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -897,6 +1004,7 @@
     {
       "id": "item_tamanduá_bandeira_paiwoe",
       "name": "tamanduá bandeira",
+      "name_boe": "Buke",
       "icon": "🐜",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -905,6 +1013,7 @@
     {
       "id": "item_tamanduá_mirin_paiwoe",
       "name": "tamanduá mirin",
+      "name_boe": "Apogo",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -913,6 +1022,7 @@
     {
       "id": "item_gato_mourisco_paiwoe",
       "name": "gato mourisco",
+      "name_boe": "Aimeareu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -921,6 +1031,7 @@
     {
       "id": "item_cutia_paiwoe",
       "name": "cutia",
+      "name_boe": "Mea",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -929,6 +1040,7 @@
     {
       "id": "item_sapo_paiwoe",
       "name": "sapo",
+      "name_boe": "Ru",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -937,6 +1049,7 @@
     {
       "id": "item_pintado_paiwoe",
       "name": "pintado",
+      "name_boe": "Orari",
       "icon": "🐠",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -945,6 +1058,7 @@
     {
       "id": "item_surubim_paiwoe",
       "name": "surubim",
+      "name_boe": "Orariji",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -953,6 +1067,7 @@
     {
       "id": "item_jaú_paiwoe",
       "name": "jaú",
+      "name_boe": "Poru",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -961,6 +1076,7 @@
     {
       "id": "item_jeripoca_paiwoe",
       "name": "jeripoca",
+      "name_boe": "Koma",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -969,6 +1085,7 @@
     {
       "id": "item_bico_de_pato_paiwoe",
       "name": "bico de pato",
+      "name_boe": "Akoro",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -977,6 +1094,7 @@
     {
       "id": "item_palmito_paiwoe",
       "name": "palmito",
+      "name_boe": "Rureo",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -985,6 +1103,7 @@
     {
       "id": "item_tipo_de_peixe_de_couro_bagre_paiwoe",
       "name": "tipo de peixe de couro bagre",
+      "name_boe": "Porugogo",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -993,6 +1112,7 @@
     {
       "id": "item_barubado_paiwoe",
       "name": "Barubado",
+      "name_boe": "Barubado",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -1001,6 +1121,7 @@
     {
       "id": "item_botoado_paiwoe",
       "name": "botoado",
+      "name_boe": "Kudogo",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -1009,6 +1130,7 @@
     {
       "id": "item_variedade_de_botoado_paiwoe",
       "name": "variedade de botoado",
+      "name_boe": "Juireu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -1017,6 +1139,7 @@
     {
       "id": "item_mandi_banana_paiwoe",
       "name": "mandi banana",
+      "name_boe": "Nowareu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -1025,6 +1148,7 @@
     {
       "id": "item_chicote_paiwoe",
       "name": "chicote",
+      "name_boe": "Rekudo",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -1033,6 +1157,7 @@
     {
       "id": "item_cascudo_paiwoe",
       "name": "cascudo",
+      "name_boe": "Okwaboareu",
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
@@ -1041,6 +1166,7 @@
     {
       "id": "item_onça_pintada_bakoro_ecerae",
       "name": "onça pintada",
+      "name_boe": "Adugo",
       "icon": "🐆",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1049,6 +1175,7 @@
     {
       "id": "item_onça_preta_bakoro_ecerae",
       "name": "onça preta",
+      "name_boe": "Adugo Coreu",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1057,6 +1184,7 @@
     {
       "id": "item_tatu_peba_bakoro_ecerae",
       "name": "tatu peba",
+      "name_boe": "Okwaru",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1065,6 +1193,7 @@
     {
       "id": "item_tatu_bolinha_bakoro_ecerae",
       "name": "tatu bolinha",
+      "name_boe": "Enokuri",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1073,6 +1202,7 @@
     {
       "id": "item_tatu_china_bakoro_ecerae",
       "name": "tatu china",
+      "name_boe": "Jerego",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1081,6 +1211,7 @@
     {
       "id": "item_piau_bakoro_ecerae",
       "name": "piau",
+      "name_boe": "Je Kujagureu",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1089,6 +1220,7 @@
     {
       "id": "item_tipo_de_piau_bakoro_ecerae",
       "name": "tipo de piau",
+      "name_boe": "Jetobo",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1097,6 +1229,7 @@
     {
       "id": "item_tipo_de_piau_bakoro_ecerae",
       "name": "tipo de piau",
+      "name_boe": "Aenogwa",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1105,6 +1238,7 @@
     {
       "id": "item_kare_etumana_bakoro_ecerae",
       "name": "Kare Etumana",
+      "name_boe": "Kare Etumana",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1113,6 +1247,7 @@
     {
       "id": "item_matrinchã_bakoro_ecerae",
       "name": "matrinchã",
+      "name_boe": "Oicereu",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1121,6 +1256,7 @@
     {
       "id": "item_piranha_bakoro_ecerae",
       "name": "piranha",
+      "name_boe": "Buiogo",
       "icon": "🐟",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1129,6 +1265,7 @@
     {
       "id": "item_variedade_de_piranha_bakoro_ecerae",
       "name": "variedade de piranha",
+      "name_boe": "Buiogo merireu",
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
@@ -1137,6 +1274,7 @@
     {
       "id": "item_tatu_canastra_bokodori_ecerae",
       "name": "tatu canastra",
+      "name_boe": "Bokodori",
       "icon": "🦔",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1145,6 +1283,7 @@
     {
       "id": "item_tipo_de_tatu_canastra_bokodori_ecerae",
       "name": "tipo de tatu canastra",
+      "name_boe": "Bokodorireu",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1153,6 +1292,7 @@
     {
       "id": "item_tipo_de_tatu_bokodori_ecerae",
       "name": "tipo de tatu",
+      "name_boe": "Iturawore",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1161,6 +1301,7 @@
     {
       "id": "item_tipo_de_tatu_bokodori_ecerae",
       "name": "tipo de tatu",
+      "name_boe": "Okugudo",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1169,6 +1310,7 @@
     {
       "id": "item_enogikure_bokodori_ecerae",
       "name": "Enogikure",
+      "name_boe": "Enogikure",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1177,6 +1319,7 @@
     {
       "id": "item_cachorro_branco_bokodori_ecerae",
       "name": "cachorro branco",
+      "name_boe": "Arigao Kigadureu",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1185,6 +1328,7 @@
     {
       "id": "item_vaca_bokodori_ecerae",
       "name": "vaca",
+      "name_boe": "Tapiradoge",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1193,6 +1337,7 @@
     {
       "id": "item_cavalo_bokodori_ecerae",
       "name": "cavalo",
+      "name_boe": "Kowarodoge",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1201,6 +1346,7 @@
     {
       "id": "item_porco_doméstico_bokodori_ecerae",
       "name": "porco doméstico",
+      "name_boe": "Jugureuge",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1209,6 +1355,7 @@
     {
       "id": "item_maragatao_bokodori_ecerae",
       "name": "Maragatao",
+      "name_boe": "Maragatao",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1217,6 +1364,7 @@
     {
       "id": "item_anu_branco_bokodori_ecerae",
       "name": "Anu branco",
+      "name_boe": "Pogo",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1225,6 +1373,7 @@
     {
       "id": "item_galinha_bokodori_ecerae",
       "name": "galinha",
+      "name_boe": "Kogarigadoge",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1233,6 +1382,7 @@
     {
       "id": "item_joão_de_barro_bokodori_ecerae",
       "name": "joão de barro",
+      "name_boe": "Kurea Kurea",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1241,6 +1391,7 @@
     {
       "id": "item_tipo_de_ave_pequeno_bokodori_ecerae",
       "name": "tipo de ave pequeno",
+      "name_boe": "Juregori",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1249,6 +1400,7 @@
     {
       "id": "item_arara_canindé_bokodori_ecerae",
       "name": "arara canindé",
+      "name_boe": "Cibae",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1257,6 +1409,7 @@
     {
       "id": "item_pato_branco_bokodori_ecerae",
       "name": "pato branco",
+      "name_boe": "Turubare kigadureu",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1265,6 +1418,7 @@
     {
       "id": "item_joão_pinto_bokodori_ecerae",
       "name": "joão pinto",
+      "name_boe": "Bataru",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1273,6 +1427,7 @@
     {
       "id": "item_galinha_branca_bokodori_ecerae",
       "name": "galinha branca",
+      "name_boe": "kagariga kigadureu",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1281,6 +1436,7 @@
     {
       "id": "item_pato_branco_bokodori_ecerae",
       "name": "pato branco",
+      "name_boe": "Turubare kigadureu",
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1289,6 +1445,7 @@
     {
       "id": "item_dourado_bokodori_ecerae",
       "name": "Dourado",
+      "name_boe": "Koge",
       "icon": "🐟",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
@@ -1297,6 +1454,7 @@
     {
       "id": "item_anta_kie",
       "name": "anta",
+      "name_boe": "Ki",
       "icon": "🫎",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1305,6 +1463,7 @@
     {
       "id": "item_paca_kie",
       "name": "paca",
+      "name_boe": "Apu",
       "icon": "🐀",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1313,6 +1472,7 @@
     {
       "id": "item_veado_kie",
       "name": "veado",
+      "name_boe": "Pobogo",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1321,6 +1481,7 @@
     {
       "id": "item_coelho_kie",
       "name": "coelho",
+      "name_boe": "Amo",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1329,6 +1490,7 @@
     {
       "id": "item_cágado_kie",
       "name": "cágado",
+      "name_boe": "Upe",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1337,6 +1499,7 @@
     {
       "id": "item_sucuri_kie",
       "name": "sucuri",
+      "name_boe": "Jure",
       "icon": "🐍",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1345,6 +1508,7 @@
     {
       "id": "item_sucuri_tocó_kie",
       "name": "sucuri tocó",
+      "name_boe": "Jure marido",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1353,6 +1517,7 @@
     {
       "id": "item_tipo_de_tatu_canastra_preto_kie",
       "name": "tipo de tatu canastra preto",
+      "name_boe": "Bokodori coreu",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1361,6 +1526,7 @@
     {
       "id": "item_queixada_kie",
       "name": "queixada",
+      "name_boe": "Jugo",
       "icon": "🐗",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1369,6 +1535,7 @@
     {
       "id": "item_tucano_do_bico_preto_kie",
       "name": "tucano do bico preto",
+      "name_boe": "Apodo oto coreu",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1377,6 +1544,7 @@
     {
       "id": "item_tucano_kie",
       "name": "tucano",
+      "name_boe": "Apodo",
       "icon": "🐦",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1385,6 +1553,7 @@
     {
       "id": "item_joão_pinto_preto_kie",
       "name": "joão pinto preto",
+      "name_boe": "Bataro Coreu",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1393,6 +1562,7 @@
     {
       "id": "item_pavãozinho_kie",
       "name": "pavãozinho",
+      "name_boe": "Buroibe",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1401,6 +1571,7 @@
     {
       "id": "item_arara_azul_kie",
       "name": "arara azul",
+      "name_boe": "Kudoro",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1409,6 +1580,7 @@
     {
       "id": "item_papagaio_corneteiro_kie",
       "name": "papagaio corneteiro",
+      "name_boe": "Kuritaga",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1417,6 +1589,7 @@
     {
       "id": "item_ema_kie",
       "name": "ema",
+      "name_boe": "Pari",
       "icon": "🦤",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1425,6 +1598,7 @@
     {
       "id": "item_socó_kie",
       "name": "socó",
+      "name_boe": "Ó",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1433,6 +1607,7 @@
     {
       "id": "item_urubu_rei_kie",
       "name": "urubu rei",
+      "name_boe": "Bai",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1441,6 +1616,7 @@
     {
       "id": "item_kudorowu_kie",
       "name": "Kudorowu",
+      "name_boe": "Kudorowu",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1449,6 +1625,7 @@
     {
       "id": "item_tipo_de_bagre_mandi_mansão_cascudo_kie",
       "name": "tipo de bagre mandi mansão cascudo",
+      "name_boe": "Paretoboreu",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1457,6 +1634,7 @@
     {
       "id": "item_butore_kie",
       "name": "Butore",
+      "name_boe": "Butore",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1465,6 +1643,7 @@
     {
       "id": "item_casa_escura_kie",
       "name": "casa escura",
+      "name_boe": "Bai coreu",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1473,6 +1652,7 @@
     {
       "id": "item_casa_branca_kie",
       "name": "casa branca",
+      "name_boe": "Bai kigadureu",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1481,6 +1661,7 @@
     {
       "id": "item_tipo_de_dourado_preto_kie",
       "name": "tipo de dourado preto",
+      "name_boe": "Okoge coreu",
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
@@ -1489,6 +1670,7 @@
     {
       "id": "item_filhote_de_onça_badojeba",
       "name": "filhote de onça",
+      "name_boe": "Adugo onaregedu",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1497,6 +1679,7 @@
     {
       "id": "item_tatu_galinha_badojeba",
       "name": "tatu galinha",
+      "name_boe": "Rea",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1505,6 +1688,7 @@
     {
       "id": "item_raposa_badojeba",
       "name": "raposa",
+      "name_boe": "Okwa",
       "icon": "🦊",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1513,6 +1697,7 @@
     {
       "id": "item_jacaré_badojeba",
       "name": "jacaré",
+      "name_boe": "Uwai",
       "icon": "🐊",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1521,6 +1706,7 @@
     {
       "id": "item_koge_bakororo_badojeba",
       "name": "Koge Bakororo",
+      "name_boe": "Koge Bakororo",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1529,6 +1715,7 @@
     {
       "id": "item_jatugugo_badojeba",
       "name": "Jatugugo",
+      "name_boe": "Jatugugo",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1537,6 +1724,7 @@
     {
       "id": "item_reko_badojeba",
       "name": "Reko",
+      "name_boe": "Reko",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1545,6 +1733,7 @@
     {
       "id": "item_uto_badojeba",
       "name": "Uto",
+      "name_boe": "Uto",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1553,6 +1742,7 @@
     {
       "id": "item_pacu_badojeba",
       "name": "pacu",
+      "name_boe": "Pobu",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1561,6 +1751,7 @@
     {
       "id": "item_bacekoguio_badojeba",
       "name": "Bacekoguio",
+      "name_boe": "Bacekoguio",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1569,6 +1760,7 @@
     {
       "id": "item_baruge_badojeba",
       "name": "Baruge",
+      "name_boe": "Baruge",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1577,6 +1769,7 @@
     {
       "id": "item_enari_badojeba",
       "name": "Enari",
+      "name_boe": "Enari",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1585,6 +1778,7 @@
     {
       "id": "item_araçã_de_cabeça_listrada_da_cor_do_céu_badojeba",
       "name": "araçã de cabeça listrada da cor do céu",
+      "name_boe": "Keakorogu Ao Baru Kadureu",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1593,6 +1787,7 @@
     {
       "id": "item_tié-fogo_badojeba",
       "name": "tié-fogo",
+      "name_boe": "Meri",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1601,6 +1796,7 @@
     {
       "id": "item_anu_preto_badojeba",
       "name": "anu preto",
+      "name_boe": "Ori",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1609,6 +1805,7 @@
     {
       "id": "item_tipo_de_garça_badojeba",
       "name": "tipo de garça",
+      "name_boe": "O",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1617,6 +1814,7 @@
     {
       "id": "item_mutum_rabo_pampa_badojeba",
       "name": "Mutum rabo pampa",
+      "name_boe": "Mutum rabo pampa",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1625,6 +1823,7 @@
     {
       "id": "item_martim_pescador_badojeba",
       "name": "Martim pescador",
+      "name_boe": "Martim pescador",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
@@ -1633,6 +1832,7 @@
     {
       "id": "item_gavião_fumaça_badojeba",
       "name": "gavião fumaça",
+      "name_boe": "Barugi",
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",

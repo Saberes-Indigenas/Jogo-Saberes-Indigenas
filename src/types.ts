@@ -30,6 +30,7 @@ export interface Clan {
 export interface Item {
   id: string; // ID único do item (ex: "item_anta")
   name: string; // Nome do item em português
+  name_boe: string;
   icon: string; // Emoji/ícone para representar o item
   correct_clan_id: string; // ID do clã ao qual o item pertence
   initial_pos: Vector2D; // Posição inicial no palco (usado quando já está no palco)

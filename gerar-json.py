@@ -82,6 +82,7 @@ data = [
 ]
 
 def format_name_for_id(name):
+    """Formata o nome em português para uso em IDs, removendo espaços e caracteres especiais."""
     return name.lower().replace(" ", "_").replace("(", "").replace(")", "").replace("/", "").replace(",", "")
 
 clan_colors = {
@@ -103,40 +104,57 @@ item_symbols = {
     "caititu": "🐖", "tamanduá bandeira": "🐜"
 }
 
-# --- LÓGICA CORRIGIDA ---
+# --- LÓGICA CORRIGIDA PARA INCLUIR O NOME BOE ---
 for clan_data in data:
     clan_name_boe = clan_data["clan_name"]
     clan_id_suffix = clan_data["clan_id"]
     clan_id = f"clan_{clan_id_suffix}"
     
+    # Adiciona o Clã
     result_json["clans"].append({"id": clan_id, "name": clan_name_boe})
 
     if "data" in clan_data and clan_data["data"]:
         for category_name_boe, items_list in clan_data["data"].items():
             for item_full_name in items_list:
+                
+                # Passo 1: Separar o nome Boe (antes do parênteses) e o nome em português (dentro do parênteses)
                 parts = item_full_name.split('(')
-                name_boe = parts[0].strip()
-                name_portuguese = parts[1].replace(')', '').strip() if len(parts) > 1 else name_boe
                 
+                # O nome Boe é a parte antes do parênteses
+                name_boe = parts[0].strip() 
+                
+                # O nome em português é a parte dentro do parênteses
+                if len(parts) > 1:
+                    name_portuguese = parts[1].replace(')', '').strip()
+                else:
+                    # Se não houver parênteses, usamos o nome Boe como nome em português
+                    name_portuguese = name_boe 
+
+                # Passo 2: Formatar ID e determinar atributos
                 item_name_formatted = format_name_for_id(name_portuguese)
-                
-                # MODIFICADO: O ID do item agora é único, combinando o nome e o ID do clã
+                # O ID do item agora é único, combinando o nome em português formatado e o ID do clã
                 item_id = f"item_{item_name_formatted}_{clan_id_suffix}"
                 
                 color = clan_colors.get(clan_name_boe, "#333333")
                 icon = item_symbols.get(name_portuguese.lower(), "✨")
 
+                # Passo 3: Adicionar o Item (agora incluindo 'name_boe')
                 result_json["items"].append({
                     "id": item_id,
-                    "name": name_portuguese,
+                    "name": name_portuguese,  # Nome em português
+                    "name_boe": name_boe,    # Nome Boe (indígena)
                     "icon": icon,
                     "correct_clan_id": clan_id,
                     "color": color,
                     "clan": clan_name_boe
                 })
 
+# Salvar o JSON
 output_path = "public/game-data.json"
 with open(output_path, "w", encoding="utf-8") as json_file:
+    # ensure_ascii=False garante que caracteres especiais (como emojis e acentos) são escritos corretamente
     json.dump(result_json, json_file, ensure_ascii=False, indent=2)
 
-print(f"Arquivo '{output_path}' atualizado com todos os clãs e itens únicos!")
+print(f"Arquivo '{output_path}' atualizado com todos os clãs e itens únicos, incluindo o nome BOE!")
+print("\n--- Amostra do Conteúdo JSON Atualizado (Primeiros 1000 caracteres) ---")
+print(json.dumps(result_json, ensure_ascii=False, indent=2)[:1000] + "\n...")

@@ -68,7 +68,7 @@ const ItemTray = ({
             whileTap={{ scale: 0.92, cursor: "grabbing" }}
           >
             <span className="item-icon">{item.icon}</span>
-            <span className="item-name">{item.name}</span>
+            <span className="item-name">{item.name_boe}</span>
           </motion.div>
         ))}
       </AnimatePresence>

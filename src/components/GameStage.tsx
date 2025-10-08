@@ -1,6 +1,7 @@
 /* Arquivo: src/components/GameStage.tsx */
 
-import { useState, useMemo, useEffect } from "react";
+// Adicione 'useRef' aos seus imports do React
+import { useState, useMemo, useEffect, useRef } from "react";
 import type { Clan, Item } from "../types";
 import { useGameLogic } from "../hooks/useGameLogic";
 import ItemTray from "./ItemTray";
@@ -8,6 +9,7 @@ import BororoStage from "./BororoStage";
 import GameModals from "./GameModals";
 import "../css/GameStage.css";
 import { ITEM_TRAY_WIDTH } from "../config/layoutConstants";
+import ForestBackground from "./ForestBackground";
 
 interface GameStageProps {
   clans: Clan[];
@@ -21,6 +23,10 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     height: window.innerHeight,
   });
 
+  // PASSO 1: Criar a referência e o estado para o deslocamento
+  const gameAreaRef = useRef<HTMLDivElement>(null);
+  const [gameAreaOffsetLeft, setGameAreaOffsetLeft] = useState(0);
+
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -29,11 +35,18 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
       });
     };
     window.addEventListener("resize", handleResize);
+
+    // PASSO 2: Medir a posição da área de jogo após a montagem/redimensionamento
+    if (gameAreaRef.current) {
+      setGameAreaOffsetLeft(gameAreaRef.current.offsetLeft);
+    }
+
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [windowSize]); // Executa no início e quando a janela muda de tamanho
 
   const layout = useMemo(() => {
-    const gameAreaWidth = windowSize.width - ITEM_TRAY_WIDTH;
+    // A lógica do layout do jogo em si não precisa mudar
+    const gameAreaWidth = windowSize.width - ITEM_TRAY_WIDTH; // Isso pode precisar de ajuste se a bandeja não for mais fixa
     const gameAreaHeight = windowSize.height;
     const centroX = gameAreaWidth / 2;
     const centroY = gameAreaHeight / 2;
@@ -41,9 +54,17 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     return { gameAreaWidth, gameAreaHeight, centroX, centroY, raioPalco };
   }, [windowSize]);
 
+  // PASSO 3: Usar o valor medido para calcular o centro do background
+  const backgroundCenter = useMemo(
+    () => ({
+      // A nova fórmula: Posição real da área de jogo + metade da largura da área de jogo
+      x: gameAreaOffsetLeft + layout.centroX,
+      y: layout.centroY,
+    }),
+    [layout.centroX, layout.centroY, gameAreaOffsetLeft] // Adiciona o offset como dependência
+  );
+
   // --- LÓGICA DO JOGO ---
-  // MODIFICAÇÃO: Adicionamos 'messageType' aos valores retornados pelo seu hook.
-  // Você precisará garantir que seu hook 'useGameLogic' também retorne este estado.
   const {
     menuItems,
     stageItems,
@@ -51,7 +72,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     isGameOver,
     isMessageVisible,
     message,
-    messageType, // <<-- ADICIONADO AQUI
+    messageType,
     draggingItemId,
     feedbackPulse,
     returningItem,
@@ -64,14 +85,25 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
   } = useGameLogic(clans, initialItems, layout);
 
   return (
+    // A estrutura JSX agora inclui a referência (ref)
     <div className="game-container">
+      {/* CORREÇÃO ADICIONAL: Garantir que o ForestBackground receba a largura total da janela */}
+      <ForestBackground
+        stageCenter={backgroundCenter}
+        stageRadius={layout.raioPalco}
+        width={windowSize.width} // <-- CORRIGIDO!
+        height={windowSize.height} // A altura já estava correta
+      />
+
       <ItemTray
         items={menuItems}
         draggingItemId={draggingItemId}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       />
-      <div className="game-area-wrapper">
+
+      {/* Anexamos a referência aqui para que possamos medir este elemento */}
+      <div className="game-area-wrapper" ref={gameAreaRef}>
         <BororoStage
           clans={clans}
           clanTargets={clanTargets}
@@ -90,12 +122,12 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           onReturnAnimationComplete={onReturnAnimationComplete}
         />
       </div>
-      {/* MODIFICAÇÃO: Passamos a nova prop 'messageType' para o componente GameModals. */}
+
       <GameModals
         isGameOver={isGameOver}
         isMessageVisible={isMessageVisible}
         message={message}
-        messageType={messageType} // <<-- ADICIONADO AQUI
+        messageType={messageType}
       />
     </div>
   );

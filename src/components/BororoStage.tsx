@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Stage,
-  Layer,
-  Circle as KonvaCircle,
-  Arc,
-  Line,
-  Star,
-} from "react-konva";
+import { Stage, Layer, Circle as KonvaCircle, Arc, Line } from "react-konva";
 import type { Clan, Item, PulseState, ReturningItemState } from "../types";
 import ClanTarget from "./ClanTarget";
 import ItemBall from "./ItemBall";
