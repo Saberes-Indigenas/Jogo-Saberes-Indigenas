@@ -1,7 +1,7 @@
 /* Arquivo: src/components/BororoStage.tsx */
 
 import React from "react";
-import { Stage, Layer, Circle as KonvaCircle, Arc, Line } from "react-konva";
+import { Stage, Layer, Circle as KonvaCircle, Line, Group, RegularPolygon, Rect } from "react-konva";
 import type { Clan, Item, PulseState, ReturningItemState } from "../types";
 import ClanTarget from "./ClanTarget";
 import ItemBall from "./ItemBall";
@@ -39,6 +39,15 @@ const BororoStage = ({
   onPulseComplete,
   onReturnAnimationComplete,
 }: BororoStageProps) => {
+  const clanEntries = Object.entries(clanTargets);
+  const clearingRadius = layout.raioPalco * 1.05;
+  const pathStrokeWidth = Math.max(layout.raioPalco * 0.06, 12);
+  const outerRingStroke = Math.max(layout.raioPalco * 0.05, 10);
+  const innerRingStroke = Math.max(layout.raioPalco * 0.04, 8);
+  const fireOuterRadius = Math.max(layout.raioPalco * 0.08, 22);
+  const fireInnerRadius = Math.max(layout.raioPalco * 0.05, 12);
+  const innerPathRadius = layout.raioPalco * 0.25;
+
   return (
     // Os eventos onDragOver e onDrop são aplicados aqui
     <main className="game-area" onDragOver={onDragOver} onDrop={onDrop}>
@@ -48,125 +57,148 @@ const BororoStage = ({
         height={layout.gameAreaHeight}
       >
         <Layer>
-          {/* --- FUNDO DO PALCO (cartoon com borda grossa) --- */}
-          {/* CORREÇÃO: O 'y' agora usa diretamente layout.centroY, sem subtrações */}
+          {/* --- CLAREIRA DA ALDEIA --- */}
           <KonvaCircle
             x={layout.centroX}
             y={layout.centroY}
-            radius={layout.raioPalco}
-            fillLinearGradientStartPoint={{
-              x: -layout.raioPalco,
-              y: -layout.raioPalco,
-            }}
-            fillLinearGradientEndPoint={{
-              x: layout.raioPalco,
-              y: layout.raioPalco,
-            }}
-            fillLinearGradientColorStops={[
-              0,
-              "#7a7860",
-              0.5,
-              "#5c5b46",
-              1,
-              "#3d3b2e",
-            ]}
-            stroke="#2a2a2a"
+            radius={clearingRadius}
+            fillLinearGradientStartPoint={{ x: -layout.raioPalco, y: -layout.raioPalco }}
+            fillLinearGradientEndPoint={{ x: layout.raioPalco, y: layout.raioPalco }}
+            fillLinearGradientColorStops={[0, "#fef3c7", 0.45, "#f6d48f", 1, "#e5a95c"]}
+            stroke="#8d5524"
             strokeWidth={6}
-            shadowColor="#000"
-            shadowBlur={15}
-            shadowOpacity={0.4}
+            shadowColor="rgba(0,0,0,0.35)"
+            shadowBlur={25}
+            shadowOffsetY={12}
           />
 
-          {/* --- METADE VERMELHA E PRETA --- */}
-          {/* CORREÇÃO: O 'y' agora usa diretamente layout.centroY */}
-          <Arc
-            x={layout.centroX}
-            y={layout.centroY}
-            innerRadius={0}
-            outerRadius={layout.raioPalco}
-            angle={180}
-            fill="rgba(220, 60, 60, 0.3)"
-            rotation={-90}
-            stroke="#2a2a2a"
-            strokeWidth={3}
-          />
-          <Arc
-            x={layout.centroX}
-            y={layout.centroY}
-            innerRadius={0}
-            outerRadius={layout.raioPalco}
-            angle={180}
-            fill="rgba(40, 40, 40, 0.3)"
-            rotation={90}
-            stroke="#2a2a2a"
-            strokeWidth={3}
-          />
-
-          {/* --- CÍRCULO INTERNO --- */}
-          {/* CORREÇÃO: O 'y' agora usa diretamente layout.centroY */}
-          <KonvaCircle
-            x={layout.centroX}
-            y={layout.centroY}
-            radius={layout.raioPalco * 0.25}
-            stroke="#2a2a2a"
-            strokeWidth={4}
-            fill="rgba(255,255,255,0.05)"
-            shadowColor="#fff"
-            shadowBlur={10}
-            dash={[12, 6]}
-          />
-
-          {/* --- LINHA CENTRAL --- */}
-          <Line
-            points={[
-              layout.centroX,
-              layout.centroY - layout.raioPalco,
-              layout.centroX,
-              layout.centroY + layout.raioPalco,
-            ]}
-            stroke="#2a2a2a"
-            strokeWidth={3}
-            dash={[15, 8]}
-            opacity={0.9}
-          />
-
-          {/* --- RAIOS PARA OS CLÃS --- */}
-          {Object.keys(clanTargets).map((clanId) => {
-            const pos = clanTargets[clanId];
-            const angle = Math.atan2(
-              pos.y - layout.centroY,
-              pos.x - layout.centroX
-            );
-            const startX =
-              layout.centroX + layout.raioPalco * 0.25 * Math.cos(angle);
-            const startY =
-              layout.centroY + layout.raioPalco * 0.25 * Math.sin(angle);
-            const endX = layout.centroX + layout.raioPalco * Math.cos(angle);
-            const endY = layout.centroY + layout.raioPalco * Math.sin(angle);
-
+          {/* --- CAMINHOS PRINCIPAIS --- */}
+          {clanEntries.map(([clanId, pos]) => {
+            const angle = Math.atan2(pos.y - layout.centroY, pos.x - layout.centroX);
             return (
               <Line
-                key={`line-${clanId}`}
-                points={[startX, startY, endX, endY]}
-                stroke="#2a2a2a"
-                strokeWidth={2}
-                dash={[10, 5]}
-                opacity={0.6}
+                key={`path-${clanId}`}
+                points={[
+                  layout.centroX + innerPathRadius * Math.cos(angle),
+                  layout.centroY + innerPathRadius * Math.sin(angle),
+                  layout.centroX + layout.raioPalco * 0.82 * Math.cos(angle),
+                  layout.centroY + layout.raioPalco * 0.82 * Math.sin(angle),
+                ]}
+                stroke="#f4dba5"
+                strokeWidth={pathStrokeWidth}
+                lineCap="round"
+                shadowColor="rgba(0,0,0,0.1)"
+                shadowBlur={20}
               />
             );
           })}
 
-          {/* --- ELEMENTOS DINÂMICOS --- */}
-          {Object.keys(clanTargets).map((clanId) => {
+          {/* --- ANEL DECORATIVO --- */}
+          <KonvaCircle
+            x={layout.centroX}
+            y={layout.centroY}
+            radius={layout.raioPalco * 0.82}
+            stroke="#d39344"
+            strokeWidth={outerRingStroke}
+            dash={[20, 18]}
+            dashEnabled
+            opacity={0.7}
+          />
+
+          <KonvaCircle
+            x={layout.centroX}
+            y={layout.centroY}
+            radius={layout.raioPalco * 0.32}
+            stroke="#c67c2c"
+            strokeWidth={innerRingStroke}
+            fill="rgba(255, 240, 200, 0.7)"
+          />
+
+          <KonvaCircle
+            x={layout.centroX}
+            y={layout.centroY}
+            radius={layout.raioPalco * 0.18}
+            fillLinearGradientStartPoint={{ x: -40, y: -40 }}
+            fillLinearGradientEndPoint={{ x: 40, y: 40 }}
+            fillLinearGradientColorStops={[0, "#ffb347", 0.6, "#ff7f50", 1, "#d14900"]}
+            shadowColor="rgba(0,0,0,0.3)"
+            shadowBlur={20}
+          />
+
+          {/* --- FOGO CENTRAL --- */}
+          <Group x={layout.centroX} y={layout.centroY}>
+            <KonvaCircle
+              radius={fireOuterRadius}
+              fillLinearGradientStartPoint={{ x: 0, y: -40 }}
+              fillLinearGradientEndPoint={{ x: 0, y: 40 }}
+              fillLinearGradientColorStops={[0, "#ff9f1c", 0.7, "#ffbf69", 1, "#ffe66d"]}
+            />
+            <KonvaCircle
+              radius={fireInnerRadius}
+              fillLinearGradientStartPoint={{ x: 0, y: -30 }}
+              fillLinearGradientEndPoint={{ x: 0, y: 30 }}
+              fillLinearGradientColorStops={[0, "#ffecd1", 1, "#ff9f1c"]}
+              opacity={0.9}
+            />
+          </Group>
+
+          {/* --- HUTS DO CLÃ --- */}
+          {clanEntries.map(([clanId, pos]) => {
             const clan = clans.find((c) => c.id === clanId);
-            const pos = clanTargets[clanId];
-            if (!clan || !pos) return null;
+            if (!clan) return null;
+            const hutDistance = layout.raioPalco * 0.92;
+            const angle = Math.atan2(pos.y - layout.centroY, pos.x - layout.centroX);
+            const hutX = layout.centroX + hutDistance * Math.cos(angle);
+            const hutY = layout.centroY + hutDistance * Math.sin(angle);
+            const hutWidth = Math.max(layout.raioPalco * 0.14, 46);
+            const hutBodyHeight = Math.max(layout.raioPalco * 0.18, 58);
+            const rotation = (Math.atan2(layout.centroY - hutY, layout.centroX - hutX) * 180) / Math.PI - 90;
+            return (
+              <Group key={`hut-${clanId}`} x={hutX} y={hutY} rotation={rotation} offsetY={hutBodyHeight * 0.5}>
+                <RegularPolygon
+                  x={0}
+                  y={-hutBodyHeight * 0.65}
+                  sides={3}
+                  radius={hutWidth * 0.9}
+                  fillLinearGradientStartPoint={{ x: -hutWidth, y: -hutWidth }}
+                  fillLinearGradientEndPoint={{ x: hutWidth, y: hutWidth }}
+                  fillLinearGradientColorStops={[0, "#8d5524", 1, "#c68642"]}
+                  shadowColor="rgba(0,0,0,0.25)"
+                  shadowBlur={10}
+                />
+                <Rect
+                  x={-hutWidth * 0.85}
+                  y={-hutBodyHeight * 0.5}
+                  width={hutWidth * 1.7}
+                  height={hutBodyHeight}
+                  fillLinearGradientStartPoint={{ x: -hutWidth, y: 0 }}
+                  fillLinearGradientEndPoint={{ x: hutWidth, y: hutBodyHeight }}
+                  fillLinearGradientColorStops={[0, "#d9a066", 1, "#a47138"]}
+                  cornerRadius={hutWidth * 0.2}
+                  shadowColor="rgba(0,0,0,0.2)"
+                  shadowBlur={12}
+                />
+                <KonvaCircle
+                  x={0}
+                  y={hutBodyHeight * 0.1}
+                  radius={hutWidth * 0.35}
+                  fill="#4a2c1a"
+                  shadowColor="rgba(0,0,0,0.3)"
+                  shadowBlur={8}
+                />
+              </Group>
+            );
+          })}
+
+          {/* --- TOTENS DE CLÃ --- */}
+          {clanEntries.map(([clanId, pos]) => {
+            const clan = clans.find((c) => c.id === clanId);
+            if (!clan) return null;
             return (
               <ClanTarget
                 key={clan.id}
                 clanName={clan.name}
                 x={pos.x}
-                // CORREÇÃO: O 'y' já vem correto do hook, não precisa de ajuste
                 y={pos.y}
                 stageRadius={layout.raioPalco}
               />
