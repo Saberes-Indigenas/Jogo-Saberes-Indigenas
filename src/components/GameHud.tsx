@@ -22,8 +22,10 @@ const GameHud = ({
   const [isOpen, setIsOpen] = useState(false);
   const progress = total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
 
+  const rootClassName = `hud-root ${isOpen ? "hud-root--open" : ""}`;
+
   return (
-    <div className="hud-root" aria-live="polite">
+    <div className={rootClassName} aria-live="polite">
       <motion.button
         type="button"
         className={`hud-toggle ${isOpen ? "is-open" : ""}`}
@@ -44,10 +46,10 @@ const GameHud = ({
             id="hud-panel"
             key="hud-panel"
             className="hud-panel"
-            initial={{ opacity: 0, y: -20, scale: 0.92 }}
+            initial={{ opacity: 0, y: -16, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.9 }}
-            transition={{ type: "spring", stiffness: 260, damping: 22 }}
+            exit={{ opacity: 0, y: -12, scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 240, damping: 24 }}
           >
             <header className="hud-panel__header">
               <div className="hud-panel__title">Jornada Bororo</div>

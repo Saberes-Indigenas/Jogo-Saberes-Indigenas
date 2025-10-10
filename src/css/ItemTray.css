@@ -130,6 +130,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  min-width: 0;
+  word-break: break-word;
 }
 
 .item-name-boe {
@@ -137,12 +139,14 @@
   font-weight: 900;
   color: #c85a11;
   text-shadow: 0 2px 0 rgba(255, 255, 255, 0.6);
+  line-height: 1.1;
 }
 
 .item-name-pt {
   font-size: 0.95rem;
   font-weight: 700;
   color: #8d5524;
+  line-height: 1.1;
 }
 
 .item-name-clan {
@@ -151,6 +155,7 @@
   color: #a35b11;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  line-height: 1.1;
 }
 
 @media (max-width: 1400px) {

@@ -43,47 +43,56 @@ const ItemTray = ({
       </header>
       <div className="item-tray__list" role="list">
         <AnimatePresence>
-          {items.map((item, index) => (
-            <motion.div
-              key={item.id}
-              role="listitem"
-              aria-roledescription="Item arrastável"
-              aria-label={`${item.name_boe}, do clã ${item.clan}`}
-              ref={(node) => {
-                if (node) {
-                  itemRefs.current.set(item.id, node);
-                } else {
-                  itemRefs.current.delete(item.id);
-                }
-              }}
-              className="draggable-item"
-              style={{ borderColor: item.color }}
-              draggable
-              onDragStartCapture={(e) => handleDragStart(e, item)}
-              onDragEnd={onDragEnd}
-              layout
-              initial={{ y: 60, opacity: 0, rotate: -8 }}
-              animate={{
-                y: 0,
-                opacity: draggingItemId === item.id ? 0 : 1,
-                rotate: 0,
-                transition: {
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 20,
-                  delay: index * 0.15,
-                },
-              }}
-              exit={{
-                y: 60,
-                opacity: 0,
-                rotate: 6,
-                transition: { duration: 0.25 },
-              }}
-              whileHover={{ scale: 1.04, y: -6 }}
-              whileTap={{ scale: 0.92, cursor: "grabbing" }}
-            >
-              <div className="draggable-item__figure" style={{ backgroundColor: item.color }}>
+          {items.map((item, index) => {
+            const boeName = item.name_boe?.trim() || item.name;
+            const clanLabel = item.clan?.trim() || "clã misterioso";
+            const ariaLabel = `${boeName}, do ${clanLabel}`;
+
+            return (
+              <motion.div
+                key={item.id}
+                role="listitem"
+                aria-roledescription="Item arrastável"
+                aria-label={ariaLabel}
+                ref={(node) => {
+                  if (node) {
+                    itemRefs.current.set(item.id, node);
+                  } else {
+                    itemRefs.current.delete(item.id);
+                  }
+                }}
+                className="draggable-item"
+                style={{ borderColor: item.color }}
+                draggable
+                onDragStartCapture={(e) => handleDragStart(e, item)}
+                onDragEnd={onDragEnd}
+                layout
+                initial={{ y: 60, opacity: 0, rotate: -8 }}
+                animate={{
+                  y: 0,
+                  opacity: draggingItemId === item.id ? 0 : 1,
+                  rotate: 0,
+                  transition: {
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20,
+                    delay: index * 0.15,
+                  },
+                }}
+                exit={{
+                  y: 60,
+                  opacity: 0,
+                  rotate: 6,
+                  transition: { duration: 0.25 },
+                }}
+                whileHover={{ scale: 1.04, y: -6 }}
+                whileTap={{ scale: 0.92, cursor: "grabbing" }}
+              >
+              <div
+                className="draggable-item__figure"
+                style={{ backgroundColor: item.color }}
+                title={boeName}
+              >
                 {item.media?.image ? (
                   <img src={item.media.image} alt="" loading="lazy" />
                 ) : (
@@ -92,12 +101,19 @@ const ItemTray = ({
                 <span className="draggable-item__shine" />
               </div>
               <div className="draggable-item__labels">
-                <span className="item-name-boe">{item.name_boe}</span>
-                <span className="item-name-pt">{item.name}</span>
-                <span className="item-name-clan">Clã: {item.clan}</span>
+                <span className="item-name-boe" title={boeName}>
+                  {boeName}
+                </span>
+                <span className="item-name-pt" title={item.name}>
+                  {item.name}
+                </span>
+                <span className="item-name-clan" title={clanLabel}>
+                  Clã: {clanLabel}
+                </span>
               </div>
             </motion.div>
-          ))}
+          );
+          })}
         </AnimatePresence>
       </div>
     </aside>
