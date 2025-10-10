@@ -2,39 +2,48 @@
   "clans": [
     {
       "id": "clan_boe_etuiedagamage",
-      "name": "BOE ETUIEDAGAMAGE"
+      "name": "BOE ETUIEDAGAMAGE",
+      "name_boe": "BOE ETUIEDAGAMAGE"
     },
     {
       "id": "clan_aroroe",
-      "name": "AROROE"
+      "name": "AROROE",
+      "name_boe": "AROROE"
     },
     {
       "id": "clan_iwagududoge",
-      "name": "IWAGUDUDOGE"
+      "name": "IWAGUDUDOGE",
+      "name_boe": "IWAGUDUDOGE"
     },
     {
       "id": "clan_apiborege",
-      "name": "APIBOREGE"
+      "name": "APIBOREGE",
+      "name_boe": "APIBOREGE"
     },
     {
       "id": "clan_paiwoe",
-      "name": "PAIWOE"
+      "name": "PAIWOE",
+      "name_boe": "PAIWOE"
     },
     {
       "id": "clan_bakoro_ecerae",
-      "name": "BAKORO ECERAE"
+      "name": "BAKORO ECERAE",
+      "name_boe": "BAKORO ECERAE"
     },
     {
       "id": "clan_bokodori_ecerae",
-      "name": "BOKODORI ECERAE"
+      "name": "BOKODORI ECERAE",
+      "name_boe": "BOKODORI ECERAE"
     },
     {
       "id": "clan_kie",
-      "name": "KIE"
+      "name": "KIE",
+      "name_boe": "KIE"
     },
     {
       "id": "clan_badojeba",
-      "name": "BADOJEBA"
+      "name": "BADOJEBA",
+      "name_boe": "BADOJEBA"
     }
   ],
   "items": [
@@ -45,7 +54,13 @@
       "icon": "🦜",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_biguá_boe_etuiedagamage",
@@ -54,7 +69,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_papagaio_verdadeiro_boe_etuiedagamage",
@@ -63,7 +84,13 @@
       "icon": "🦜",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gavião_requinta_boe_etuiedagamage",
@@ -72,7 +99,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pomba_boe_etuiedagamage",
@@ -81,7 +114,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pato_boe_etuiedagamage",
@@ -90,7 +129,13 @@
       "icon": "🦆",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_kanao_kigadureu_boe_etuiedagamage",
@@ -99,7 +144,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gavião_boe_etuiedagamage",
@@ -108,7 +159,13 @@
       "icon": "🦅",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_anhuma_boe_etuiedagamage",
@@ -117,7 +174,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_queixada_boe_etuiedagamage",
@@ -126,7 +189,13 @@
       "icon": "🐗",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_caititu_boe_etuiedagamage",
@@ -135,7 +204,13 @@
       "icon": "🐖",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_lobinho_boe_etuiedagamage",
@@ -144,7 +219,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_papa_mel_boe_etuiedagamage",
@@ -153,7 +234,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_furão_boe_etuiedagamage",
@@ -162,7 +249,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cachorro_do_mato_boe_etuiedagamage",
@@ -171,7 +264,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_quati_boe_etuiedagamage",
@@ -180,7 +279,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_ariranha_boe_etuiedagamage",
@@ -189,7 +294,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_lontra_boe_etuiedagamage",
@@ -198,7 +309,13 @@
       "icon": "🦦",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_mão_pelada_boe_etuiedagamage",
@@ -207,7 +324,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_lontra_boe_etuiedagamage",
@@ -216,7 +339,13 @@
       "icon": "🦦",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cobra_coral_boe_etuiedagamage",
@@ -225,7 +354,13 @@
       "icon": "🐍",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cobra_coral_boe_etuiedagamage",
@@ -234,7 +369,13 @@
       "icon": "🐍",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_larva_de_borboleta_boe_etuiedagamage",
@@ -243,7 +384,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_lavra_de_borboleta_amarelo_boe_etuiedagamage",
@@ -252,7 +399,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_aroro_ewagureu_boe_etuiedagamage",
@@ -261,7 +414,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_boe_etuiedagamage",
       "color": "#b52323",
-      "clan": "BOE ETUIEDAGAMAGE"
+      "clan": "BOE ETUIEDAGAMAGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_capivara_iwagududoge",
@@ -270,7 +429,13 @@
       "icon": "🦫",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_rato_iwagududoge",
@@ -279,7 +444,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_preá_iwagududoge",
@@ -288,7 +459,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_lobo_iwagududoge",
@@ -297,7 +474,13 @@
       "icon": "🐺",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cachorro_preto_iwagududoge",
@@ -306,7 +489,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_piraputanga_iwagududoge",
@@ -315,7 +504,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_lambari_iwagududoge",
@@ -324,7 +519,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_bagre_pequeno_iwagududoge",
@@ -333,7 +534,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_mutum_fêmea_iwagududoge",
@@ -342,7 +549,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gavião_fumaça_iwagududoge",
@@ -351,7 +564,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gavião_fumaça_castanho_iwagududoge",
@@ -360,7 +579,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_keago_kigadureu_iwagududoge",
@@ -369,7 +594,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_curiango_iwagududoge",
@@ -378,7 +609,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_andorinha_iwagududoge",
@@ -387,7 +624,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_beija_flor_iwagududoge",
@@ -396,7 +639,13 @@
       "icon": "🐦",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_beija_flor_parecido_com_arara_azul_iwagududoge",
@@ -405,7 +654,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_piuguriwu_iwagududoge",
@@ -414,7 +669,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_ciwajereu_iwagududoge",
@@ -423,7 +684,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_variedade_de_gavião_iwagududoge",
@@ -432,7 +699,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_periquito_iwagududoge",
@@ -441,7 +714,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_periquito_vassourinha_iwagududoge",
@@ -450,7 +729,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_grainha_iwagududoge",
@@ -459,7 +744,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cucu_iwagududoge",
@@ -468,7 +759,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_sanhaço_iwagududoge",
@@ -477,7 +774,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_karao_iwagududoge",
@@ -486,7 +789,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_mãe_da_lua_iwagududoge",
@@ -495,7 +804,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pogubo_iwagududoge",
@@ -504,7 +819,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_urubu_iwagududoge",
@@ -513,7 +834,13 @@
       "icon": "🦅",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_urubu_cangaia_iwagududoge",
@@ -522,7 +849,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gralhão_iwagududoge",
@@ -531,7 +864,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_iwagududoge",
       "color": "#b52323",
-      "clan": "IWAGUDUDOGE"
+      "clan": "IWAGUDUDOGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gavião_real_apiborege",
@@ -540,7 +879,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gavião_apiborege",
@@ -549,7 +894,13 @@
       "icon": "🦅",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_torowa_apiborege",
@@ -558,7 +909,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_kuruguga_porireu_apiborege",
@@ -567,7 +924,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_kuruguga_awarare_apiborege",
@@ -576,7 +939,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_kuruguga_kudagodoreu_apiborege",
@@ -585,7 +954,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_kurugugabokwadiare_apiborege",
@@ -594,7 +969,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gaivota_apiborege",
@@ -603,7 +984,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_caburé_apiborege",
@@ -612,7 +999,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_siriema_apiborege",
@@ -621,7 +1014,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tucaninho_apiborege",
@@ -630,7 +1029,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_ikuiemana_apiborege",
@@ -639,7 +1044,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_jabuti_apiborege",
@@ -648,7 +1059,13 @@
       "icon": "🐢",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_bakuie_apiborege",
@@ -657,7 +1074,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_sinimbu_apiborege",
@@ -666,7 +1089,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_jaguatirica_apiborege",
@@ -675,7 +1104,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_curimbatá_apiborege",
@@ -684,7 +1119,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pacu_peba_apiborege",
@@ -693,7 +1134,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_savá_apiborege",
@@ -702,7 +1149,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_lambari_pequeno_apiborege",
@@ -711,7 +1164,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_lambari_apiborege",
@@ -720,7 +1179,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_metoe_apiborege",
@@ -729,7 +1194,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_sardinha_apiborege",
@@ -738,7 +1209,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_koduraka_apiborege",
@@ -747,7 +1224,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_madre_pérola_apiborege",
@@ -756,7 +1239,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_aturebo_apiborege",
@@ -765,7 +1254,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_atunabo_apiborege",
@@ -774,7 +1269,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_bakororo_kuidabireu_apiborege",
@@ -783,7 +1284,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_apiborege",
       "color": "#b52323",
-      "clan": "APIBOREGE"
+      "clan": "APIBOREGE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_arara_amarelo_paiwoe",
@@ -792,7 +1299,13 @@
       "icon": "🦜",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_ararinha_paiwoe",
@@ -801,7 +1314,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_papagaio_campeiro_paiwoe",
@@ -810,7 +1329,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_periquito_estrela_paiwoe",
@@ -819,7 +1344,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gavião_paiwoe",
@@ -828,7 +1359,13 @@
       "icon": "🦅",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_bokurowodo_paiwoe",
@@ -837,7 +1374,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_kurutui_paiwoe",
@@ -846,7 +1389,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_variedade_de_ararinha_paiwoe",
@@ -855,7 +1404,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_piabo_paiwoe",
@@ -864,7 +1419,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_guachão_paiwoe",
@@ -873,7 +1434,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_chechéu_paiwoe",
@@ -882,7 +1449,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_mergulhão_bivá_paiwoe",
@@ -891,7 +1464,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_bivá_paiwoe",
@@ -900,7 +1479,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_acuã_paiwoe",
@@ -909,7 +1494,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_coruja_paiwoe",
@@ -918,7 +1509,13 @@
       "icon": "🦉",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_papagaio_urubuzinho_paiwoe",
@@ -927,7 +1524,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pato_preto_paiwoe",
@@ -936,7 +1539,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_bugio_preto_paiwoe",
@@ -945,7 +1554,13 @@
       "icon": "🐒",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_bugio_de_peito_avermelhado_paiwoe",
@@ -954,7 +1569,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_ouriço_paiwoe",
@@ -963,7 +1584,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_macaco_barriga_paiwoe",
@@ -972,7 +1599,13 @@
       "icon": "🐒",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_lobo_guará_paiwoe",
@@ -981,7 +1614,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_jabuti_paiwoe",
@@ -990,7 +1629,13 @@
       "icon": "🐢",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_jabuti_grande_da_mata_paiwoe",
@@ -999,7 +1644,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tamanduá_bandeira_paiwoe",
@@ -1008,7 +1659,13 @@
       "icon": "🐜",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tamanduá_mirin_paiwoe",
@@ -1017,7 +1674,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gato_mourisco_paiwoe",
@@ -1026,7 +1689,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cutia_paiwoe",
@@ -1035,7 +1704,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_sapo_paiwoe",
@@ -1044,7 +1719,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pintado_paiwoe",
@@ -1053,7 +1734,13 @@
       "icon": "🐠",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_surubim_paiwoe",
@@ -1062,7 +1749,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_jaú_paiwoe",
@@ -1071,7 +1764,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_jeripoca_paiwoe",
@@ -1080,7 +1779,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_bico_de_pato_paiwoe",
@@ -1089,7 +1794,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_palmito_paiwoe",
@@ -1098,7 +1809,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_peixe_de_couro_bagre_paiwoe",
@@ -1107,7 +1824,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_barubado_paiwoe",
@@ -1116,7 +1839,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_botoado_paiwoe",
@@ -1125,7 +1854,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_variedade_de_botoado_paiwoe",
@@ -1134,7 +1869,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_mandi_banana_paiwoe",
@@ -1143,7 +1884,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_chicote_paiwoe",
@@ -1152,7 +1899,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cascudo_paiwoe",
@@ -1161,7 +1914,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_paiwoe",
       "color": "#b52323",
-      "clan": "PAIWOE"
+      "clan": "PAIWOE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_onça_pintada_bakoro_ecerae",
@@ -1170,7 +1929,13 @@
       "icon": "🐆",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_onça_preta_bakoro_ecerae",
@@ -1179,7 +1944,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tatu_peba_bakoro_ecerae",
@@ -1188,7 +1959,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tatu_bolinha_bakoro_ecerae",
@@ -1197,7 +1974,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tatu_china_bakoro_ecerae",
@@ -1206,7 +1989,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_piau_bakoro_ecerae",
@@ -1215,7 +2004,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_piau_bakoro_ecerae",
@@ -1224,7 +2019,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_piau_bakoro_ecerae",
@@ -1233,7 +2034,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_kare_etumana_bakoro_ecerae",
@@ -1242,7 +2049,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_matrinchã_bakoro_ecerae",
@@ -1251,7 +2064,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_piranha_bakoro_ecerae",
@@ -1260,7 +2079,13 @@
       "icon": "🐟",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_variedade_de_piranha_bakoro_ecerae",
@@ -1269,7 +2094,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bakoro_ecerae",
       "color": "#000000",
-      "clan": "BAKORO ECERAE"
+      "clan": "BAKORO ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tatu_canastra_bokodori_ecerae",
@@ -1278,7 +2109,13 @@
       "icon": "🦔",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_tatu_canastra_bokodori_ecerae",
@@ -1287,7 +2124,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_tatu_bokodori_ecerae",
@@ -1296,7 +2139,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_tatu_bokodori_ecerae",
@@ -1305,7 +2154,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_enogikure_bokodori_ecerae",
@@ -1314,7 +2169,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cachorro_branco_bokodori_ecerae",
@@ -1323,7 +2184,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_vaca_bokodori_ecerae",
@@ -1332,7 +2199,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cavalo_bokodori_ecerae",
@@ -1341,7 +2214,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_porco_doméstico_bokodori_ecerae",
@@ -1350,7 +2229,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_maragatao_bokodori_ecerae",
@@ -1359,7 +2244,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_anu_branco_bokodori_ecerae",
@@ -1368,7 +2259,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_galinha_bokodori_ecerae",
@@ -1377,7 +2274,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_joão_de_barro_bokodori_ecerae",
@@ -1386,7 +2289,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_ave_pequeno_bokodori_ecerae",
@@ -1395,7 +2304,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_arara_canindé_bokodori_ecerae",
@@ -1404,7 +2319,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pato_branco_bokodori_ecerae",
@@ -1413,7 +2334,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_joão_pinto_bokodori_ecerae",
@@ -1422,7 +2349,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_galinha_branca_bokodori_ecerae",
@@ -1431,7 +2364,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pato_branco_bokodori_ecerae",
@@ -1440,7 +2379,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_dourado_bokodori_ecerae",
@@ -1449,7 +2394,13 @@
       "icon": "🐟",
       "correct_clan_id": "clan_bokodori_ecerae",
       "color": "#000000",
-      "clan": "BOKODORI ECERAE"
+      "clan": "BOKODORI ECERAE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_anta_kie",
@@ -1458,7 +2409,13 @@
       "icon": "🫎",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_paca_kie",
@@ -1467,7 +2424,13 @@
       "icon": "🐀",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_veado_kie",
@@ -1476,7 +2439,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_coelho_kie",
@@ -1485,7 +2454,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_cágado_kie",
@@ -1494,7 +2469,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_sucuri_kie",
@@ -1503,7 +2484,13 @@
       "icon": "🐍",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_sucuri_tocó_kie",
@@ -1512,7 +2499,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_tatu_canastra_preto_kie",
@@ -1521,7 +2514,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_queixada_kie",
@@ -1530,7 +2529,13 @@
       "icon": "🐗",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tucano_do_bico_preto_kie",
@@ -1539,7 +2544,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tucano_kie",
@@ -1548,7 +2559,13 @@
       "icon": "🐦",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_joão_pinto_preto_kie",
@@ -1557,7 +2574,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pavãozinho_kie",
@@ -1566,7 +2589,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_arara_azul_kie",
@@ -1575,7 +2604,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_papagaio_corneteiro_kie",
@@ -1584,7 +2619,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_ema_kie",
@@ -1593,7 +2634,13 @@
       "icon": "🦤",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_socó_kie",
@@ -1602,7 +2649,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_urubu_rei_kie",
@@ -1611,7 +2664,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_kudorowu_kie",
@@ -1620,7 +2679,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_bagre_mandi_mansão_cascudo_kie",
@@ -1629,7 +2694,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_butore_kie",
@@ -1638,7 +2709,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_casa_escura_kie",
@@ -1647,7 +2724,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_casa_branca_kie",
@@ -1656,7 +2739,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_dourado_preto_kie",
@@ -1665,7 +2754,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_kie",
       "color": "#000000",
-      "clan": "KIE"
+      "clan": "KIE",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_filhote_de_onça_badojeba",
@@ -1674,7 +2769,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tatu_galinha_badojeba",
@@ -1683,7 +2784,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_raposa_badojeba",
@@ -1692,7 +2799,13 @@
       "icon": "🦊",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_jacaré_badojeba",
@@ -1701,7 +2814,13 @@
       "icon": "🐊",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_koge_bakororo_badojeba",
@@ -1710,7 +2829,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_jatugugo_badojeba",
@@ -1719,7 +2844,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_reko_badojeba",
@@ -1728,7 +2859,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_uto_badojeba",
@@ -1737,7 +2874,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_pacu_badojeba",
@@ -1746,7 +2889,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_bacekoguio_badojeba",
@@ -1755,7 +2904,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_baruge_badojeba",
@@ -1764,7 +2919,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_enari_badojeba",
@@ -1773,7 +2934,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_araçã_de_cabeça_listrada_da_cor_do_céu_badojeba",
@@ -1782,7 +2949,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tié-fogo_badojeba",
@@ -1791,7 +2964,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_anu_preto_badojeba",
@@ -1800,7 +2979,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_tipo_de_garça_badojeba",
@@ -1809,7 +2994,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_mutum_rabo_pampa_badojeba",
@@ -1818,7 +3009,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_martim_pescador_badojeba",
@@ -1827,7 +3024,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     },
     {
       "id": "item_gavião_fumaça_badojeba",
@@ -1836,7 +3039,13 @@
       "icon": "✨",
       "correct_clan_id": "clan_badojeba",
       "color": "#000000",
-      "clan": "BADOJEBA"
+      "clan": "BADOJEBA",
+      "media": {
+        "audio": null,
+        "image": null,
+        "credit": null
+      },
+      "fact": null
     }
   ]
 }

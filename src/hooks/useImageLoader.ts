@@ -19,7 +19,7 @@ export const useImageLoader = (urls: string[]) => {
     const uniqueUrls = [...new Set(urls)];
 
     uniqueUrls.forEach((url) => {
-      const promise = new Promise<void>((resolve, reject) => {
+      const promise = new Promise<void>((resolve) => {
         const img = new Image();
         img.src = url;
         img.onload = () => {

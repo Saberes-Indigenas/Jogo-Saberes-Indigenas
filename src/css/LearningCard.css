@@ -1,0 +1,136 @@
+.learning-card {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 32px;
+  border: 6px solid rgba(63, 81, 181, 0.35);
+  padding: 1.5rem 2rem;
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
+  width: min(620px, calc(100% - 340px));
+  z-index: 25;
+  font-family: "Nunito", sans-serif;
+}
+
+.learning-card__figure {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fbc02d, #f57c00);
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.45);
+}
+
+.learning-card__figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.learning-card__icon {
+  font-size: 3rem;
+}
+
+.learning-card__aura {
+  position: absolute;
+  inset: 4px;
+  border-radius: 20px;
+  border: 3px dashed rgba(255, 255, 255, 0.8);
+  animation: auraPulse 2s ease-in-out infinite;
+}
+
+@keyframes auraPulse {
+  0% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.learning-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: #2e2a1f;
+}
+
+.learning-card__subtitle {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6a1b9a;
+  font-size: 0.75rem;
+}
+
+.learning-card__content h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #1a237e;
+}
+
+.learning-card__translation {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.learning-card__clan {
+  margin: 0.25rem 0 0.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.learning-card__tip {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+
+.learning-card__footer {
+  display: flex;
+  gap: 1.25rem;
+  font-weight: 800;
+  margin-top: 0.5rem;
+  color: #ff6f00;
+}
+
+@media (max-width: 1400px) {
+  .learning-card {
+    width: min(620px, calc(100% - 260px));
+  }
+}
+
+@media (max-width: 1100px) {
+  .learning-card {
+    position: relative;
+    transform: none;
+    left: auto;
+    bottom: auto;
+    margin: 1.5rem auto 0;
+    width: min(90%, 620px);
+  }
+}
+
+@media (max-width: 768px) {
+  .learning-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.25rem;
+  }
+
+  .learning-card__footer {
+    justify-content: center;
+  }
+}

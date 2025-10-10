@@ -25,8 +25,15 @@ export type ReturningItemState = {
 export interface Clan {
   id: string; // ID único do clã (ex: "clan_paiwoe")
   name: string; // Nome do clã em português/identificador
-  name_boe: string; // Nome original em Bororo
+  name_boe?: string; // Nome original em Bororo (opcional até que o conteúdo seja preenchido)
 }
+
+export interface ItemMedia {
+  image?: string | null; // Caminho para uma ilustração amigável da criança
+  audio?: string | null; // Caminho para o áudio com a pronúncia do nome em Bororo
+  credit?: string | null; // Crédito opcional para o material
+}
+
 export interface Item {
   id: string; // ID único do item (ex: "item_anta")
   name: string; // Nome do item em português
@@ -36,6 +43,15 @@ export interface Item {
   initial_pos: Vector2D; // Posição inicial no palco (usado quando já está no palco)
   color: string; // Cor de fundo do item (ex: "#b52323")
   clan: string; // Nome do clã (para exibição)
+  media?: ItemMedia; // Recursos multimídia associados ao item
+  fact?: string | null; // Curiosidade opcional mostrada no cartão educativo
+}
+
+export interface RewardCelebration {
+  id: number;
+  icon: string;
+  label: string;
+  accentColor: string;
 }
 
 export interface GameData {

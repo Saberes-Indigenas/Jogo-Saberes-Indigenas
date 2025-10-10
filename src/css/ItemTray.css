@@ -1,109 +1,165 @@
-/* Importa a fonte 'Nunito' do Google Fonts para um visual mais amigável */
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap');
 
-/* ---- BANDEJA DE ITENS (ITEM TRAY) - DESIGN DE MADEIRA RÚSTICA ---- */
-/* ---- BANDEJA DE ITENS (ITEM TRAY) - DESIGN DE MADEIRA MÁGICA ESTILO CARTOON ---- */
 .item-tray {
-  /* --- Layout Interno (mantido do original) --- */
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-content: center; /* Alinha itens ao topo para preencher de cima para baixo */
-  gap: 2rem 0.2rem;
-  width: 300px;
-  height: 700px;
-  overflow-y: auto;
-  z-index: 10;
-  position: relative; /* Mantido para elementos futuros */
-  
-  /* --- Novo Estilo Cartoon --- */
-  
-  /* Um padding um pouco maior para acomodar a borda grossa */
-  padding: 2.5rem 2rem;
-  margin-left: 4rem; 
-
-  /* Fundo com gradientes para um efeito de madeira polida e mágica */
-  background-color: #6B4226; /* Cor base caso o gradiente falhe */
-  background-image: 
-    /* Um brilho sutil no centro para dar um toque mágico */
-    radial-gradient(ellipse at center, rgba(255, 220, 150, 0.2) 0%, transparent 70%),
-    /* Gradiente linear para a textura principal da madeira */
-    linear-gradient(to bottom, #8a5a3a 0%, #6B4226 100%);
-
-  /* Borda grossa e escura para um contorno forte, típico de desenhos */
-  border: 10px solid #4a2c1a;
-  
-  /* Cantos bem arredondados para um visual mais suave e amigável */
-  border-radius: 30px; 
-  
-  /* Sombras para dar profundidade e destacar o elemento */
-  box-shadow: 
-    /* Sombra interna: faz a área dos itens parecer mais funda */
-    inset 0 0 20px rgba(0, 0, 0, 0.5), 
-    /* Sombra externa: faz a bandeja "flutuar" na página */
-    0 10px 30px rgba(0, 0, 0, 0.4);
-}
-
-
-
-/* ---- ITENS ARRASTÁVEIS (DRAGGABLE ITEM) - ESTILO REFINADO ---- */
-.draggable-item {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%; /* Mantém o formato circular */
+  width: 320px;
+  max-width: 90vw;
+  height: calc(100vh - 3rem);
+  margin: 1.5rem 1.5rem 1.5rem 2.5rem;
+  padding: 2rem 1.5rem;
+  border-radius: 32px;
+  border: 8px solid #4a2c1a;
+  background: linear-gradient(160deg, #6b4226, #8d5b36 65%, #6b4226 100%);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.45), 0 22px 40px rgba(0, 0, 0, 0.45);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: grab;
-  position: relative; /* Necessário para o posicionamento do nome */
-
-  /* ESTILO VISUAL TEMÁTICO */
-  font-family: 'Nunito', sans-serif; /* Fonte mais amigável */
-  border: 3px solid #5a5948; /* Borda com a cor do tema */
-  
-  /* Sombra interna para dar profundidade e uma sombra externa sutil */
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 
-              0 4px 8px rgba(0, 0, 0, 0.4);
-
-  /* Transição suave para todas as propriedades */
-
-}
-
-/* EFEITO HOVER MELHORADO */
-.draggable-item:hover {
-  transform: scale(1.1) translateY(-5px); /* Efeito de flutuar */
-  border-color: #f39c12; /* Borda fica com a cor de destaque ao passar o mouse */
-  
-  /* A sombra externa ganha um brilho com a cor de destaque */
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5), 
-              0 0 20px -5px #f39c12;
-}
-
-/* Feedback visual ao arrastar o item */
-.draggable-item:active {
-  cursor: grabbing;
-  transform: scale(0.95); /* Efeito de "pressionar" */
-
-}
-
-/* ---- NOME DO ITEM ---- */
-.item-name {
+  gap: 1.25rem;
+  z-index: 12;
   font-family: 'Nunito', sans-serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  color: #f0f0f0;
-  text-shadow: 1px 1px 3px #000;
-
-  position: absolute;
-  bottom: -25px; /* Posição abaixo do círculo */
-  width: 120px;
-  text-align: center;
-  pointer-events: none; /* Evita que o texto atrapalhe o arrastar */
+  overflow: hidden;
 }
 
-/* ---- ÍCONE DENTRO DO ITEM ---- */
+.item-tray__header {
+  text-align: center;
+  color: #ffecb3;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.item-tray__header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  letter-spacing: 0.06em;
+}
+
+.item-tray__header p {
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffe0b2;
+}
+
+.item-tray__list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item-tray__list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.item-tray__list::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 999px;
+}
+
+.item-tray__list::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #ffca28, #ff9800);
+  border-radius: 999px;
+}
+
+.draggable-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.9rem 1rem;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+  cursor: grab;
+  color: #fff8e1;
+}
+
+.draggable-item__figure {
+  position: relative;
+  width: 82px;
+  height: 82px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+.draggable-item__figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.draggable-item__shine {
+  position: absolute;
+  inset: 6px;
+  border-radius: 14px;
+  border: 2px dashed rgba(255, 255, 255, 0.8);
+  opacity: 0.7;
+  animation: trayShine 2.4s ease-in-out infinite;
+}
+
+@keyframes trayShine {
+  0% {
+    transform: scale(0.95) rotate(0deg);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1) rotate(4deg);
+    opacity: 1;
+  }
+}
+
 .item-icon {
-    font-size: 2rem;
-    color: white;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  font-size: 2.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.draggable-item__labels {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.item-name-boe {
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: #fff59d;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.item-name-pt {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffe082;
+}
+
+.item-name-clan {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffe0b2;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+@media (max-width: 1400px) {
+  .item-tray {
+    width: 280px;
+    padding: 1.5rem 1.25rem;
+    margin: 1rem;
+  }
+}
+
+@media (max-width: 1100px) {
+  .item-tray {
+    width: min(520px, 90%);
+    height: auto;
+    max-height: none;
+    margin: 1rem auto;
+  }
+
+  .item-tray__list {
+    max-height: 340px;
+  }
 }

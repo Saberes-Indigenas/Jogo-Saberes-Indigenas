@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Group, Circle, Text } from "react-konva";
+import { Group, Circle, Text, Rect } from "react-konva";
 import Konva from "konva";
 import type { Item } from "../types";
 
@@ -126,6 +126,34 @@ const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
         offsetY={ITEM_RAIO_VISUAL}
         listening={false}
       />
+      <Group y={ITEM_RAIO_VISUAL + 18} listening={false}>
+        <Rect
+          x={-ITEM_RAIO_VISUAL - 20}
+          width={ITEM_RAIO_VISUAL * 2 + 40}
+          height={54}
+          fill="rgba(0, 0, 0, 0.55)"
+          cornerRadius={20}
+        />
+        <Text
+          text={item.name_boe}
+          fontFamily="Nunito"
+          fontStyle="bold"
+          fontSize={16}
+          fill="#fff59d"
+          width={ITEM_RAIO_VISUAL * 2 + 40}
+          align="center"
+          y={6}
+        />
+        <Text
+          text={`(${item.name})`}
+          fontFamily="Nunito"
+          fontSize={13}
+          fill="#f5f5f5"
+          width={ITEM_RAIO_VISUAL * 2 + 40}
+          align="center"
+          y={28}
+        />
+      </Group>
     </Group>
   );
 };

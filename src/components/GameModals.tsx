@@ -9,6 +9,11 @@ interface GameModalsProps {
   isMessageVisible: boolean;
   message: string;
   messageType: "success" | "error" | "roundComplete"; // Tipos possíveis
+  score: number;
+  feathers: number;
+  maxStreak: number;
+  completed: number;
+  total: number;
 }
 
 // Variantes de animação (sem alterações)
@@ -66,6 +71,11 @@ const GameModals = ({
   isMessageVisible,
   message,
   messageType,
+  score,
+  feathers,
+  maxStreak,
+  completed,
+  total,
 }: GameModalsProps) => {
   return (
     <AnimatePresence>
@@ -102,7 +112,35 @@ const GameModals = ({
             >
               🎉 Parabéns! 🎉
             </motion.h1>
-            <motion.p>Você restaurou a ordem de todos os clãs!</motion.p>
+            <motion.p>
+              Você restaurou a ordem de todos os clãs! Compartilhe o que aprendeu com sua
+              aldeia.
+            </motion.p>
+            <motion.ul
+              className="gameOverStats"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <li>
+                <span>Total de pontos</span>
+                <strong>{score.toLocaleString("pt-BR")}</strong>
+              </li>
+              <li>
+                <span>Plumas conquistadas</span>
+                <strong>{feathers}</strong>
+              </li>
+              <li>
+                <span>Maior sequência</span>
+                <strong>{maxStreak}</strong>
+              </li>
+              <li>
+                <span>Itens conectados</span>
+                <strong>
+                  {completed}/{total}
+                </strong>
+              </li>
+            </motion.ul>
             <motion.button
               onClick={() => window.location.reload()}
               whileHover={{ scale: 1.1, rotate: -2 }}

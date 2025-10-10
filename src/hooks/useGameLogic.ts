@@ -1,7 +1,7 @@
 /* Arquivo: src/hooks/useGameLogic.ts */
 
-import { useState, useMemo, useEffect } from "react";
-import type { Clan, Item } from "../types";
+import { useState, useMemo, useEffect, useRef } from "react";
+import type { Clan, Item, RewardCelebration } from "../types";
 // A importação do HEADER_HEIGHT não é mais necessária para o cálculo do drop
 // import { HEADER_HEIGHT } from "../config/layoutConstants";
 
@@ -63,6 +63,30 @@ export const useGameLogic = (
   const [feedbackPulse, setFeedbackPulse] = useState<PulseState>(null);
   const [returningItem, setReturningItem] = useState<ReturningItemState>(null);
   const [draggedItemInfo, setDraggedItemInfo] = useState<DraggedItemInfo>(null);
+  const [score, setScore] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [maxStreak, setMaxStreak] = useState(0);
+  const [featherCount, setFeatherCount] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
+  const [spotlightItem, setSpotlightItem] = useState<Item | null>(null);
+  const [celebration, setCelebration] = useState<RewardCelebration | null>(
+    null
+  );
+  const celebrationTimeoutRef = useRef<number | null>(null);
+  const pronunciationAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  const totalItems = useMemo(() => initialItems.length, [initialItems]);
+
+  useEffect(() => {
+    return () => {
+      if (celebrationTimeoutRef.current) {
+        window.clearTimeout(celebrationTimeoutRef.current);
+      }
+      if (pronunciationAudioRef.current) {
+        pronunciationAudioRef.current.pause();
+      }
+    };
+  }, []);
 
   // --- CÁLCULOS DE PREPARAÇÃO (sem alterações) ---
   const clanTargets = useMemo(() => {
@@ -123,6 +147,7 @@ export const useGameLogic = (
     setMenuItems(shuffleArray(newBatch));
     setRemainingItemsByClan(newRemainingMap);
     setStageItems([]);
+    setSpotlightItem(null);
   };
 
   useEffect(() => {
@@ -158,6 +183,38 @@ export const useGameLogic = (
     setTimeout(() => setIsMessageVisible(false), duration);
   };
 
+  const scheduleCelebrationClear = () => {
+    if (celebrationTimeoutRef.current) {
+      window.clearTimeout(celebrationTimeoutRef.current);
+    }
+    celebrationTimeoutRef.current = window.setTimeout(
+      () => setCelebration(null),
+      2800
+    );
+  };
+
+  const triggerCelebration = (data: Omit<RewardCelebration, "id">) => {
+    setCelebration({ ...data, id: Date.now() });
+    scheduleCelebrationClear();
+  };
+
+  const playPronunciation = (item: Item) => {
+    const audioSource = item.media?.audio;
+    if (!audioSource) return;
+
+    if (!pronunciationAudioRef.current) {
+      pronunciationAudioRef.current = new Audio();
+    }
+
+    const audio = pronunciationAudioRef.current;
+    audio.pause();
+    audio.src = audioSource;
+    audio.currentTime = 0;
+    audio.play().catch((error) => {
+      console.warn("Não foi possível reproduzir o áudio do item", error);
+    });
+  };
+
   const findNearestClan = (dropPos: { x: number; y: number }): Clan | null => {
     let nearestClan: Clan | null = null;
     let minDistance = Infinity;
@@ -181,7 +238,7 @@ export const useGameLogic = (
 
   // --- MANIPULADORES DE EVENTOS (sem alterações) ---
   const handleDragStart = (
-    e: React.DragEvent,
+    _e: React.DragEvent,
     item: Item,
     initialRect: DOMRect
   ) => {
@@ -203,6 +260,9 @@ export const useGameLogic = (
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+    if (e.dataTransfer) {
+      e.dataTransfer.dropEffect = "move";
+    }
   };
 
   // --- LÓGICA DE DROP CORRIGIDA ---
@@ -215,15 +275,28 @@ export const useGameLogic = (
     // CORREÇÃO: Removemos a subtração de HEADER_HEIGHT.
     // Agora, as coordenadas do mouse são relativas ao topo do container do palco,
     // que é o mesmo sistema de coordenadas do canvas do Konva.
-    const dropPos = {
+    const pointerPos = {
       x: e.clientX - stageRect.left,
       y: e.clientY - stageRect.top,
+    };
+
+    const dropPos = {
+      x: Math.min(Math.max(pointerPos.x, 0), stageRect.width),
+      y: Math.min(Math.max(pointerPos.y, 0), stageRect.height),
     };
 
     const targetClan = findNearestClan(dropPos);
 
     if (targetClan && item.correct_clan_id === targetClan.id) {
-      showFeedback("Correto!", "success", 1500);
+      const newStreak = streak + 1;
+      const earnedPoints = 100 + newStreak * 25;
+      setScore((prev) => prev + earnedPoints);
+      setStreak(newStreak);
+      setMaxStreak((prev) => Math.max(prev, newStreak));
+      setCompletedCount((prev) => prev + 1);
+
+      const successMessage = `Você conectou ${item.name_boe} ao clã ${targetClan.name}!`;
+      showFeedback(successMessage, "success", 1800);
       const targetCenterPos = clanTargets[targetClan.id];
       setFeedbackPulse({
         ...targetCenterPos,
@@ -232,6 +305,24 @@ export const useGameLogic = (
       });
       const newItemForStage: Item = { ...item, initial_pos: targetCenterPos };
       setStageItems((prev) => [...prev, newItemForStage]);
+      setSpotlightItem(newItemForStage);
+      playPronunciation(item);
+
+      if (newStreak > 0 && newStreak % 3 === 0) {
+        setFeatherCount((prev) => prev + 1);
+        triggerCelebration({
+          icon: "🪶",
+          label: "Você ganhou uma Pluma do Conhecimento!",
+          accentColor: "#ffe082",
+        });
+      } else if (newStreak === 1) {
+        triggerCelebration({
+          icon: "🔥",
+          label: "Sequência iniciada! Continue firme!",
+          accentColor: "#ffb74d",
+        });
+      }
+
       const newMenuItems = menuItems.filter((i) => i.id !== item.id);
       setMenuItems(newMenuItems);
       setDraggingItemId(null);
@@ -241,14 +332,27 @@ export const useGameLogic = (
           remainingItemsByClan.values()
         ).some((arr) => arr.length > 0);
         if (hasRemainingItems) {
-          showFeedback("Rodada Completa!", "roundComplete", 2500);
+          showFeedback("Rodada completa! Prepare-se para novos desafios.", "roundComplete", 2500);
           setTimeout(() => loadNextBatch(remainingItemsByClan), 2500);
         } else {
+          triggerCelebration({
+            icon: "🌈",
+            label: "Você reuniu todo o círculo sagrado!",
+            accentColor: "#b39ddb",
+          });
           setTimeout(() => setIsGameOver(true), 500);
         }
       }
     } else {
-      showFeedback("Incorreto. Tente novamente.", "error", 1500);
+      if (streak > 2) {
+        triggerCelebration({
+          icon: "💧",
+          label: "Respire fundo e tente novamente!",
+          accentColor: "#80cbc4",
+        });
+      }
+      setStreak(0);
+      showFeedback("Incorreto. Observe as cores do clã e tente novamente.", "error", 1600);
       setFeedbackPulse({ ...dropPos, color: "incorrect", key: Date.now() });
 
       // CORREÇÃO: Também removemos a subtração de HEADER_HEIGHT aqui,
@@ -273,7 +377,22 @@ export const useGameLogic = (
     draggingItemId,
     feedbackPulse,
     returningItem,
+    score,
+    streak,
+    maxStreak,
+    featherCount,
+    completedCount,
+    totalItems,
+    spotlightItem,
+    celebration,
     clearFeedbackPulse: () => setFeedbackPulse(null),
+    clearCelebration: () => {
+      if (celebrationTimeoutRef.current) {
+        window.clearTimeout(celebrationTimeoutRef.current);
+        celebrationTimeoutRef.current = null;
+      }
+      setCelebration(null);
+    },
     onReturnAnimationComplete,
     handleDragStart,
     handleDragEnd,

@@ -8,6 +8,9 @@ import BororoStage from "./BororoStage";
 import GameModals from "./GameModals";
 import "../css/GameStage.css";
 import ForestBackground from "./ForestBackground";
+import GameHud from "./GameHud";
+import LearningCard from "./LearningCard";
+import RewardCelebration from "./RewardCelebration";
 
 interface GameStageProps {
   clans: Clan[];
@@ -72,7 +75,16 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     draggingItemId,
     feedbackPulse,
     returningItem,
+    score,
+    streak,
+    maxStreak,
+    featherCount,
+    completedCount,
+    totalItems,
+    spotlightItem,
+    celebration,
     clearFeedbackPulse,
+    clearCelebration,
     onReturnAnimationComplete,
     handleDragStart,
     handleDragEnd,
@@ -114,11 +126,33 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           onReturnAnimationComplete={onReturnAnimationComplete}
         />
       </div>
+      <GameHud
+        score={score}
+        streak={streak}
+        maxStreak={maxStreak}
+        feathers={featherCount}
+        completed={completedCount}
+        total={totalItems}
+      />
+      <LearningCard
+        item={spotlightItem}
+        streak={streak}
+        feathers={featherCount}
+      />
+      <RewardCelebration
+        celebration={celebration}
+        onDismiss={clearCelebration}
+      />
       <GameModals
         isGameOver={isGameOver}
         isMessageVisible={isMessageVisible}
         message={message}
         messageType={messageType}
+        score={score}
+        feathers={featherCount}
+        maxStreak={maxStreak}
+        completed={completedCount}
+        total={totalItems}
       />
     </div>
   );

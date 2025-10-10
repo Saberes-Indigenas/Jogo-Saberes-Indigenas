@@ -22,56 +22,84 @@ const ItemTray = ({
     const node = itemRefs.current.get(item.id);
     if (node) {
       const rect = node.getBoundingClientRect();
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = "move";
+        const pixelRatio = window.devicePixelRatio || 1;
+        e.dataTransfer.setDragImage(
+          node,
+          (rect.width / 2) * pixelRatio,
+          (rect.height / 2) * pixelRatio
+        );
+      }
       onDragStart(e, item, rect);
     }
   };
 
   return (
-    <aside className="item-tray">
-      <AnimatePresence>
-        {items.map((item, index) => (
-          <motion.div
-            key={item.id}
-            ref={(node) => {
-              if (node) {
-                itemRefs.current.set(item.id, node);
-              } else {
-                itemRefs.current.delete(item.id);
-              }
-            }}
-            className="draggable-item"
-            style={{ backgroundColor: item.color }}
-            draggable
-            onDragStart={(e) => handleDragStart(e, item)}
-            onDragEnd={onDragEnd}
-            layout
-            initial={{ y: "100vh", opacity: 0, rotate: -20 }}
-            animate={{
-              y: 0,
-              opacity: draggingItemId === item.id ? 0 : 1,
-              rotate: 0,
-              transition: {
-                type: "spring",
-                stiffness: 300,
-                damping: 15,
-                bounce: 0.6,
-                delay: index * 0.25,
-              },
-            }}
-            exit={{
-              y: "100vh",
-              opacity: 0,
-              rotate: 20,
-              transition: { duration: 0.3 },
-            }}
-            whileHover={{ scale: 1.08, y: -8, zIndex: 10 }}
-            whileTap={{ scale: 0.92, cursor: "grabbing" }}
-          >
-            <span className="item-icon">{item.icon}</span>
-            <span className="item-name">{item.name_boe}</span>
-          </motion.div>
-        ))}
-      </AnimatePresence>
+    <aside className="item-tray" aria-label="Bandeja de itens para arrastar">
+      <header className="item-tray__header">
+        <h2>Caixa dos Saberes</h2>
+        <p>Arraste o ser para o clã correto e fale o nome em Bororo em voz alta.</p>
+      </header>
+      <div className="item-tray__list" role="list">
+        <AnimatePresence>
+          {items.map((item, index) => (
+            <motion.div
+              key={item.id}
+              role="listitem"
+              aria-roledescription="Item arrastável"
+              aria-label={`${item.name_boe}, do clã ${item.clan}`}
+              ref={(node) => {
+                if (node) {
+                  itemRefs.current.set(item.id, node);
+                } else {
+                  itemRefs.current.delete(item.id);
+                }
+              }}
+              className="draggable-item"
+              style={{ borderColor: item.color }}
+              draggable
+              onDragStartCapture={(e) => handleDragStart(e, item)}
+              onDragEnd={onDragEnd}
+              layout
+              initial={{ y: 60, opacity: 0, rotate: -8 }}
+              animate={{
+                y: 0,
+                opacity: draggingItemId === item.id ? 0 : 1,
+                rotate: 0,
+                transition: {
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 20,
+                  delay: index * 0.15,
+                },
+              }}
+              exit={{
+                y: 60,
+                opacity: 0,
+                rotate: 6,
+                transition: { duration: 0.25 },
+              }}
+              whileHover={{ scale: 1.04, y: -6 }}
+              whileTap={{ scale: 0.92, cursor: "grabbing" }}
+            >
+              <div className="draggable-item__figure" style={{ backgroundColor: item.color }}>
+                {item.media?.image ? (
+                  <img src={item.media.image} alt="" loading="lazy" />
+                ) : (
+                  <span className="item-icon">{item.icon}</span>
+                )}
+                <span className="draggable-item__shine" />
+              </div>
+              <div className="draggable-item__labels">
+                <span className="item-name-boe">{item.name_boe}</span>
+                <span className="item-name-pt">{item.name}</span>
+                <span className="item-name-clan">Clã: {item.clan}</span>
+              </div>
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
     </aside>
   );
 };
