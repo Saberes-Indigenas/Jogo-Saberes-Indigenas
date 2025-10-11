@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef } from "react";
-import { Group, Circle, Text, RegularPolygon, Star } from "react-konva";
+import { useEffect, useRef } from "react";
+import { Group, Star, RegularPolygon } from "react-konva";
 import Konva from "konva";
+import ItemCard from "./ItemCard";
 import type { EnteringOffering as EnteringOfferingState } from "../hooks/useGameLogic";
 
 interface EnteringOfferingProps {
@@ -8,113 +9,104 @@ interface EnteringOfferingProps {
   onComplete: (offering: EnteringOfferingState) => void;
 }
 
-const BASE_RADIUS = 52;
+const TRAVEL_DURATION = 900;
 
 const EnteringOffering = ({ offering, onComplete }: EnteringOfferingProps) => {
   const groupRef = useRef<Konva.Group>(null);
   const sparkleRef = useRef<Konva.Group>(null);
 
-  const accentColor = useMemo(() => {
-    const hueSeed = Math.abs(offering.item.id.length * 37) % 360;
-    return `hsl(${hueSeed}, 82%, 64%)`;
-  }, [offering.item.id.length]);
-
   useEffect(() => {
-    if (!groupRef.current) return;
+    const group = groupRef.current;
+    if (!group) return;
 
-    const travelTween = new Konva.Tween({
-      node: groupRef.current,
-      duration: 0.9,
-      x: offering.endPos.x,
-      y: offering.endPos.y - BASE_RADIUS * 0.2,
-      scaleX: 0.25,
-      scaleY: 0.25,
-      opacity: 0,
-      rotation: offering.startPos.x < offering.endPos.x ? -18 : 18,
-      easing: Konva.Easings.EaseInOut,
-      onFinish: () => onComplete(offering),
-    });
+    group.position(offering.startPos);
+    group.opacity(0.98);
+    group.scale({ x: 1, y: 1 });
+    group.rotation(0);
+    group.listening(false);
+    group.moveToTop();
 
-    const wobble = new Konva.Tween({
-      node: groupRef.current,
-      duration: 0.3,
-      scaleX: 1.12,
-      scaleY: 0.92,
-      yoyo: true,
-      repeat: 3,
-      easing: Konva.Easings.EaseInOut,
-    });
+    const layer = group.getLayer();
+    if (!layer) return;
 
-    travelTween.play();
-    wobble.play();
+    let animation: Konva.Animation | null = null;
+    let finished = false;
+
+    animation = new Konva.Animation((frame) => {
+      if (!frame || !group) return;
+      const progress = Math.min(frame.time / TRAVEL_DURATION, 1);
+      const eased = Konva.Easings.EaseInOut(progress, 0, 1, 1);
+      const swirl = Math.sin(progress * Math.PI * 4) * 22;
+      const rise = Math.sin(progress * Math.PI) * 90 * (1 - progress * 0.35);
+
+      const nextX =
+        offering.startPos.x + (offering.endPos.x - offering.startPos.x) * eased + swirl;
+      const nextY =
+        offering.startPos.y + (offering.endPos.y - offering.startPos.y) * eased - rise;
+
+      group.position({ x: nextX, y: nextY });
+      group.rotation(Math.sin(progress * Math.PI * 3.4) * 12);
+
+      const shrink = 1 - progress * 0.55;
+      const stretch = 1 - progress * 0.35 + Math.sin(progress * Math.PI * 2) * 0.05;
+      group.scale({ x: shrink, y: stretch });
+      group.opacity(0.95 - progress * 0.5);
+
+      if (progress >= 1 && !finished) {
+        finished = true;
+        animation?.stop();
+        onComplete(offering);
+      }
+    }, layer);
+
+    animation.start();
 
     return () => {
-      travelTween.destroy();
-      wobble.destroy();
+      animation?.stop();
     };
   }, [offering, onComplete]);
 
   useEffect(() => {
-    if (!sparkleRef.current) return;
+    const sparkle = sparkleRef.current;
+    if (!sparkle) return;
 
-    const sparkleAnim = new Konva.Animation((frame) => {
+    const layer = sparkle.getLayer();
+    if (!layer) return;
+
+    const animation = new Konva.Animation((frame) => {
       if (!frame) return;
-      const pulse = (Math.sin(frame.time / 160) + 1) / 2;
-      sparkleRef.current?.scale({ x: 0.9 + pulse * 0.2, y: 0.9 + pulse * 0.2 });
-      sparkleRef.current?.opacity(0.6 + pulse * 0.3);
-    }, sparkleRef.current.getLayer());
+      const pulse = (Math.sin(frame.time / 150) + 1) / 2;
+      sparkle.scale({ x: 0.85 + pulse * 0.25, y: 0.85 + pulse * 0.25 });
+      sparkle.opacity(0.45 + pulse * 0.4);
+      sparkle.rotation(pulse * 30);
+    }, layer);
 
-    sparkleAnim.start();
+    animation.start();
 
     return () => {
-      sparkleAnim.stop();
+      animation.stop();
     };
   }, []);
 
   return (
-    <Group
-      ref={groupRef}
-      x={offering.startPos.x}
-      y={offering.startPos.y}
-      opacity={0.98}
-      listening={false}
-    >
-      <Group ref={sparkleRef} opacity={0.75} listening={false}>
+    <Group ref={groupRef}>
+      <Group ref={sparkleRef} listening={false} opacity={0.75}>
         <Star
           numPoints={6}
-          innerRadius={BASE_RADIUS * 0.32}
-          outerRadius={BASE_RADIUS * 0.62}
-          fill={`${accentColor}55`}
-          rotation={12}
+          innerRadius={46}
+          outerRadius={76}
+          fill="rgba(255, 241, 195, 0.55)"
+          shadowColor="rgba(255, 204, 128, 0.6)"
+          shadowBlur={18}
         />
         <RegularPolygon
           sides={4}
-          radius={BASE_RADIUS * 0.55}
-          fill={`${accentColor}66`}
+          radius={58}
+          fill="rgba(255, 204, 128, 0.55)"
           rotation={45}
         />
       </Group>
-      <Circle
-        radius={BASE_RADIUS}
-        fill={offering.item.color}
-        stroke="#ffffff"
-        strokeWidth={4}
-        shadowColor="rgba(0,0,0,0.55)"
-        shadowBlur={14}
-        shadowOffset={{ x: 0, y: 10 }}
-      />
-      <Text
-        text={offering.item.icon}
-        fontSize={38}
-        align="center"
-        verticalAlign="middle"
-        width={BASE_RADIUS * 2}
-        height={BASE_RADIUS * 2}
-        offsetX={BASE_RADIUS}
-        offsetY={BASE_RADIUS}
-        fill="#fff8e1"
-        listening={false}
-      />
+      <ItemCard item={offering.item} initial_pos={{ x: -75, y: -95 }} isDraggable={false} />
     </Group>
   );
 };

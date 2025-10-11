@@ -10,12 +10,7 @@ interface ItemTrayProps {
   onDragEnd: () => void;
 }
 
-const ItemTray = ({
-  items,
-  draggingItemId,
-  onDragStart,
-  onDragEnd,
-}: ItemTrayProps) => {
+const ItemTray = ({ items, draggingItemId, onDragStart, onDragEnd }: ItemTrayProps) => {
   const itemRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
 
   const handleDragStart = (e: React.DragEvent, item: Item) => {
@@ -24,7 +19,6 @@ const ItemTray = ({
       const rect = node.getBoundingClientRect();
       if (e.dataTransfer) {
         e.dataTransfer.effectAllowed = "move";
-        // Definir dados garante que navegadores como Firefox disparem o evento de drop
         e.dataTransfer.setData("application/x-item-id", item.id);
         e.dataTransfer.setData("text/plain", item.id);
         const pixelRatio = window.devicePixelRatio || 1;
@@ -34,8 +28,17 @@ const ItemTray = ({
           (rect.height / 2) * pixelRatio
         );
       }
+      node.classList.add("draggable-item--dragging");
       onDragStart(e, item, rect);
     }
+  };
+
+  const handleDragEnd = (itemId: string) => {
+    const node = itemRefs.current.get(itemId);
+    if (node) {
+      node.classList.remove("draggable-item--dragging");
+    }
+    onDragEnd();
   };
 
   return (
@@ -67,8 +70,9 @@ const ItemTray = ({
                 className="draggable-item"
                 style={{ borderColor: item.color }}
                 draggable
+                data-dragging={draggingItemId === item.id}
                 onDragStartCapture={(e) => handleDragStart(e, item)}
-                onDragEnd={onDragEnd}
+                onDragEnd={() => handleDragEnd(item.id)}
                 layout
                 initial={{ y: 60, opacity: 0, rotate: -8 }}
                 animate={{
@@ -88,34 +92,34 @@ const ItemTray = ({
                   rotate: 6,
                   transition: { duration: 0.25 },
                 }}
-                whileHover={{ scale: 1.04, y: -6 }}
-                whileTap={{ scale: 0.92, cursor: "grabbing" }}
+                whileHover={{ scale: 1.05, y: -8 }}
+                whileTap={{ scale: 0.9, cursor: "grabbing" }}
               >
-              <div
-                className="draggable-item__figure"
-                style={{ backgroundColor: item.color }}
-                title={boeName}
-              >
-                {item.media?.image ? (
-                  <img src={item.media.image} alt="" loading="lazy" />
-                ) : (
-                  <span className="item-icon">{item.icon}</span>
-                )}
-                <span className="draggable-item__shine" />
-              </div>
-              <div className="draggable-item__labels">
-                <span className="item-name-boe" title={boeName}>
-                  {boeName}
-                </span>
-                <span className="item-name-pt" title={item.name}>
-                  {item.name}
-                </span>
-                <span className="item-name-clan" title={clanLabel}>
-                  Clã: {clanLabel}
-                </span>
-              </div>
-            </motion.div>
-          );
+                <div
+                  className="draggable-item__figure"
+                  style={{ backgroundColor: item.color }}
+                  title={boeName}
+                >
+                  {item.media?.image ? (
+                    <img src={item.media.image} alt="" loading="lazy" />
+                  ) : (
+                    <span className="item-icon">{item.icon}</span>
+                  )}
+                  <span className="draggable-item__shine" />
+                </div>
+                <div className="draggable-item__labels">
+                  <span className="item-name-boe" title={boeName}>
+                    {boeName}
+                  </span>
+                  <span className="item-name-pt" title={item.name}>
+                    {item.name}
+                  </span>
+                  <span className="item-name-clan" title={clanLabel}>
+                    Clã: {clanLabel}
+                  </span>
+                </div>
+              </motion.div>
+            );
           })}
         </AnimatePresence>
       </div>
