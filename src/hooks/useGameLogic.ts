@@ -151,6 +151,20 @@ export const useGameLogic = (
   };
 
   useEffect(() => {
+    let timer: number | null = null;
+    if (spotlightItem) {
+      timer = window.setTimeout(() => {
+        setSpotlightItem(null);
+      }, 10000); // 5000 milissegundos = 5 segundos
+    }
+    return () => {
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+    };
+  }, [spotlightItem]);
+
+  useEffect(() => {
     if (initialItems.length > 0 && remainingItemsByClan.size === 0) {
       const itemsByClan = new Map<string, Item[]>();
       initialItems.forEach((item) => {
@@ -332,7 +346,11 @@ export const useGameLogic = (
           remainingItemsByClan.values()
         ).some((arr) => arr.length > 0);
         if (hasRemainingItems) {
-          showFeedback("Rodada completa! Prepare-se para novos desafios.", "roundComplete", 2500);
+          showFeedback(
+            "Rodada completa! Prepare-se para novos desafios.",
+            "roundComplete",
+            2500
+          );
           setTimeout(() => loadNextBatch(remainingItemsByClan), 2500);
         } else {
           triggerCelebration({
@@ -352,7 +370,11 @@ export const useGameLogic = (
         });
       }
       setStreak(0);
-      showFeedback("Incorreto. Observe as cores do clã e tente novamente.", "error", 1600);
+      showFeedback(
+        "Incorreto. Observe as cores do clã e tente novamente.",
+        "error",
+        1600
+      );
       setFeedbackPulse({ ...dropPos, color: "incorrect", key: Date.now() });
 
       // CORREÇÃO: Também removemos a subtração de HEADER_HEIGHT aqui,
