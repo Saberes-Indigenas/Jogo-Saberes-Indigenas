@@ -8,9 +8,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
-  background-image: radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 42%),
-    radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 38%),
-    linear-gradient(180deg, #9fd7ff 0%, #7dc7ff 35%, #61b9ff 48%, #55a868 70%, #347a3d 100%);
+  background: radial-gradient(
+    circle at var(--cx, 50%) var(--cy, 50%),
+    #dfffd9 0%,      /* verde quase branco – luz intensa no centro */
+    #b7f7a5 15%,     /* verde claro */
+    #7ed874 35%,     /* verde médio suave */
+    #4ca94c 55%,     /* verde médio-escuro */
+    #2d7030 75%,     /* verde escuro natural */
+    #153a16 90%,     /* verde muito escuro nas bordas */
+    #0b1f0b 100%     /* quase preto – profundidade da floresta */
+  );
+
   color: #2f2614;
 }
 
@@ -22,10 +30,6 @@ body {
   align-items: stretch;
   justify-content: flex-start;
   overflow: hidden;
-  padding-left: clamp(1rem, 2vw, 3rem);
-  padding-right: clamp(1rem, 3vw, 3rem);
-  padding-top: clamp(1rem, 2vh, 2.5rem);
-  padding-bottom: clamp(1rem, 3vh, 3rem);
   box-sizing: border-box;
   isolation: isolate;
 }
@@ -68,6 +72,7 @@ body {
 .game-container > canvas {
   width: 100%;
   height: 100%;
+   z-index: 99 
 }
 
 @media (max-width: 1100px) {
@@ -95,4 +100,9 @@ body {
   .game-area-wrapper::after {
     inset: 16% 12% 12%;
   }
+}
+
+.fg-overlay {
+  z-index: 50;           /* MAIOR que o BororoStage (que usa z-index: 8) */
+  pointer-events: none;  /* não bloqueia cliques/arraste do palco */
 }

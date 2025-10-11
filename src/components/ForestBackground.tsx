@@ -316,10 +316,7 @@ const ForestCanvas = memo<{
   loadedImages: Map<string, HTMLImageElement>;
   width: number;
   height: number;
-  zIndex: number;
-  blur?: number;
-  opacity?: number;
-}>(({ assets, loadedImages, width, height, zIndex, blur = 0, opacity = 1 }) => {
+}>(({ assets, loadedImages, width, height }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -370,15 +367,7 @@ const ForestCanvas = memo<{
       ref={canvasRef}
       width={width}
       height={height}
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        zIndex,
-        opacity,
-        pointerEvents: "none",
-        filter: blur ? `blur(${blur}px)` : undefined,
-      }}
+      style={{ position: "absolute", zIndex: 1, pointerEvents: "none" }}
     />
   );
 });
@@ -440,40 +429,13 @@ const ForestBackground: React.FC<{
     return null;
   }
 
-  const backgroundAssets = assets.filter((asset) => (asset.zIndex ?? 0) <= 8);
-  const midgroundAssets = assets.filter(
-    (asset) => (asset.zIndex ?? 0) > 8 && (asset.zIndex ?? 0) < 12
-  );
-  const canopyAssets = assets.filter((asset) => (asset.zIndex ?? 0) >= 12);
-
   return (
-    <>
-      <ForestCanvas
-        assets={backgroundAssets}
-        loadedImages={loadedImages}
-        width={width}
-        height={height}
-        zIndex={2}
-        opacity={0.92}
-        blur={1.5}
-      />
-      <ForestCanvas
-        assets={midgroundAssets}
-        loadedImages={loadedImages}
-        width={width}
-        height={height}
-        zIndex={6}
-        opacity={0.88}
-      />
-      <ForestCanvas
-        assets={canopyAssets}
-        loadedImages={loadedImages}
-        width={width}
-        height={height}
-        zIndex={32}
-        opacity={0.96}
-      />
-    </>
+    <ForestCanvas
+      assets={assets}
+      loadedImages={loadedImages}
+      width={width}
+      height={height}
+    />
   );
 };
 

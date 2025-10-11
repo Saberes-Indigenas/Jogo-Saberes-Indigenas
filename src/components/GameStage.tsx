@@ -64,6 +64,16 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     [gameAreaRect, layout.centroX] // Removida a dependência de layout.centroY
   );
 
+  useEffect(() => {
+    if (backgroundCenter.x && backgroundCenter.y) {
+      const cxPercent = (backgroundCenter.x / window.innerWidth) * 100;
+      const cyPercent = (backgroundCenter.y / window.innerHeight) * 100;
+
+      document.documentElement.style.setProperty("--cx", `${cxPercent}%`);
+      document.documentElement.style.setProperty("--cy", `${cyPercent}%`);
+    }
+  }, [backgroundCenter]);
+
   const {
     menuItems,
     stageItems,
@@ -94,18 +104,21 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
 
   return (
     <div className="game-container">
-      <ForestBackground
-        stageCenter={backgroundCenter}
-        stageRadius={layout.raioPalco}
-        width={window.innerWidth}
-        height={window.innerHeight}
-      />
-      <ItemTray
-        items={menuItems}
-        draggingItemId={draggingItemId}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      />
+      <div className="fg-overlay">
+        <ForestBackground
+          stageCenter={backgroundCenter}
+          stageRadius={layout.raioPalco}
+          width={window.innerWidth}
+          height={window.innerHeight}
+        />
+
+        <ItemTray
+          items={menuItems}
+          draggingItemId={draggingItemId}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        />
+      </div>
       <div className="game-area-wrapper" ref={gameAreaWrapperRef}>
         <BororoStage
           clans={clans}
