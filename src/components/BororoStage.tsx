@@ -91,6 +91,7 @@ const BororoStage = ({
                 x={pos.x}
                 y={pos.y}
                 stageRadius={layout.raioPalco}
+                centerX={layout.centroX}
               />
             );
           })}
