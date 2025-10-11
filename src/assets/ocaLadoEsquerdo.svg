@@ -9,7 +9,7 @@
    style="enable-background:new 0 0 2000 2000;"
    xml:space="preserve"
    id="svg577"
-   sodipodi:docname="ocaLadoDireito copy.svg"
+   sodipodi:docname="oca.svg"
    inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -43,7 +43,7 @@
 	
 	<g
    id="g577"
-   transform="matrix(-1.1083762,0,0,1.1079365,3141.7995,-162.49354)">
+   transform="matrix(1.1079365,0,0,1.1079365,-169.08287,-162.49354)">
 		<path
    style="fill:#f0e0d0"
    d="m 1745.055,1352.152 c 0,81.391 -110.898,147.372 -247.699,147.372 -136.782,0 -247.68,-65.981 -247.68,-147.372 0,-81.391 110.898,-147.372 247.68,-147.372 136.801,0 247.699,65.981 247.699,147.372 z m 0,0"
