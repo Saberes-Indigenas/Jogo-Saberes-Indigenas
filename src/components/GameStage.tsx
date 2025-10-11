@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import type { Clan, Item } from "../types";
 import { useGameLogic } from "../hooks/useGameLogic";
+import type { EnteringOffering } from "../hooks/useGameLogic";
 import ItemTray from "./ItemTray";
 import BororoStage from "./BororoStage";
 import GameModals from "./GameModals";
@@ -11,6 +12,9 @@ import ForestBackground from "./ForestBackground";
 import GameHud from "./GameHud";
 import LearningCard from "./LearningCard";
 import RewardCelebration from "./RewardCelebration";
+import ClanInfoBubble from "./ClanInfoBubble";
+
+import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 
 interface GameStageProps {
   clans: Clan[];
@@ -46,9 +50,9 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
   const layout = useMemo(() => {
     const gameAreaWidth = gameAreaRect.width;
     const gameAreaHeight = gameAreaRect.height;
-    const centroX = gameAreaWidth / 2;
+    const centroX = gameAreaWidth * 0.62;
     const centroY = gameAreaHeight / 2;
-    const raioPalco = Math.min(gameAreaWidth, gameAreaHeight) * 0.4;
+    const raioPalco = Math.min(gameAreaWidth, gameAreaHeight) * 0.45;
     return { gameAreaWidth, gameAreaHeight, centroX, centroY, raioPalco };
   }, [gameAreaRect]);
 
@@ -76,7 +80,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
 
   const {
     menuItems,
-    stageItems,
+    enteringOfferings,
     clanTargets,
     isGameOver,
     isMessageVisible,
@@ -100,10 +104,91 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     handleDragEnd,
     handleDragOver,
     handleDrop,
+    clanInventories,
+    recentDeliveries,
+    registerOfferingArrival,
   } = useGameLogic(clans, initialItems, layout);
 
+  const [activeBubble, setActiveBubble] = useState<{
+    clan: Clan;
+    items: Item[];
+    anchor: { x: number; y: number };
+    orientation: { vertical: "above" | "below"; horizontal: "left" | "right" };
+  } | null>(null);
+
+  const closeBubble = () => setActiveBubble(null);
+
+  useEffect(() => {
+    if (!activeBubble) return;
+    const storedItems = clanInventories.get(activeBubble.clan.id) || [];
+    if (storedItems.length === 0) {
+      setActiveBubble(null);
+    } else if (storedItems.length !== activeBubble.items.length) {
+      setActiveBubble((prev) =>
+        prev
+          ? {
+              ...prev,
+              items: storedItems,
+            }
+          : null
+      );
+    }
+  }, [activeBubble, clanInventories]);
+
+  const handleClanClick = (clanId: string) => {
+    const storedItems = clanInventories.get(clanId) || [];
+    if (storedItems.length === 0) {
+      setActiveBubble(null);
+      return;
+    }
+
+    const clan = clans.find((c) => c.id === clanId);
+    const anchor = clanTargets[clanId];
+    if (!clan || !anchor) return;
+
+    setActiveBubble((prev) => {
+      if (prev?.clan.id === clanId) {
+        return null;
+      }
+
+      const vertical = anchor.y < layout.centroY ? "below" : "above";
+      const horizontal = anchor.x < layout.centroX ? "right" : "left";
+
+      return {
+        clan,
+        items: storedItems,
+        anchor,
+        orientation: { vertical, horizontal },
+      };
+    });
+  };
+
+  const handleOfferingAnimationComplete = (offering: EnteringOffering) => {
+    registerOfferingArrival(offering.key, offering.clanId, offering.item);
+  };
+  const chaoFlorestaSize = layout.raioPalco * 5;
   return (
     <div className="game-container">
+      {/* Só renderizamos quando o centro foi calculado para evitar um "pulo" */}
+      {layout.raioPalco > 0 && (
+        <img
+          src={chaoBororoFloresta}
+          alt="" // Imagem puramente decorativa, alt vazio é apropriado
+          className="chao-floresta-background"
+          style={{
+            width: chaoFlorestaSize,
+            height: chaoFlorestaSize,
+            // A mágica da centralização acontece aqui:
+            // Pegamos o ponto central (backgroundCenter) e subtraímos metade
+            // do tamanho da imagem para encontrar o ponto top-left correto.
+            left: backgroundCenter.x,
+            top: backgroundCenter.y,
+            // 2. Usamos 'transform' para que o CSS mova a imagem para trás
+            //    em 50% da sua própria largura e altura, centralizando-a perfeitamente.
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      )}
       <div className="fg-overlay">
         <ForestBackground
           stageCenter={backgroundCenter}
@@ -123,7 +208,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
         <BororoStage
           clans={clans}
           clanTargets={clanTargets}
-          stageItems={stageItems}
+          enteringOfferings={enteringOfferings}
           feedbackPulse={feedbackPulse}
           returningItem={returningItem}
           layout={layout}
@@ -137,8 +222,17 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           }}
           onPulseComplete={clearFeedbackPulse}
           onReturnAnimationComplete={onReturnAnimationComplete}
+          onOfferingComplete={handleOfferingAnimationComplete}
+          clanInventories={clanInventories}
+          recentDeliveries={recentDeliveries}
+          onClanClick={handleClanClick}
         />
       </div>
+      <ClanInfoBubble
+        activeBubble={activeBubble}
+        containerRect={gameAreaRect}
+        onClose={closeBubble}
+      />
       <GameHud
         score={score}
         streak={streak}

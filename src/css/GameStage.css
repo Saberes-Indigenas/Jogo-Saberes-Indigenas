@@ -9,14 +9,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
   background: radial-gradient(
-    circle at var(--cx, 50%) var(--cy, 50%),
-    #dfffd9 0%,      /* verde quase branco – luz intensa no centro */
-    #b7f7a5 15%,     /* verde claro */
-    #7ed874 35%,     /* verde médio suave */
-    #4ca94c 55%,     /* verde médio-escuro */
-    #2d7030 75%,     /* verde escuro natural */
-    #153a16 90%,     /* verde muito escuro nas bordas */
-    #0b1f0b 100%     /* quase preto – profundidade da floresta */
+    circle at var(--cx, 50%) var(--cy, 50%),    /* verde escuro natural */
+    rgb(21, 58, 22) 1%,     /* verde muito escuro nas bordas */
+    rgb(11, 31, 11) 100%     /* quase preto – profundidade da floresta */
   );
 
   color: #2f2614;
@@ -101,4 +96,13 @@ body {
 .fg-overlay {
   z-index: 50;           /* MAIOR que o BororoStage (que usa z-index: 8) */
   pointer-events: none;  /* não bloqueia cliques/arraste do palco */
+}
+
+
+.chao-floresta-background {
+  position: absolute; /* Permite o controle exato de 'top' e 'left' */
+  z-index: 1; /* Garante que fique atrás do .game-area-wrapper (z-index: 8) */
+  pointer-events: none; /* Impede que a imagem bloqueie cliques ou arrastos */
+  user-select: none; /* Impede que usuários selecionem ou arrastem a imagem */
+  opacity: 0.9; /* Opcional: Deixa a imagem um pouco mais suave com o fundo */
 }
