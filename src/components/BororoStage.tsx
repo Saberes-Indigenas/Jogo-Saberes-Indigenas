@@ -4,14 +4,15 @@ import React from "react";
 import { Stage, Layer, Circle as KonvaCircle } from "react-konva";
 import type { Clan, Item, PulseState, ReturningItemState } from "../types";
 import ClanTarget from "./ClanTarget";
-import ItemBall from "./ItemBall";
 import FeedbackPulse from "./FeedbackPulse";
 import ReturningItem from "./ReturningItem";
+import EnteringOffering from "./EnteringOffering";
+import type { EnteringOffering as EnteringOfferingState } from "../hooks/useGameLogic";
 
 interface BororoStageProps {
   clans: Clan[];
   clanTargets: { [key: string]: { x: number; y: number } };
-  stageItems: Item[];
+  enteringOfferings: EnteringOfferingState[];
   feedbackPulse: PulseState;
   returningItem: ReturningItemState;
   layout: {
@@ -25,12 +26,16 @@ interface BororoStageProps {
   onDrop: (e: React.DragEvent) => void;
   onPulseComplete: () => void;
   onReturnAnimationComplete: () => void;
+  onOfferingComplete: (offering: EnteringOfferingState) => void;
+  clanInventories: Map<string, Item[]>;
+  recentDeliveries: { [clanId: string]: number };
+  onClanClick: (clanId: string) => void;
 }
 
 const BororoStage = ({
   clans,
   clanTargets,
-  stageItems,
+  enteringOfferings,
   feedbackPulse,
   returningItem,
   layout,
@@ -38,6 +43,10 @@ const BororoStage = ({
   onDrop,
   onPulseComplete,
   onReturnAnimationComplete,
+  onOfferingComplete,
+  clanInventories,
+  recentDeliveries,
+  onClanClick,
 }: BororoStageProps) => {
   const clanEntries = Object.entries(clanTargets);
   const clearingRadius = layout.raioPalco * 1.04;
@@ -84,27 +93,28 @@ const BororoStage = ({
           {clanEntries.map(([clanId, pos]) => {
             const clan = clans.find((c) => c.id === clanId);
             if (!clan) return null;
+            const inventory = clanInventories.get(clan.id) || [];
             return (
               <ClanTarget
                 key={clan.id}
+                clanId={clan.id}
                 clanName={clan.name}
                 x={pos.x}
                 y={pos.y}
                 stageRadius={layout.raioPalco}
+                centerX={layout.centroX}
+                hasOfferings={inventory.length > 0}
+                deliveryTrigger={recentDeliveries[clan.id] ?? 0}
+                onClick={() => onClanClick(clan.id)}
               />
             );
           })}
 
-          {stageItems.map((item) => (
-            <ItemBall
-              key={item.id}
-              item={item}
-              initial_pos={{
-                x: item.initial_pos.x,
-                // CORREÇÃO: O 'y' já vem correto do hook
-                y: item.initial_pos.y,
-              }}
-              isDraggable={false}
+          {enteringOfferings.map((offering) => (
+            <EnteringOffering
+              key={offering.key}
+              offering={offering}
+              onComplete={onOfferingComplete}
             />
           ))}
 

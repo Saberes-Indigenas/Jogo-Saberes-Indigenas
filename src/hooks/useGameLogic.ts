@@ -19,6 +19,14 @@ type ReturningItemState = {
   endPos: { x: number; y: number };
 } | null;
 
+export type EnteringOffering = {
+  key: number;
+  clanId: string;
+  item: Item;
+  startPos: { x: number; y: number };
+  endPos: { x: number; y: number };
+};
+
 type MessageType = "success" | "error" | "roundComplete";
 
 type DraggedItemInfo = {
@@ -57,7 +65,9 @@ export const useGameLogic = (
   const [messageType, setMessageType] = useState<MessageType>("success");
   const [isMessageVisible, setIsMessageVisible] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [stageItems, setStageItems] = useState<Item[]>([]);
+  const [enteringOfferings, setEnteringOfferings] = useState<EnteringOffering[]>(
+    []
+  );
   const [menuItems, setMenuItems] = useState<Item[]>([]);
   const [draggingItemId, setDraggingItemId] = useState<string | null>(null);
   const [feedbackPulse, setFeedbackPulse] = useState<PulseState>(null);
@@ -72,6 +82,12 @@ export const useGameLogic = (
   const [celebration, setCelebration] = useState<RewardCelebration | null>(
     null
   );
+  const [clanInventories, setClanInventories] = useState<Map<string, Item[]>>(
+    new Map()
+  );
+  const [recentDeliveries, setRecentDeliveries] = useState<{
+    [clanId: string]: number;
+  }>({});
   const celebrationTimeoutRef = useRef<number | null>(null);
   const pronunciationAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -146,7 +162,6 @@ export const useGameLogic = (
 
     setMenuItems(shuffleArray(newBatch));
     setRemainingItemsByClan(newRemainingMap);
-    setStageItems([]);
     setSpotlightItem(null);
   };
 
@@ -167,6 +182,12 @@ export const useGameLogic = (
         [...itemsByClan].filter(([, items]) => items.length > 0)
       );
 
+      const initialInventory = new Map<string, Item[]>();
+      filteredItemsByClan.forEach((_, clanId) => {
+        initialInventory.set(clanId, []);
+      });
+
+      setClanInventories(initialInventory);
       setRemainingItemsByClan(filteredItemsByClan);
       loadNextBatch(filteredItemsByClan);
     }
@@ -265,6 +286,23 @@ export const useGameLogic = (
     }
   };
 
+  const registerOfferingArrival = (
+    entryKey: number,
+    clanId: string,
+    item: Item
+  ) => {
+    setEnteringOfferings((prev) =>
+      prev.filter((offering) => offering.key !== entryKey)
+    );
+    setClanInventories((prev) => {
+      const updated = new Map(prev);
+      const existing = updated.get(clanId) || [];
+      updated.set(clanId, [...existing, item]);
+      return updated;
+    });
+    setRecentDeliveries((prev) => ({ ...prev, [clanId]: Date.now() }));
+  };
+
   // --- LÓGICA DE DROP CORRIGIDA ---
   const handleDrop = (e: React.DragEvent, stageRect: DOMRect) => {
     e.preventDefault();
@@ -303,9 +341,18 @@ export const useGameLogic = (
         color: "correct",
         key: Date.now(),
       });
-      const newItemForStage: Item = { ...item, initial_pos: targetCenterPos };
-      setStageItems((prev) => [...prev, newItemForStage]);
-      setSpotlightItem(newItemForStage);
+      const entryKey = Date.now();
+      setEnteringOfferings((prev) => [
+        ...prev,
+        {
+          key: entryKey,
+          clanId: targetClan.id,
+          item,
+          startPos: dropPos,
+          endPos: targetCenterPos,
+        },
+      ]);
+      setSpotlightItem({ ...item });
       playPronunciation(item);
 
       if (newStreak > 0 && newStreak % 3 === 0) {
@@ -368,7 +415,7 @@ export const useGameLogic = (
 
   return {
     isGameOver,
-    stageItems,
+    enteringOfferings,
     menuItems,
     message,
     messageType,
@@ -398,5 +445,8 @@ export const useGameLogic = (
     handleDragEnd,
     handleDragOver,
     handleDrop,
+    clanInventories,
+    recentDeliveries,
+    registerOfferingArrival,
   };
 };

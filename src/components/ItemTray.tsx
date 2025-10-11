@@ -24,6 +24,9 @@ const ItemTray = ({
       const rect = node.getBoundingClientRect();
       if (e.dataTransfer) {
         e.dataTransfer.effectAllowed = "move";
+        // Definir dados garante que navegadores como Firefox disparem o evento de drop
+        e.dataTransfer.setData("application/x-item-id", item.id);
+        e.dataTransfer.setData("text/plain", item.id);
         const pixelRatio = window.devicePixelRatio || 1;
         e.dataTransfer.setDragImage(
           node,

@@ -1,55 +1,193 @@
 // ClanTarget.tsx
 
-import { Circle, Text, Group } from "react-konva";
+import { useEffect, useMemo, useState, useRef } from "react";
+import { Image as KonvaImage, Text, Group, Circle } from "react-konva";
+import Konva from "konva";
+
+import ocaDireitaUrl from "../assets/ocaLadoDireito.svg";
+import ocaEsquerdaUrl from "../assets/ocaLadoEsquerdo.svg";
 
 interface ClanTargetProps {
+  clanId: string;
   clanName: string;
   x: number;
   y: number;
-  stageRadius: number; // <- NOVA PROP: O raio do palco principal como referência de tamanho.
+  stageRadius: number; // Referência para dimensionamento responsivo
+  centerX: number;
+  hasOfferings: boolean;
+  deliveryTrigger: number;
+  onClick: () => void;
 }
 
-const ClanTarget = ({ clanName, x, y, stageRadius }: ClanTargetProps) => {
-  // --- CÁLCULOS DE DIMENSIONAMENTO RESPONSIVO ---
-  // Todas as medidas agora são uma fração do raio do palco (stageRadius).
-  // Se o palco crescer ou diminuir, o alvo fará o mesmo.
+const ClanTarget = ({
+  clanId,
+  clanName,
+  x,
+  y,
+  stageRadius,
+  centerX,
+  hasOfferings,
+  deliveryTrigger,
+  onClick,
+}: ClanTargetProps) => {
+  const [image, setImage] = useState<HTMLImageElement | null>(null);
+  const [naturalSize, setNaturalSize] = useState({ width: 1, height: 1 });
+  const groupRef = useRef<Konva.Group>(null);
+  const imageRef = useRef<Konva.Image>(null);
+  const glowRef = useRef<Konva.Circle>(null);
 
-  // O raio do nosso alvo será 12% do raio total do palco.
+  const isRightSide = useMemo(() => x >= centerX, [x, centerX]);
+  const selectedImageUrl = isRightSide ? ocaEsquerdaUrl : ocaDireitaUrl;
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = selectedImageUrl;
+
+    const handleLoad = () => {
+      setNaturalSize({
+        width: img.naturalWidth || 1,
+        height: img.naturalHeight || 1,
+      });
+      setImage(img);
+    };
+
+    if (img.complete) {
+      handleLoad();
+    } else {
+      img.addEventListener("load", handleLoad);
+    }
+
+    return () => {
+      img.removeEventListener("load", handleLoad);
+    };
+  }, [selectedImageUrl]);
+
   const targetRadius = stageRadius * 0.12;
-
-  // O tamanho da fonte será proporcional ao raio do alvo.
+  const baseWidth = targetRadius * 2.6;
+  const aspectRatio = naturalSize.width / naturalSize.height;
+  const imageWidth = baseWidth;
+  const imageHeight = imageWidth / aspectRatio;
+  const imageOffsetY = imageHeight * 0.65;
   const fontSize = targetRadius * 0.22;
 
-  // A largura do contorno e o desfoque da sombra também escalam.
-  const strokeWidth = targetRadius * 0.06;
-  const shadowBlur = targetRadius * 0.2;
+  useEffect(() => {
+    if (!deliveryTrigger || !imageRef.current) return;
+
+    const bounce = new Konva.Tween({
+      node: imageRef.current,
+      duration: 0.45,
+      scaleX: 1.06,
+      scaleY: 0.94,
+      rotation: isRightSide ? 4.5 : -4.5,
+      y: imageRef.current.y() - imageHeight * 0.08,
+      easing: Konva.Easings.EaseInOut,
+      yoyo: true,
+      repeat: 1,
+    });
+
+    const halo = glowRef.current
+      ? new Konva.Tween({
+          node: glowRef.current,
+          duration: 0.45,
+          scaleX: 1.15,
+          scaleY: 1.15,
+          opacity: 0.95,
+          easing: Konva.Easings.EaseOut,
+          yoyo: true,
+          repeat: 1,
+        })
+      : null;
+
+    bounce.play();
+    halo?.play();
+
+    return () => {
+      bounce.destroy();
+      halo?.destroy();
+    };
+  }, [deliveryTrigger, imageHeight, isRightSide]);
+
+  useEffect(() => {
+    if (!groupRef.current) return;
+    const stage = groupRef.current.getStage();
+    if (!stage) return;
+
+    const container = stage.container();
+    const handleEnter = () => {
+      if (!hasOfferings) return;
+      container.style.cursor = "pointer";
+    };
+    const handleLeave = () => {
+      container.style.cursor = "default";
+    };
+
+    const node = groupRef.current;
+    node.on("mouseenter", handleEnter);
+    node.on("mouseleave", handleLeave);
+
+    return () => {
+      node.off("mouseenter", handleEnter);
+      node.off("mouseleave", handleLeave);
+      if (container) {
+        container.style.cursor = "default";
+      }
+    };
+  }, [hasOfferings]);
 
   return (
-    <Group x={x} y={y}>
-      <Circle
-        // Usando as variáveis calculadas
-        radius={targetRadius}
-        stroke="#f5f5ff"
-        strokeWidth={strokeWidth}
-        opacity={0.9}
-        shadowColor="black"
-        shadowBlur={shadowBlur}
-        shadowOpacity={0.7}
-      />
+    <Group
+      ref={groupRef}
+      x={x}
+      y={y}
+      onClick={() => hasOfferings && onClick()}
+      onTap={() => hasOfferings && onClick()}
+      listening
+      name={`clan-target-${clanId}`}
+    >
+      {hasOfferings && (
+        <Circle
+          ref={glowRef}
+          radius={targetRadius * 1.18}
+          fillRadialGradientColorStops={[
+            0,
+            "rgba(255, 241, 179, 0.85)",
+            0.35,
+            "rgba(255, 214, 102, 0.65)",
+            1,
+            "rgba(255, 214, 102, 0)",
+          ]}
+          offsetY={targetRadius * 0.2}
+          opacity={0.85}
+          listening={false}
+        />
+      )}
+      {image && (
+        <KonvaImage
+          ref={imageRef}
+          image={image}
+          width={imageWidth}
+          height={imageHeight}
+          offsetX={imageWidth / 2}
+          offsetY={imageOffsetY}
+          shadowColor="rgba(0,0,0,0.55)"
+          shadowBlur={18}
+          shadowOpacity={0.7}
+          shadowOffset={{ x: 0, y: 10 }}
+        />
+      )}
       <Text
         text={clanName}
-        // O posicionamento e a largura do texto também são relativos ao novo raio
-        x={-targetRadius * 0.9} // Centraliza o texto (largura/2)
-        y={targetRadius * 1.1} // Posiciona logo abaixo do círculo
-        width={targetRadius * 1.8} // Largura da caixa de texto
+        x={-targetRadius * 1}
+        y={targetRadius * 1.15}
+        width={targetRadius * 2}
         align="center"
         fontSize={fontSize}
         fontStyle="bold"
         fill="#f5f5f5"
-        listening={false} // O texto não interfere com eventos de mouse
+        listening={false}
         shadowColor="black"
         shadowBlur={5}
-        shadowOpacity={0.8}
+        shadowOpacity={0.85}
       />
     </Group>
   );

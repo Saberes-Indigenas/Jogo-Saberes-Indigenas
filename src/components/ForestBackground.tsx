@@ -14,6 +14,8 @@ import pieceForestUrl1 from "../assets/pieceForest1.svg";
 import pieceForestUrl2 from "../assets/pieceForest2.svg";
 import pieceForestUrl3 from "../assets/pieceForest3.svg";
 import pieceForestUrl4 from "../assets/pieceForest4.svg";
+import floorParticlesUrl from "../assets/floorparticles.svg";
+import floorParticle2Url from "../assets/floorparticle2.svg";
 
 // --- Constantes e Tipos (sem alterações) ---
 const pieceForestUrls = [
@@ -23,8 +25,9 @@ const pieceForestUrls = [
   pieceForestUrl4,
 ];
 const treeAssetUrls = [tree1Url, tree2Url, tree3Url, tree4Url];
+const groundParticleUrls = [floorParticlesUrl, floorParticle2Url];
 
-type AssetType = "PIECE_FOREST" | "TREE" | "BUSH" | "ROCK";
+type AssetType = "PIECE_FOREST" | "TREE" | "BUSH" | "ROCK" | "GROUND_PARTICLE";
 
 interface StaticAsset {
   id: number;
@@ -39,6 +42,46 @@ interface StaticAsset {
 }
 
 const FOREST_LAYOUT: StaticAsset[] = [
+  {
+    id: 901,
+    type: "GROUND_PARTICLE",
+    variant: 0,
+    angle: -12,
+    distance: 1.05,
+    size: 1.05,
+    rotation: -8,
+    zIndex: -50,
+  },
+  {
+    id: 902,
+    type: "GROUND_PARTICLE",
+    variant: 1,
+    angle: 42,
+    distance: 1.18,
+    size: 1.1,
+    rotation: 14,
+    zIndex: -52,
+  },
+  {
+    id: 903,
+    type: "GROUND_PARTICLE",
+    variant: 0,
+    angle: 185,
+    distance: 1.08,
+    size: 1.12,
+    rotation: 6,
+    zIndex: -54,
+  },
+  {
+    id: 904,
+    type: "GROUND_PARTICLE",
+    variant: 1,
+    angle: 238,
+    distance: 1.16,
+    size: 1.08,
+    rotation: -18,
+    zIndex: -56,
+  },
   // ... (a sua lista de assets permanece exatamente a mesma)
   // ========================================================
   // CAMADA DE FUNDO (SEUS ITENS ORIGINAIS - INTOCADOS)
@@ -381,7 +424,13 @@ const ForestBackground: React.FC<{
 }> = ({ stageCenter, stageRadius, width, height }) => {
   const imageUrls = useMemo(() => {
     return [
-      ...new Set([...pieceForestUrls, ...treeAssetUrls, bushUrl, rockUrl]),
+      ...new Set([
+        ...pieceForestUrls,
+        ...treeAssetUrls,
+        ...groundParticleUrls,
+        bushUrl,
+        rockUrl,
+      ]),
     ];
   }, []);
 
@@ -398,6 +447,13 @@ const ForestBackground: React.FC<{
           break;
         case "TREE":
           src = treeAssetUrls[staticAsset.variant ?? 0];
+          break;
+        case "GROUND_PARTICLE":
+          src =
+            groundParticleUrls[
+              ((staticAsset.variant ?? 0) + groundParticleUrls.length) %
+                groundParticleUrls.length
+            ];
           break;
         case "BUSH":
           src = bushUrl;
