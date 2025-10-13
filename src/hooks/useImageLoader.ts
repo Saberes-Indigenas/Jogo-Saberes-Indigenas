@@ -12,38 +12,91 @@ export const useImageLoader = (urls: string[]) => {
 
   useEffect(() => {
     let isMounted = true;
-    const imagePromises: Promise<void>[] = [];
+
+    const uniqueUrls = [...new Set(urls)].filter(Boolean);
+    if (uniqueUrls.length === 0) {
+      setLoadedImages(new Map());
+      setIsLoading(false);
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    setIsLoading(true);
     const images = new Map<string, HTMLImageElement>();
+    const disposers: Array<() => void> = [];
 
-    // Remove URLs duplicadas para evitar carregamentos desnecessários
-    const uniqueUrls = [...new Set(urls)];
+    const imagePromises = uniqueUrls.map(
+      (url) =>
+        new Promise<void>((resolve) => {
+          let resolved = false;
+          const safeResolve = () => {
+            if (resolved) return;
+            resolved = true;
+            resolve();
+          };
 
-    uniqueUrls.forEach((url) => {
-      const promise = new Promise<void>((resolve) => {
-        const img = new Image();
-        img.src = url;
-        img.onload = () => {
-          images.set(url, img);
-          resolve();
-        };
-        img.onerror = () => {
-          console.error(`Falha ao carregar a imagem: ${url}`);
-          // Resolve mesmo em caso de erro para não bloquear o carregamento das outras
-          resolve();
-        };
-      });
-      imagePromises.push(promise);
-    });
+          const img = new Image();
+          img.decoding = "async";
+
+          const finalize = () => {
+            if (!isMounted) {
+              safeResolve();
+              return;
+            }
+
+            if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+              images.set(url, img);
+            }
+            safeResolve();
+          };
+
+          const handleLoad = () => {
+            img.removeEventListener("load", handleLoad);
+            img.removeEventListener("error", handleError);
+            if (typeof img.decode === "function") {
+              img
+                .decode()
+                .catch(() => undefined)
+                .finally(finalize);
+            } else {
+              finalize();
+            }
+          };
+
+          const handleError = () => {
+            console.error(`Falha ao carregar a imagem: ${url}`);
+            img.removeEventListener("load", handleLoad);
+            img.removeEventListener("error", handleError);
+            finalize();
+          };
+
+          img.addEventListener("load", handleLoad, { once: true });
+          img.addEventListener("error", handleError, { once: true });
+          img.src = url;
+
+          disposers.push(() => {
+            img.removeEventListener("load", handleLoad);
+            img.removeEventListener("error", handleError);
+          });
+
+          if (img.complete && img.naturalWidth !== 0) {
+            handleLoad();
+          }
+        })
+    );
 
     Promise.all(imagePromises).then(() => {
-      if (isMounted) {
-        setLoadedImages(images);
-        setIsLoading(false);
+      if (!isMounted) {
+        return;
       }
+      setLoadedImages(images);
+      setIsLoading(false);
     });
 
     return () => {
-      isMounted = false; // Cleanup para evitar atualizações em componentes desmontados
+      isMounted = false;
+      disposers.forEach((dispose) => dispose());
     };
   }, [urls]); // Executa apenas se a lista de URLs mudar
 

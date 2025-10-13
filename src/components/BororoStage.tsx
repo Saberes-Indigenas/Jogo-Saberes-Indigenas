@@ -64,15 +64,50 @@ const BororoStage = ({
 
   // --- NOVO: Efeito para carregar a imagem SVG ---
   useEffect(() => {
+    let isMounted = true;
     const image = new window.Image();
-    image.src = ChaoBororo;
-    image.onload = () => {
+    image.decoding = "async";
+    let hasFinalized = false;
+
+    const finalize = () => {
+      if (!isMounted || hasFinalized) {
+        return;
+      }
+      hasFinalized = true;
       setChaoImage(image);
       setIsGroundReady(true);
     };
-    image.onerror = (err) => {
-      console.error("Erro ao carregar a imagem do chão Bororo:", err);
-      setIsGroundReady(true);
+
+    const handleLoad = () => {
+      if (typeof image.decode === "function") {
+        image
+          .decode()
+          .catch(() => undefined)
+          .finally(finalize);
+      } else {
+        finalize();
+      }
+    };
+
+    const handleError = (err: unknown) => {
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Erro ao carregar a imagem do chão Bororo:", err);
+      }
+      finalize();
+    };
+
+    image.addEventListener("load", handleLoad, { once: true });
+    image.addEventListener("error", handleError, { once: true });
+    image.src = ChaoBororo;
+
+    if (image.complete && image.naturalWidth !== 0) {
+      handleLoad();
+    }
+
+    return () => {
+      isMounted = false;
+      image.removeEventListener("load", handleLoad);
+      image.removeEventListener("error", handleError);
     };
   }, []); // O array vazio garante que o efeito só roda uma vez ao montar o componente
 
