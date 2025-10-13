@@ -1,9 +1,12 @@
-import { useId, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import "../css/GameHud.css";
 
-import Cesta from "../assets/cestaUrucum.svg?react";
-import BlueFeather from "../assets/blue-feather.svg";
+import BasketAsset from "../assets/hud/basket.svg?react";
+import FeatherAsset from "../assets/hud/feather.svg?react";
+import StreakAsset from "../assets/hud/streak.svg?react";
+import VillageAsset from "../assets/hud/village.svg?react";
+import TexturaDeEsteira from "./TexturaDeEsteira";
 interface GameHudProps {
   score: number;
   streak: number;
@@ -13,107 +16,36 @@ interface GameHudProps {
   total: number;
 }
 
-const BasketIcon = () => {
-  const patternId = useId();
-
-  return (
-    <svg
-      viewBox="0 0 64 64"
-      role="img"
-      aria-hidden="true"
-      className="hud-icon hud-icon--basket"
-    >
-      <defs>
-        <pattern
-          id={`basket-weave-${patternId}`}
-          patternUnits="userSpaceOnUse"
-          width="8"
-          height="8"
-        >
-          <path
-            d="M0 0L8 8M8 0L0 8"
-            stroke="rgba(15, 15, 15, 0.2)"
-            strokeWidth="1"
-          />
-        </pattern>
-      </defs>
-      <path
-        d="M12 28C12 22 16 20 22 20H42C48 20 52 22 52 28V52C52 56 48 58 42 58H22C16 58 12 56 12 52Z"
-        fill="var(--hud-sand)"
-        strokeWidth="3.5"
-        stroke="var(--hud-secondary)"
-      />
-      <rect
-        x="12"
-        y="28"
-        width="40"
-        height="30"
-        rx="4"
-        ry="4"
-        fill={`url(#basket-weave-${patternId})`}
-      />
-      <path
-        d="M18 28C16 16 24 10 32 10S48 16 46 28"
-        fill="none"
-        strokeWidth="6"
-        stroke="var(--hud-secondary)"
-      />
-    </svg>
-  );
-};
+const BasketIcon = () => (
+  <BasketAsset
+    aria-hidden="true"
+    role="img"
+    className="hud-icon hud-icon--basket"
+  />
+);
 
 const FeatherIcon = () => (
-  <svg
-    viewBox="0 0 64 64"
-    role="img"
+  <FeatherAsset
     aria-hidden="true"
+    role="img"
     className="hud-icon hud-icon--feather"
-  >
-    <path
-      d="M20 60C30 30 45 20 54 8 48 22 38 42 20 60Z"
-      fill="var(--hud-primary)"
-      stroke="var(--hud-secondary)"
-      strokeWidth="3"
-    />
-    <path
-      d="M42 24C40 32 34 45 22 58"
-      fill="none"
-      stroke="#3498db"
-      strokeWidth="2.5"
-    />
-    <line
-      x1="20"
-      y1="60"
-      x2="54"
-      y2="8"
-      stroke="rgba(15, 15, 15, 0.4)"
-      strokeWidth="1.5"
-    />
-  </svg>
+  />
 );
 
 const StreakIcon = () => (
-  <svg
-    viewBox="0 0 64 64"
-    role="img"
+  <StreakAsset
     aria-hidden="true"
+    role="img"
     className="hud-icon hud-icon--streak"
-  >
-    <line x1="12" y1="32" x2="52" y2="32" strokeWidth="4" />
-    <circle cx="22" cy="32" r="5" fill="var(--hud-primary)" />
-    <circle cx="32" cy="32" r="5" fill="var(--hud-secondary)" />
-    <circle cx="42" cy="32" r="5" fill="var(--hud-primary)" />
-    <path d="M16 22L32 42 48 22" fill="none" strokeWidth="3.5" />
-  </svg>
+  />
 );
 
 const VillageIcon = () => (
-  <svg
-    viewBox="0 0 64 64"
-    role="img"
+  <VillageAsset
     aria-hidden="true"
+    role="img"
     className="hud-icon hud-icon--village"
-  ></svg>
+  />
 );
 
 const PaintMark = ({ isActive }: { isActive: boolean }) => (
@@ -144,17 +76,21 @@ const ProgressRing = ({ value }: { value: number }) => {
           <filter id="hud-earth-texture">
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.1"
-              numOctaves="2"
+              baseFrequency="0.04"
+              numOctaves="3"
+              seed="10"
               result="noise"
             />
-            <feColorMatrix
+            <feDiffuseLighting
               in="noise"
-              type="matrix"
-              values="0.6 0 0 0 0  0 0.48 0 0 0  0 0 0.3 0 0  0 0 0 1 0"
-              result="earthy"
-            />
-            <feBlend in="SourceGraphic" in2="earthy" mode="multiply" />
+              lightingColor="#d7b47b"
+              surfaceScale="2"
+              result="lighting"
+            >
+              <feDistantLight azimuth="235" elevation="60" />
+            </feDiffuseLighting>
+            <feComposite in="lighting" in2="SourceGraphic" operator="in" result="textured" />
+            <feBlend in="SourceGraphic" in2="textured" mode="multiply" />
           </filter>
           <linearGradient
             id="hud-progress-gradient"
@@ -206,6 +142,7 @@ const ScoreIndicator = ({ score }: { score: number }) => (
     className="hud-module hud-module--score"
     aria-label="Pontuação acumulada"
   >
+    <TexturaDeEsteira />
     <div className="hud-module__icon">
       <BasketIcon />
     </div>
@@ -224,6 +161,7 @@ const FeatherIndicator = ({ feathers }: { feathers: number }) => (
     className="hud-module hud-module--feathers"
     aria-label="Plumas conquistadas"
   >
+    <TexturaDeEsteira />
     <div className="hud-module__icon">
       <FeatherIcon />
     </div>
@@ -250,6 +188,7 @@ const StreakIndicator = ({
       className="hud-module hud-module--streak"
       aria-label="Sequência de acertos"
     >
+      <TexturaDeEsteira />
       <div className="hud-module__icon">
         <StreakIcon />
       </div>
@@ -281,6 +220,7 @@ const ProgressIndicator = ({
     role="group"
     aria-label="Progresso da aldeia"
   >
+    <TexturaDeEsteira />
     <div className="hud-module__icon" aria-hidden="true">
       <ProgressRing value={progress} />
     </div>
@@ -341,6 +281,7 @@ const GameHud = ({
             exit={{ opacity: 0, y: -12, scale: 0.92 }}
             transition={{ type: "spring", stiffness: 240, damping: 24 }}
           >
+            <TexturaDeEsteira className="hud-panel__texture" tone="clay" />
             <header className="hud-panel__header">
               <div className="hud-panel__badge" aria-hidden="true">
                 <VillageIcon />

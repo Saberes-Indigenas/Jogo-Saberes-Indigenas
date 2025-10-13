@@ -35,9 +35,6 @@
   align-items: center;
   gap: 0.65rem;
   background-color: var(--hud-sand);
-  background-image:
-    repeating-linear-gradient(135deg, rgba(181, 35, 35, 0.08) 0 16px, transparent 16px 32px),
-    repeating-linear-gradient(-135deg, rgba(15, 15, 15, 0.08) 0 12px, transparent 12px 24px);
   box-shadow: 0 6px 0 rgba(82, 49, 21, 0.28);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
@@ -54,9 +51,7 @@
 }
 
 .hud-toggle.is-open {
-  background-image:
-    repeating-linear-gradient(135deg, rgba(181, 35, 35, 0.12) 0 14px, transparent 14px 28px),
-    repeating-linear-gradient(-135deg, rgba(15, 15, 15, 0.12) 0 10px, transparent 10px 20px);
+  filter: brightness(1.03);
 }
 
 .hud-toggle__icon {
@@ -64,7 +59,6 @@
   height: 2.15rem;
   border-radius: 50%;
   background-color: var(--hud-primary);
-  background-image: radial-gradient(circle at 50% 35%, rgba(245, 234, 211, 0.3), transparent 60%);
   display: grid;
   place-items: center;
   box-shadow: inset 0 0 0 2px rgba(245, 234, 211, 0.55);
@@ -97,9 +91,6 @@
   left: 0;
   width: clamp(260px, 26vw, 360px);
   background-color: var(--hud-sand);
-  background-image:
-    repeating-linear-gradient(90deg, rgba(15, 15, 15, 0.05) 0 2px, transparent 2px 18px),
-    repeating-linear-gradient(135deg, rgba(181, 35, 35, 0.06) 0 14px, transparent 14px 28px);
   border-radius: 24px;
   border: 2px solid rgba(15, 15, 15, 0.25);
   padding: 1.35rem 1.4rem 1.35rem;
@@ -129,7 +120,6 @@
   height: 3.2rem;
   border-radius: 50%;
   background-color: var(--hud-primary);
-  background-image: radial-gradient(circle at 50% 35%, rgba(245, 234, 211, 0.4), transparent 65%);
   display: grid;
   place-items: center;
   box-shadow: inset 0 0 0 3px rgba(245, 234, 211, 0.65);
@@ -172,15 +162,13 @@
   border-radius: 20px;
   border: 1.5px solid rgba(15, 15, 15, 0.2);
   background-color: rgba(245, 234, 211, 0.92);
-  background-image:
-    repeating-linear-gradient(120deg, rgba(181, 35, 35, 0.04) 0 12px, transparent 12px 24px),
-    repeating-linear-gradient(-120deg, rgba(15, 15, 15, 0.05) 0 10px, transparent 10px 20px);
   box-shadow: 0 8px 12px rgba(15, 15, 15, 0.12);
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.75rem;
   padding: 0.9rem 1rem;
   align-items: center;
+  overflow: hidden;
 }
 
 .hud-module::after {
@@ -190,24 +178,6 @@
   border-radius: 16px;
   border: 1px dashed rgba(15, 15, 15, 0.18);
   pointer-events: none;
-}
-
-.hud-module--score {
-  background-image:
-    repeating-linear-gradient(120deg, rgba(181, 35, 35, 0.08) 0 10px, transparent 10px 22px),
-    repeating-linear-gradient(-120deg, rgba(255, 233, 196, 0.32) 0 8px, transparent 8px 20px);
-}
-
-.hud-module--feathers {
-  background-image:
-    repeating-linear-gradient(135deg, rgba(15, 15, 15, 0.06) 0 12px, transparent 12px 24px),
-    repeating-linear-gradient(-135deg, rgba(52, 152, 219, 0.18) 0 8px, transparent 8px 20px);
-}
-
-.hud-module--streak {
-  background-image:
-    repeating-linear-gradient(120deg, rgba(15, 15, 15, 0.06) 0 8px, transparent 8px 18px),
-    repeating-linear-gradient(-120deg, rgba(181, 35, 35, 0.14) 0 12px, transparent 12px 24px);
 }
 
 .hud-module--progress {
@@ -222,12 +192,10 @@
   height: 64px;
   border-radius: 18px;
   background-color: rgba(215, 180, 123, 0.24);
-  background-image:
-    repeating-linear-gradient(135deg, rgba(15, 15, 15, 0.08) 0 10px, transparent 10px 20px),
-    repeating-linear-gradient(-135deg, rgba(181, 35, 35, 0.08) 0 12px, transparent 12px 24px);
   display: grid;
   place-items: center;
   overflow: hidden;
+  color: var(--hud-secondary);
 }
 
 .hud-module--progress .hud-module__icon {
@@ -236,32 +204,41 @@
   background: transparent;
 }
 
+.hud-module--score .hud-module__icon {
+  color: rgba(15, 15, 15, 0.82);
+}
+
+.hud-module--feathers .hud-module__icon {
+  color: rgba(52, 96, 134, 0.85);
+}
+
+.hud-module--streak .hud-module__icon {
+  color: rgba(181, 35, 35, 0.85);
+}
+
+.hud-module--progress .hud-module__icon {
+  color: rgba(121, 68, 25, 0.92);
+}
+
 .hud-icon {
   width: 100%;
   height: 100%;
-  fill: rgba(15, 15, 15, 0.7);
-  stroke: rgba(15, 15, 15, 0.55);
-  stroke-width: 3.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  color: rgba(15, 15, 15, 0.78);
 }
 
-.hud-icon--feather {
-  stroke-width: 3;
+.hud-texture {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: multiply;
+  opacity: 0.65;
+  pointer-events: none;
 }
 
-.hud-icon--streak line,
-.hud-icon--streak path {
-  stroke: rgba(15, 15, 15, 0.6);
-}
-
-.hud-icon--streak circle {
-  stroke: rgba(245, 234, 211, 0.65);
-  stroke-width: 1.5;
-}
-
-.hud-icon--village line {
-  stroke: rgba(15, 15, 15, 0.65);
+.hud-panel__texture {
+  opacity: 0.45;
 }
 
 .hud-module__content {
@@ -429,5 +406,21 @@
 
   .hud-panel__row {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .hud-root {
+    left: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .hud-toggle {
+    width: calc(100vw - 1.5rem);
+    justify-content: space-between;
+  }
+
+  .hud-panel {
+    width: min(360px, calc(100vw - 1.5rem));
   }
 }
