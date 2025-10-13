@@ -23,19 +23,22 @@
 }
 
 .hud-root--open {
-  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.28));
 }
 
 .hud-toggle {
   pointer-events: auto;
-  border: 2px solid rgba(9, 7, 4, 0.35);
+  border: 2px solid rgba(15, 15, 15, 0.3);
   border-radius: 999px;
   padding: 0.55rem 1.1rem 0.55rem 0.7rem;
   display: flex;
   align-items: center;
   gap: 0.65rem;
-  background: linear-gradient(135deg, rgba(245, 234, 211, 0.92), rgba(215, 180, 123, 0.94));
-  box-shadow: 0 9px 0 rgba(82, 49, 21, 0.35);
+  background-color: var(--hud-sand);
+  background-image:
+    repeating-linear-gradient(135deg, rgba(181, 35, 35, 0.08) 0 16px, transparent 16px 32px),
+    repeating-linear-gradient(-135deg, rgba(15, 15, 15, 0.08) 0 12px, transparent 12px 24px);
+  box-shadow: 0 6px 0 rgba(82, 49, 21, 0.28);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
   text-transform: uppercase;
@@ -46,31 +49,30 @@
 
 .hud-toggle:hover {
   transform: translateY(-3px);
-  box-shadow: 0 11px 0 rgba(82, 49, 21, 0.42);
-  filter: brightness(1.05);
+  box-shadow: 0 9px 0 rgba(82, 49, 21, 0.35);
+  filter: brightness(1.04);
 }
 
 .hud-toggle.is-open {
-  background: linear-gradient(135deg, rgba(245, 218, 178, 0.98), rgba(223, 174, 108, 0.98));
+  background-image:
+    repeating-linear-gradient(135deg, rgba(181, 35, 35, 0.12) 0 14px, transparent 14px 28px),
+    repeating-linear-gradient(-135deg, rgba(15, 15, 15, 0.12) 0 10px, transparent 10px 20px);
 }
 
 .hud-toggle__icon {
   width: 2.15rem;
   height: 2.15rem;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 30%, rgba(181, 35, 35, 0.9), rgba(15, 15, 15, 0.9));
+  background-color: var(--hud-primary);
+  background-image: radial-gradient(circle at 50% 35%, rgba(245, 234, 211, 0.3), transparent 60%);
   display: grid;
   place-items: center;
-  box-shadow: inset 0 0 0 2px rgba(245, 234, 211, 0.6);
+  box-shadow: inset 0 0 0 2px rgba(245, 234, 211, 0.55);
 }
 
 .hud-toggle__icon svg {
   width: 1.45rem;
   height: 1.45rem;
-  fill: rgba(245, 234, 211, 0.85);
-  stroke: rgba(245, 234, 211, 0.65);
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 .hud-toggle__label {
@@ -94,35 +96,24 @@
   top: calc(100% + 1rem);
   left: 0;
   width: clamp(260px, 26vw, 360px);
-  background: rgba(245, 234, 211, 0.96);
+  background-color: var(--hud-sand);
+  background-image:
+    repeating-linear-gradient(90deg, rgba(15, 15, 15, 0.05) 0 2px, transparent 2px 18px),
+    repeating-linear-gradient(135deg, rgba(181, 35, 35, 0.06) 0 14px, transparent 14px 28px);
   border-radius: 24px;
-  border: 2px solid rgba(15, 15, 15, 0.2);
+  border: 2px solid rgba(15, 15, 15, 0.25);
   padding: 1.35rem 1.4rem 1.35rem;
   overflow: hidden;
+  position: relative;
 }
 
-.hud-panel::before,
 .hud-panel::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 10px;
+  border: 1px dashed rgba(15, 15, 15, 0.25);
+  border-radius: 18px;
   pointer-events: none;
-  border-radius: inherit;
-}
-
-.hud-panel::before {
-  background: linear-gradient(
-      135deg,
-      rgba(181, 35, 35, 0.12),
-      transparent 40%,
-      rgba(15, 15, 15, 0.1) 70%,
-      transparent
-    ),
-    radial-gradient(circle at top right, rgba(239, 208, 155, 0.3), transparent 55%);
-}
-
-.hud-panel::after {
-  border: 1px dashed rgba(181, 35, 35, 0.4);
 }
 
 .hud-panel__header {
@@ -137,20 +128,16 @@
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 50%;
-  background: radial-gradient(circle at 50% 35%, rgba(181, 35, 35, 0.85), rgba(15, 15, 15, 0.85));
+  background-color: var(--hud-primary);
+  background-image: radial-gradient(circle at 50% 35%, rgba(245, 234, 211, 0.4), transparent 65%);
   display: grid;
   place-items: center;
-  box-shadow: inset 0 0 0 3px rgba(245, 234, 211, 0.7);
+  box-shadow: inset 0 0 0 3px rgba(245, 234, 211, 0.65);
 }
 
 .hud-panel__badge svg {
   width: 2.4rem;
   height: 2.4rem;
-  fill: rgba(245, 234, 211, 0.85);
-  stroke: rgba(245, 234, 211, 0.6);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
 .hud-panel__title {
@@ -183,9 +170,12 @@
 .hud-module {
   position: relative;
   border-radius: 20px;
-  border: 1.5px solid rgba(15, 15, 15, 0.15);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(236, 214, 175, 0.82));
-  box-shadow: inset 0 0 0 1px rgba(245, 234, 211, 0.6), 0 12px 18px rgba(15, 15, 15, 0.15);
+  border: 1.5px solid rgba(15, 15, 15, 0.2);
+  background-color: rgba(245, 234, 211, 0.92);
+  background-image:
+    repeating-linear-gradient(120deg, rgba(181, 35, 35, 0.04) 0 12px, transparent 12px 24px),
+    repeating-linear-gradient(-120deg, rgba(15, 15, 15, 0.05) 0 10px, transparent 10px 20px);
+  box-shadow: 0 8px 12px rgba(15, 15, 15, 0.12);
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0.75rem;
@@ -193,16 +183,31 @@
   align-items: center;
 }
 
+.hud-module::after {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 16px;
+  border: 1px dashed rgba(15, 15, 15, 0.18);
+  pointer-events: none;
+}
+
 .hud-module--score {
-  background: linear-gradient(135deg, rgba(236, 214, 175, 0.95), rgba(245, 218, 178, 0.95));
+  background-image:
+    repeating-linear-gradient(120deg, rgba(181, 35, 35, 0.08) 0 10px, transparent 10px 22px),
+    repeating-linear-gradient(-120deg, rgba(255, 233, 196, 0.32) 0 8px, transparent 8px 20px);
 }
 
 .hud-module--feathers {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(230, 234, 239, 0.92));
+  background-image:
+    repeating-linear-gradient(135deg, rgba(15, 15, 15, 0.06) 0 12px, transparent 12px 24px),
+    repeating-linear-gradient(-135deg, rgba(52, 152, 219, 0.18) 0 8px, transparent 8px 20px);
 }
 
 .hud-module--streak {
-  background: linear-gradient(135deg, rgba(243, 216, 199, 0.9), rgba(245, 196, 170, 0.92));
+  background-image:
+    repeating-linear-gradient(120deg, rgba(15, 15, 15, 0.06) 0 8px, transparent 8px 18px),
+    repeating-linear-gradient(-120deg, rgba(181, 35, 35, 0.14) 0 12px, transparent 12px 24px);
 }
 
 .hud-module--progress {
@@ -216,7 +221,10 @@
   width: 64px;
   height: 64px;
   border-radius: 18px;
-  background: rgba(215, 180, 123, 0.18);
+  background-color: rgba(215, 180, 123, 0.24);
+  background-image:
+    repeating-linear-gradient(135deg, rgba(15, 15, 15, 0.08) 0 10px, transparent 10px 20px),
+    repeating-linear-gradient(-135deg, rgba(181, 35, 35, 0.08) 0 12px, transparent 12px 24px);
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -240,6 +248,20 @@
 
 .hud-icon--feather {
   stroke-width: 3;
+}
+
+.hud-icon--streak line,
+.hud-icon--streak path {
+  stroke: rgba(15, 15, 15, 0.6);
+}
+
+.hud-icon--streak circle {
+  stroke: rgba(245, 234, 211, 0.65);
+  stroke-width: 1.5;
+}
+
+.hud-icon--village line {
+  stroke: rgba(15, 15, 15, 0.65);
 }
 
 .hud-module__content {
@@ -275,16 +297,16 @@
   margin-top: 0.2rem;
 }
 
-.hud-streak__mark {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(15, 15, 15, 0.18);
-  box-shadow: inset 0 0 0 1px rgba(245, 234, 211, 0.6);
+.hud-streak__mark-svg {
+  fill: rgba(15, 15, 15, 0.18);
+  stroke: rgba(245, 234, 211, 0.6);
+  stroke-width: 1px;
+  filter: drop-shadow(0 1px 1px rgba(15, 15, 15, 0.12));
 }
 
-.hud-streak__mark.is-active {
-  background: radial-gradient(circle at 40% 40%, rgba(181, 35, 35, 0.85), rgba(15, 15, 15, 0.9));
+.hud-streak__mark-svg.is-active {
+  fill: var(--hud-primary);
+  stroke: var(--hud-secondary);
 }
 
 .hud-progress-ring {
@@ -303,7 +325,7 @@
 
 .hud-progress-ring__track {
   fill: none;
-  stroke: rgba(15, 15, 15, 0.1);
+  stroke: rgba(15, 15, 15, 0.12);
 }
 
 .hud-progress-ring__value {
@@ -314,8 +336,8 @@
 }
 
 .hud-progress-ring__center {
-  fill: rgba(245, 234, 211, 0.9);
-  stroke: rgba(15, 15, 15, 0.12);
+  fill: rgba(245, 234, 211, 0.92);
+  stroke: rgba(15, 15, 15, 0.18);
   stroke-width: 2;
 }
 
@@ -330,9 +352,6 @@
 .hud-progress-ring__totem svg {
   width: 52px;
   height: 52px;
-  fill: rgba(181, 35, 35, 0.8);
-  stroke: rgba(15, 15, 15, 0.4);
-  stroke-width: 3;
 }
 
 .hud-panel__footer {

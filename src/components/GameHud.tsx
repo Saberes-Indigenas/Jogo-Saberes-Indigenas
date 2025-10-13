@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import "../css/GameHud.css";
 
@@ -11,33 +11,81 @@ interface GameHudProps {
   total: number;
 }
 
-const BasketIcon = () => (
-  <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--basket">
-    <rect x="12" y="26" width="40" height="28" rx="6" ry="6" fill="none" />
-    <path d="M18 26c2-10 9-18 14-18s12 8 14 18" fill="none" strokeWidth="6" />
-    <path d="M18 40h28M16 48h32" fill="none" strokeWidth="4" />
-  </svg>
-);
+const BasketIcon = () => {
+  const patternId = useId();
+
+  return (
+    <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--basket">
+      <defs>
+        <pattern id={`basket-weave-${patternId}`} patternUnits="userSpaceOnUse" width="8" height="8">
+          <path d="M0 0L8 8M8 0L0 8" stroke="rgba(15, 15, 15, 0.2)" strokeWidth="1" />
+        </pattern>
+      </defs>
+      <path
+        d="M12 28C12 22 16 20 22 20H42C48 20 52 22 52 28V52C52 56 48 58 42 58H22C16 58 12 56 12 52Z"
+        fill="var(--hud-sand)"
+        strokeWidth="3.5"
+        stroke="var(--hud-secondary)"
+      />
+      <rect
+        x="12"
+        y="28"
+        width="40"
+        height="30"
+        rx="4"
+        ry="4"
+        fill={`url(#basket-weave-${patternId})`}
+      />
+      <path d="M18 28C16 16 24 10 32 10S48 16 46 28" fill="none" strokeWidth="6" stroke="var(--hud-secondary)" />
+    </svg>
+  );
+};
 
 const FeatherIcon = () => (
   <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--feather">
-    <path d="M20 52c0-18 12-36 26-40-2 12-12 30-26 40z" fill="none" />
-    <path d="M18 42c12 0 20-12 26-24" fill="none" strokeWidth="4" />
+    <path
+      d="M20 60C30 30 45 20 54 8 48 22 38 42 20 60Z"
+      fill="var(--hud-primary)"
+      stroke="var(--hud-secondary)"
+      strokeWidth="3"
+    />
+    <path d="M42 24C40 32 34 45 22 58" fill="none" stroke="#3498db" strokeWidth="2.5" />
+    <line x1="20" y1="60" x2="54" y2="8" stroke="rgba(15, 15, 15, 0.4)" strokeWidth="1.5" />
   </svg>
 );
 
 const StreakIcon = () => (
   <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--streak">
-    <path d="M12 44l20-32 20 32" fill="none" />
-    <path d="M24 44l8-12 8 12" fill="none" />
+    <line x1="12" y1="32" x2="52" y2="32" strokeWidth="4" />
+    <circle cx="22" cy="32" r="5" fill="var(--hud-primary)" />
+    <circle cx="32" cy="32" r="5" fill="var(--hud-secondary)" />
+    <circle cx="42" cy="32" r="5" fill="var(--hud-primary)" />
+    <path d="M16 22L32 42 48 22" fill="none" strokeWidth="3.5" />
   </svg>
 );
 
 const VillageIcon = () => (
-  <svg viewBox="0 0 72 72" role="img" aria-hidden="true" className="hud-icon hud-icon--village">
-    <circle cx="36" cy="36" r="30" />
-    <path d="M20 44l16-20 16 20" />
-    <rect x="30" y="36" width="12" height="14" rx="2" />
+  <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--village">
+    <path
+      d="M12 48 32 16 52 48H12Z"
+      fill="var(--hud-sand)"
+      strokeWidth="3.5"
+      stroke="var(--hud-secondary)"
+    />
+    <rect x="28" y="36" width="8" height="12" fill="var(--hud-secondary)" />
+    <line x1="12" y1="48" x2="52" y2="48" strokeWidth="4" stroke="var(--hud-secondary)" />
+  </svg>
+);
+
+const PaintMark = ({ isActive }: { isActive: boolean }) => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    role="presentation"
+    className={`hud-streak__mark-svg ${isActive ? "is-active" : ""}`}
+  >
+    <path d="M2 6L6 10 10 6 6 2Z" />
   </svg>
 );
 
@@ -54,6 +102,16 @@ const ProgressRing = ({ value }: { value: number }) => {
     <div className="hud-progress-ring" aria-hidden="true">
       <svg className="hud-progress-ring__svg" viewBox="0 0 128 128" role="img">
         <defs>
+          <filter id="hud-earth-texture">
+            <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="2" result="noise" />
+            <feColorMatrix
+              in="noise"
+              type="matrix"
+              values="0.6 0 0 0 0  0 0.48 0 0 0  0 0 0.3 0 0  0 0 0 1 0"
+              result="earthy"
+            />
+            <feBlend in="SourceGraphic" in2="earthy" mode="multiply" />
+          </filter>
           <linearGradient id="hud-progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="rgba(181, 35, 35, 0.95)" />
             <stop offset="65%" stopColor="rgba(15, 15, 15, 0.9)" />
@@ -64,7 +122,8 @@ const ProgressRing = ({ value }: { value: number }) => {
           cx="64"
           cy="64"
           r={radius}
-          strokeWidth="8"
+          strokeWidth="12"
+          filter="url(#hud-earth-texture)"
         />
         <motion.circle
           className="hud-progress-ring__value"
@@ -77,7 +136,7 @@ const ProgressRing = ({ value }: { value: number }) => {
           animate={{ strokeDashoffset: dashOffset }}
           transition={{ type: "spring", stiffness: 180, damping: 24 }}
         />
-        <circle className="hud-progress-ring__center" cx="64" cy="64" r="38" />
+        <circle className="hud-progress-ring__center" cx="64" cy="64" r="38" filter="url(#hud-earth-texture)" />
       </svg>
       <div className="hud-progress-ring__totem">
         <VillageIcon />
@@ -127,10 +186,7 @@ const StreakIndicator = ({ streak, maxStreak }: { streak: number; maxStreak: num
         <span className="hud-module__hint">máx. {maxStreak}</span>
         <div className="hud-streak__marks" aria-hidden="true">
           {Array.from({ length: marks }).map((_, index) => (
-            <span
-              key={index}
-              className={`hud-streak__mark ${index < activeMarks ? "is-active" : ""}`}
-            />
+            <PaintMark key={index} isActive={index < activeMarks} />
           ))}
         </div>
       </div>
