@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import "../css/GameHud.css";
 
@@ -14,6 +15,7 @@ interface GameHudProps {
   feathers: number;
   completed: number;
   total: number;
+  stageCenter: { x: number; y: number } | null;
 }
 
 const InlineHudIcon = ({
@@ -55,8 +57,33 @@ const PaintMark = ({ isActive }: { isActive: boolean }) => (
   </svg>
 );
 
-const ProgressRing = ({ value }: { value: number }) => {
-  const radius = 56;
+interface ProgressRingProps {
+  value: number;
+  size?: number;
+  strokeWidth?: number;
+  trackWidth?: number;
+  className?: string;
+  children?: ReactNode;
+}
+
+const ProgressRing = ({
+  value,
+  size = 128,
+  strokeWidth = 10,
+  trackWidth = strokeWidth + 2,
+  className = "",
+  children,
+}: ProgressRingProps) => {
+  const radius = useMemo(() => {
+    const maxStroke = Math.max(strokeWidth, trackWidth);
+    return Math.max(12, (size - maxStroke) / 2);
+  }, [size, strokeWidth, trackWidth]);
+
+  const centerRadius = useMemo(() => {
+    const reduction = Math.max(trackWidth * 0.7, 18);
+    return Math.max(8, radius - reduction);
+  }, [radius, trackWidth]);
+
   const circumference = 2 * Math.PI * radius;
   const clampedValue = Math.max(0, Math.min(100, value));
   const dashOffset = useMemo(
@@ -65,8 +92,16 @@ const ProgressRing = ({ value }: { value: number }) => {
   );
 
   return (
-    <div className="hud-progress-ring" aria-hidden="true">
-      <svg className="hud-progress-ring__svg" viewBox="0 0 128 128" role="img">
+    <div
+      className={`hud-progress-ring ${className}`.trim()}
+      aria-hidden="true"
+      style={{ width: size, height: size }}
+    >
+      <svg
+        className="hud-progress-ring__svg"
+        viewBox={`0 0 ${size} ${size}`}
+        role="img"
+      >
         <defs>
           <filter id="hud-earth-texture">
             <feTurbulence
@@ -100,18 +135,18 @@ const ProgressRing = ({ value }: { value: number }) => {
         </defs>
         <circle
           className="hud-progress-ring__track"
-          cx="64"
-          cy="64"
+          cx={size / 2}
+          cy={size / 2}
           r={radius}
-          strokeWidth="12"
+          strokeWidth={trackWidth}
           filter="url(#hud-earth-texture)"
         />
         <motion.circle
           className="hud-progress-ring__value"
-          cx="64"
-          cy="64"
+          cx={size / 2}
+          cy={size / 2}
           r={radius}
-          strokeWidth="10"
+          strokeWidth={strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={circumference}
           animate={{ strokeDashoffset: dashOffset }}
@@ -119,14 +154,14 @@ const ProgressRing = ({ value }: { value: number }) => {
         />
         <circle
           className="hud-progress-ring__center"
-          cx="64"
-          cy="64"
-          r="38"
+          cx={size / 2}
+          cy={size / 2}
+          r={centerRadius}
           filter="url(#hud-earth-texture)"
         />
       </svg>
       <div className="hud-progress-ring__totem">
-        <VillageIcon />
+        {children}
       </div>
     </div>
   );
@@ -217,7 +252,14 @@ const ProgressIndicator = ({
   >
     <TexturaDeEsteira />
     <div className="hud-module__icon" aria-hidden="true">
-      <ProgressRing value={progress} />
+      <ProgressRing
+        value={progress}
+        size={108}
+        strokeWidth={8}
+        trackWidth={11}
+      >
+        <VillageIcon />
+      </ProgressRing>
     </div>
     <div className="hud-module__content">
       <span className="hud-module__label">Aldeia</span>
@@ -236,31 +278,56 @@ const GameHud = ({
   feathers,
   completed,
   total,
+  stageCenter,
 }: GameHudProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const progress =
     total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
 
-  const rootClassName = `hud-root ${isOpen ? "hud-root--open" : ""}`;
+  const hudStyle = useMemo(() => {
+    if (!stageCenter) {
+      return { left: "50%", top: "50%" };
+    }
+    return { left: `${stageCenter.x}px`, top: `${stageCenter.y}px` };
+  }, [stageCenter]);
+
+  const moduleVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.92 },
+    visible: { opacity: 1, y: 0, scale: 1 },
+  } as const;
 
   return (
-    <div className={rootClassName} aria-live="polite">
+    <div
+      className={`hud-stage-anchor ${isOpen ? "hud-stage-anchor--open" : ""}`}
+      style={hudStyle}
+      aria-live="polite"
+    >
       <motion.button
         type="button"
-        className={`hud-toggle ${isOpen ? "is-open" : ""}`}
+        className={`hud-totem-button ${isOpen ? "is-open" : ""}`}
         onClick={() => setIsOpen((prev) => !prev)}
-        whileTap={{ scale: 0.94 }}
+        whileHover={{ scale: 1.06, rotate: isOpen ? 2 : -2 }}
+        whileTap={{ scale: 0.95 }}
         aria-expanded={isOpen}
         aria-controls="hud-panel"
         aria-label={
           isOpen ? "Fechar painel da jornada" : "Abrir painel da jornada"
         }
       >
-        <span className="hud-toggle__icon" aria-hidden="true">
-          <BasketIcon />
-        </span>
-        <span className="hud-toggle__label">Jornada</span>
-        <span className="hud-toggle__badge">
+        <span className="hud-totem-button__pulse" aria-hidden="true" />
+        <ProgressRing
+          value={progress}
+          size={180}
+          strokeWidth={12}
+          trackWidth={16}
+          className="hud-progress-ring--totem"
+        >
+          <span className="hud-totem-button__icon" aria-hidden="true">
+            <VillageIcon />
+          </span>
+        </ProgressRing>
+        <span className="hud-totem-button__label">Jornada Boe</span>
+        <span className="hud-totem-button__score">
           {score.toLocaleString("pt-BR")}
         </span>
       </motion.button>
@@ -271,51 +338,70 @@ const GameHud = ({
             id="hud-panel"
             key="hud-panel"
             className="hud-panel"
-            initial={{ opacity: 0, y: -16, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.92 }}
-            transition={{ type: "spring", stiffness: 240, damping: 24 }}
+            initial={{ opacity: 0, y: 40, scale: 0.92, rotate: -2 }}
+            animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+            exit={{ opacity: 0, y: 30, scale: 0.9, rotate: 2 }}
+            transition={{ type: "spring", stiffness: 220, damping: 24 }}
           >
             <TexturaDeEsteira className="hud-panel__texture" tone="clay" />
             <header className="hud-panel__header">
-              <div className="hud-panel__badge" aria-hidden="true">
+              <div className="hud-panel__crest" aria-hidden="true">
                 <VillageIcon />
               </div>
-              <div>
-                <h2 className="hud-panel__title">Jornada Boe</h2>
-                <p>
-                  Conduza cada ser ao seu clã. As texturas e ícones deste painel
-                  aguardam os grafismos oficiais do povo Boe.
+              <div className="hud-panel__legend">
+                <h2 className="hud-panel__title">Ritual da Aldeia</h2>
+                <p className="hud-panel__subtitle">
+                  Celebre cada encontro correto e fortaleça os laços do povo Boe.
                 </p>
               </div>
+              <motion.button
+                type="button"
+                className="hud-panel__close"
+                onClick={() => setIsOpen(false)}
+                whileHover={{ scale: 1.08, rotate: 3 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Fechar painel da jornada"
+              >
+                ✕
+              </motion.button>
             </header>
 
-            <div className="hud-panel__modules">
-              <ScoreIndicator score={score} />
-              <div className="hud-panel__row">
-                <FeatherIndicator feathers={feathers} />
-                <StreakIndicator streak={streak} maxStreak={maxStreak} />
-              </div>
+            <motion.div
+              className="hud-panel__modules"
+              initial="hidden"
+              animate="visible"
+            >
+              {[<ScoreIndicator score={score} key="score" />,
+              <FeatherIndicator feathers={feathers} key="feathers" />,
+              <StreakIndicator streak={streak} maxStreak={maxStreak} key="streak" />,
               <ProgressIndicator
                 progress={progress}
                 completed={completed}
                 total={total}
-              />
-            </div>
+                key="progress"
+              />].map((module, index) => (
+                <motion.div
+                  key={`hud-module-${index}`}
+                  className="hud-panel__module"
+                  variants={moduleVariants}
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20,
+                    delay: 0.08 * index,
+                  }}
+                >
+                  {module}
+                </motion.div>
+              ))}
+            </motion.div>
 
             <footer className="hud-panel__footer">
               <p>
-                Dica: repita o nome em Bororo a cada acerto e compartilhe uma
-                história sobre o clã correspondente.
+                Repita o nome em Bororo a cada acerto e compartilhe uma história
+                com a aldeia para ganhar novas plumas.
               </p>
             </footer>
-            <button
-              type="button"
-              className="hud-panel__close"
-              onClick={() => setIsOpen(false)}
-            >
-              Fechar
-            </button>
           </motion.section>
         )}
       </AnimatePresence>

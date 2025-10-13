@@ -219,6 +219,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             feathers={featherCount}
             completed={completedCount}
             total={totalItems}
+            stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
           />
 
           {isGameReady && (
