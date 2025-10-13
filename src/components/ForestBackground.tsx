@@ -960,7 +960,8 @@ const ForestBackground: React.FC<{
   stageRadius: number;
   width: number;
   height: number;
-}> = ({ stageCenter, stageRadius, width, height }) => {
+  onReady?: () => void;
+}> = ({ stageCenter, stageRadius, width, height, onReady }) => {
   const imageUrls = useMemo(() => {
     return [
       ...new Set([
@@ -974,6 +975,16 @@ const ForestBackground: React.FC<{
   }, []);
 
   const { loadedImages, isLoading } = useImageLoader(imageUrls);
+  const hasReportedReadyRef = useRef(false);
+  const canRender = !isLoading && width > 0 && height > 0;
+
+  useEffect(() => {
+    if (!canRender || hasReportedReadyRef.current) {
+      return;
+    }
+    hasReportedReadyRef.current = true;
+    onReady?.();
+  }, [canRender, onReady]);
 
   const assets = useMemo<RenderableAsset[]>(() => {
     if (width === 0 || height === 0) return [];

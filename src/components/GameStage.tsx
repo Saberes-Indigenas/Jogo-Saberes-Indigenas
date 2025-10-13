@@ -14,6 +14,7 @@ import LearningCard from "./LearningCard";
 import RewardCelebration from "./RewardCelebration";
 import ClanInfoBubble from "./ClanInfoBubble";
 import ReturningItemOverlay from "./ReturningItemOverlay";
+import LoadingScreen from "./LoadingScreen";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 
@@ -110,6 +111,10 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     registerOfferingArrival,
   } = useGameLogic(clans, initialItems, layout);
 
+  const [isStageReady, setStageReady] = useState(false);
+  const [isForestReady, setForestReady] = useState(false);
+  const isGameReady = isStageReady && isForestReady;
+
   const [activeBubble, setActiveBubble] = useState<{
     clan: Clan;
     items: Item[];
@@ -169,103 +174,117 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
   };
   const chaoFlorestaSize = layout.raioPalco * 5;
   return (
-    <div className="game-container">
-      {/* Só renderizamos quando o centro foi calculado para evitar um "pulo" */}
-      {layout.raioPalco > 0 && (
-        <img
-          src={chaoBororoFloresta}
-          alt="" // Imagem puramente decorativa, alt vazio é apropriado
-          className="chao-floresta-background"
-          style={{
-            width: chaoFlorestaSize,
-            height: chaoFlorestaSize,
-            // A mágica da centralização acontece aqui:
-            // Pegamos o ponto central (backgroundCenter) e subtraímos metade
-            // do tamanho da imagem para encontrar o ponto top-left correto.
-            left: backgroundCenter.x,
-            top: backgroundCenter.y,
-            // 2. Usamos 'transform' para que o CSS mova a imagem para trás
-            //    em 50% da sua própria largura e altura, centralizando-a perfeitamente.
-            transform: "translate(-50%, -50%)",
-          }}
-        />
+    <div className="game-container" aria-busy={!isGameReady}>
+      {!isGameReady && (
+        <div className="game-loading-overlay">
+          <LoadingScreen />
+        </div>
       )}
-      <div className="fg-overlay">
-        <ForestBackground
-          stageCenter={backgroundCenter}
-          stageRadius={layout.raioPalco}
-          width={window.innerWidth}
-          height={window.innerHeight}
-        />
+      <div
+        className={`game-content${isGameReady ? " game-content--visible" : ""}`}
+        aria-hidden={!isGameReady}
+      >
+        {/* Só renderizamos quando o centro foi calculado para evitar um "pulo" */}
+        {layout.raioPalco > 0 && (
+          <img
+            src={chaoBororoFloresta}
+            alt="" // Imagem puramente decorativa, alt vazio é apropriado
+            className="chao-floresta-background"
+            style={{
+              width: chaoFlorestaSize,
+              height: chaoFlorestaSize,
+              // A mágica da centralização acontece aqui:
+              // Pegamos o ponto central (backgroundCenter) e subtraímos metade
+              // do tamanho da imagem para encontrar o ponto top-left correto.
+              left: backgroundCenter.x,
+              top: backgroundCenter.y,
+              // 2. Usamos 'transform' para que o CSS mova a imagem para trás
+              //    em 50% da sua própria largura e altura, centralizando-a perfeitamente.
+              transform: "translate(-50%, -50%)",
+            }}
+          />
+        )}
+        <div className="fg-overlay">
+          <ForestBackground
+            stageCenter={backgroundCenter}
+            stageRadius={layout.raioPalco}
+            width={window.innerWidth}
+            height={window.innerHeight}
+            onReady={() => setForestReady(true)}
+          />
 
-        <ItemTray
-          items={menuItems}
-          draggingItemId={draggingItemId}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        />
-      </div>
-      <div className="game-area-wrapper" ref={gameAreaWrapperRef}>
-        <BororoStage
-          clans={clans}
-          clanTargets={clanTargets}
-          enteringOfferings={enteringOfferings}
-          feedbackPulse={feedbackPulse}
+          {isGameReady && (
+            <ItemTray
+              items={menuItems}
+              draggingItemId={draggingItemId}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+            />
+          )}
+        </div>
+        <div className="game-area-wrapper" ref={gameAreaWrapperRef}>
+          <BororoStage
+            clans={clans}
+            clanTargets={clanTargets}
+            enteringOfferings={enteringOfferings}
+            feedbackPulse={feedbackPulse}
+            layout={layout}
+            onDragOver={handleDragOver}
+            onDrop={(e) => {
+              if (gameAreaWrapperRef.current) {
+                const stageRect =
+                  gameAreaWrapperRef.current.getBoundingClientRect();
+                handleDrop(e, stageRect);
+              }
+            }}
+            onPulseComplete={clearFeedbackPulse}
+            onOfferingComplete={handleOfferingAnimationComplete}
+            clanInventories={clanInventories}
+            recentDeliveries={recentDeliveries}
+            onClanClick={handleClanClick}
+            onReady={() => setStageReady(true)}
+          />
+        </div>
+        <ReturningItemOverlay
+          returningItem={returningItem}
           layout={layout}
-          onDragOver={handleDragOver}
-          onDrop={(e) => {
-            if (gameAreaWrapperRef.current) {
-              const stageRect =
-                gameAreaWrapperRef.current.getBoundingClientRect();
-              handleDrop(e, stageRect);
-            }
-          }}
-          onPulseComplete={clearFeedbackPulse}
-          onOfferingComplete={handleOfferingAnimationComplete}
-          clanInventories={clanInventories}
-          recentDeliveries={recentDeliveries}
-          onClanClick={handleClanClick}
+          containerRect={gameAreaRect}
+          onComplete={onReturnAnimationComplete}
+        />
+        <ClanInfoBubble
+          activeBubble={activeBubble}
+          containerRect={gameAreaRect}
+          onClose={closeBubble}
+        />
+        <GameHud
+          score={score}
+          streak={streak}
+          maxStreak={maxStreak}
+          feathers={featherCount}
+          completed={completedCount}
+          total={totalItems}
+        />
+        <LearningCard
+          item={spotlightItem}
+          streak={streak}
+          feathers={featherCount}
+        />
+        <RewardCelebration
+          celebration={celebration}
+          onDismiss={clearCelebration}
+        />
+        <GameModals
+          isGameOver={isGameOver}
+          isMessageVisible={isMessageVisible}
+          message={message}
+          messageType={messageType}
+          score={score}
+          feathers={featherCount}
+          maxStreak={maxStreak}
+          completed={completedCount}
+          total={totalItems}
         />
       </div>
-      <ReturningItemOverlay
-        returningItem={returningItem}
-        layout={layout}
-        containerRect={gameAreaRect}
-        onComplete={onReturnAnimationComplete}
-      />
-      <ClanInfoBubble
-        activeBubble={activeBubble}
-        containerRect={gameAreaRect}
-        onClose={closeBubble}
-      />
-      <GameHud
-        score={score}
-        streak={streak}
-        maxStreak={maxStreak}
-        feathers={featherCount}
-        completed={completedCount}
-        total={totalItems}
-      />
-      <LearningCard
-        item={spotlightItem}
-        streak={streak}
-        feathers={featherCount}
-      />
-      <RewardCelebration
-        celebration={celebration}
-        onDismiss={clearCelebration}
-      />
-      <GameModals
-        isGameOver={isGameOver}
-        isMessageVisible={isMessageVisible}
-        message={message}
-        messageType={messageType}
-        score={score}
-        feathers={featherCount}
-        maxStreak={maxStreak}
-        completed={completedCount}
-        total={totalItems}
-      />
     </div>
   );
 };

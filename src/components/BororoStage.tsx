@@ -1,6 +1,6 @@
 /* Arquivo: src/components/BororoStage.tsx */
 
-import React, { useEffect, useMemo, useState } from "react"; // Importe useState e useEffect
+import React, { useEffect, useMemo, useRef, useState } from "react"; // Importe useState e useEffect
 import { Stage, Layer, Image as KonvaImage } from "react-konva"; // Importe KonvaImage
 import type { Clan, Item, PulseState } from "../types";
 import ClanTarget from "./ClanTarget";
@@ -28,6 +28,7 @@ interface BororoStageProps {
   clanInventories: Map<string, Item[]>;
   recentDeliveries: { [clanId: string]: number };
   onClanClick: (clanId: string) => void;
+  onReady?: () => void;
 }
 
 const BororoStage = ({
@@ -43,6 +44,7 @@ const BororoStage = ({
   clanInventories,
   recentDeliveries,
   onClanClick,
+  onReady,
 }: BororoStageProps) => {
   const clanEntries = Object.entries(clanTargets);
   const clearingRadius = layout.raioPalco * 1.04;
@@ -57,6 +59,8 @@ const BororoStage = ({
   const [chaoImage, setChaoImage] = useState<HTMLImageElement | undefined>(
     undefined
   );
+  const [isGroundReady, setIsGroundReady] = useState(false);
+  const hasSignaledReadyRef = useRef(false);
 
   // --- NOVO: Efeito para carregar a imagem SVG ---
   useEffect(() => {
@@ -64,11 +68,21 @@ const BororoStage = ({
     image.src = ChaoBororo;
     image.onload = () => {
       setChaoImage(image);
+      setIsGroundReady(true);
     };
     image.onerror = (err) => {
       console.error("Erro ao carregar a imagem do chão Bororo:", err);
+      setIsGroundReady(true);
     };
   }, []); // O array vazio garante que o efeito só roda uma vez ao montar o componente
+
+  useEffect(() => {
+    if (!isGroundReady || hasSignaledReadyRef.current) {
+      return;
+    }
+    hasSignaledReadyRef.current = true;
+    onReady?.();
+  }, [isGroundReady, onReady]);
 
   // O tamanho do SVG será o diâmetro do círculo, que é 2 * raio.
   const svgSize = clearingRadius * 2;
