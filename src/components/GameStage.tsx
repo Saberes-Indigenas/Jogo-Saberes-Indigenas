@@ -212,6 +212,14 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             height={window.innerHeight}
             onReady={() => setForestReady(true)}
           />
+          <GameHud
+            score={score}
+            streak={streak}
+            maxStreak={maxStreak}
+            feathers={featherCount}
+            completed={completedCount}
+            total={totalItems}
+          />
 
           {isGameReady && (
             <ItemTray
@@ -256,14 +264,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           containerRect={gameAreaRect}
           onClose={closeBubble}
         />
-        <GameHud
-          score={score}
-          streak={streak}
-          maxStreak={maxStreak}
-          feathers={featherCount}
-          completed={completedCount}
-          total={totalItems}
-        />
+
         <LearningCard
           item={spotlightItem}
           streak={streak}

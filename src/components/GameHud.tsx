@@ -2,6 +2,8 @@ import { useId, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import "../css/GameHud.css";
 
+import Cesta from "../assets/cestaUrucum.svg?react";
+import BlueFeather from "../assets/blue-feather.svg";
 interface GameHudProps {
   score: number;
   streak: number;
@@ -15,10 +17,24 @@ const BasketIcon = () => {
   const patternId = useId();
 
   return (
-    <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--basket">
+    <svg
+      viewBox="0 0 64 64"
+      role="img"
+      aria-hidden="true"
+      className="hud-icon hud-icon--basket"
+    >
       <defs>
-        <pattern id={`basket-weave-${patternId}`} patternUnits="userSpaceOnUse" width="8" height="8">
-          <path d="M0 0L8 8M8 0L0 8" stroke="rgba(15, 15, 15, 0.2)" strokeWidth="1" />
+        <pattern
+          id={`basket-weave-${patternId}`}
+          patternUnits="userSpaceOnUse"
+          width="8"
+          height="8"
+        >
+          <path
+            d="M0 0L8 8M8 0L0 8"
+            stroke="rgba(15, 15, 15, 0.2)"
+            strokeWidth="1"
+          />
         </pattern>
       </defs>
       <path
@@ -36,26 +52,53 @@ const BasketIcon = () => {
         ry="4"
         fill={`url(#basket-weave-${patternId})`}
       />
-      <path d="M18 28C16 16 24 10 32 10S48 16 46 28" fill="none" strokeWidth="6" stroke="var(--hud-secondary)" />
+      <path
+        d="M18 28C16 16 24 10 32 10S48 16 46 28"
+        fill="none"
+        strokeWidth="6"
+        stroke="var(--hud-secondary)"
+      />
     </svg>
   );
 };
 
 const FeatherIcon = () => (
-  <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--feather">
+  <svg
+    viewBox="0 0 64 64"
+    role="img"
+    aria-hidden="true"
+    className="hud-icon hud-icon--feather"
+  >
     <path
       d="M20 60C30 30 45 20 54 8 48 22 38 42 20 60Z"
       fill="var(--hud-primary)"
       stroke="var(--hud-secondary)"
       strokeWidth="3"
     />
-    <path d="M42 24C40 32 34 45 22 58" fill="none" stroke="#3498db" strokeWidth="2.5" />
-    <line x1="20" y1="60" x2="54" y2="8" stroke="rgba(15, 15, 15, 0.4)" strokeWidth="1.5" />
+    <path
+      d="M42 24C40 32 34 45 22 58"
+      fill="none"
+      stroke="#3498db"
+      strokeWidth="2.5"
+    />
+    <line
+      x1="20"
+      y1="60"
+      x2="54"
+      y2="8"
+      stroke="rgba(15, 15, 15, 0.4)"
+      strokeWidth="1.5"
+    />
   </svg>
 );
 
 const StreakIcon = () => (
-  <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--streak">
+  <svg
+    viewBox="0 0 64 64"
+    role="img"
+    aria-hidden="true"
+    className="hud-icon hud-icon--streak"
+  >
     <line x1="12" y1="32" x2="52" y2="32" strokeWidth="4" />
     <circle cx="22" cy="32" r="5" fill="var(--hud-primary)" />
     <circle cx="32" cy="32" r="5" fill="var(--hud-secondary)" />
@@ -65,16 +108,12 @@ const StreakIcon = () => (
 );
 
 const VillageIcon = () => (
-  <svg viewBox="0 0 64 64" role="img" aria-hidden="true" className="hud-icon hud-icon--village">
-    <path
-      d="M12 48 32 16 52 48H12Z"
-      fill="var(--hud-sand)"
-      strokeWidth="3.5"
-      stroke="var(--hud-secondary)"
-    />
-    <rect x="28" y="36" width="8" height="12" fill="var(--hud-secondary)" />
-    <line x1="12" y1="48" x2="52" y2="48" strokeWidth="4" stroke="var(--hud-secondary)" />
-  </svg>
+  <svg
+    viewBox="0 0 64 64"
+    role="img"
+    aria-hidden="true"
+    className="hud-icon hud-icon--village"
+  ></svg>
 );
 
 const PaintMark = ({ isActive }: { isActive: boolean }) => (
@@ -95,7 +134,7 @@ const ProgressRing = ({ value }: { value: number }) => {
   const clampedValue = Math.max(0, Math.min(100, value));
   const dashOffset = useMemo(
     () => circumference - (clampedValue / 100) * circumference,
-    [circumference, clampedValue],
+    [circumference, clampedValue]
   );
 
   return (
@@ -103,7 +142,12 @@ const ProgressRing = ({ value }: { value: number }) => {
       <svg className="hud-progress-ring__svg" viewBox="0 0 128 128" role="img">
         <defs>
           <filter id="hud-earth-texture">
-            <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="2" result="noise" />
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.1"
+              numOctaves="2"
+              result="noise"
+            />
             <feColorMatrix
               in="noise"
               type="matrix"
@@ -112,7 +156,13 @@ const ProgressRing = ({ value }: { value: number }) => {
             />
             <feBlend in="SourceGraphic" in2="earthy" mode="multiply" />
           </filter>
-          <linearGradient id="hud-progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient
+            id="hud-progress-gradient"
+            x1="0%"
+            y1="0%"
+            x2="100%"
+            y2="100%"
+          >
             <stop offset="0%" stopColor="rgba(181, 35, 35, 0.95)" />
             <stop offset="65%" stopColor="rgba(15, 15, 15, 0.9)" />
           </linearGradient>
@@ -136,7 +186,13 @@ const ProgressRing = ({ value }: { value: number }) => {
           animate={{ strokeDashoffset: dashOffset }}
           transition={{ type: "spring", stiffness: 180, damping: 24 }}
         />
-        <circle className="hud-progress-ring__center" cx="64" cy="64" r="38" filter="url(#hud-earth-texture)" />
+        <circle
+          className="hud-progress-ring__center"
+          cx="64"
+          cy="64"
+          r="38"
+          filter="url(#hud-earth-texture)"
+        />
       </svg>
       <div className="hud-progress-ring__totem">
         <VillageIcon />
@@ -146,20 +202,28 @@ const ProgressRing = ({ value }: { value: number }) => {
 };
 
 const ScoreIndicator = ({ score }: { score: number }) => (
-  <article className="hud-module hud-module--score" aria-label="Pontuação acumulada">
+  <article
+    className="hud-module hud-module--score"
+    aria-label="Pontuação acumulada"
+  >
     <div className="hud-module__icon">
       <BasketIcon />
     </div>
     <div className="hud-module__content">
       <span className="hud-module__label">Pontos</span>
-      <strong className="hud-module__value">{score.toLocaleString("pt-BR")}</strong>
+      <strong className="hud-module__value">
+        {score.toLocaleString("pt-BR")}
+      </strong>
       <span className="hud-module__hint">Cesto de honrarias</span>
     </div>
   </article>
 );
 
 const FeatherIndicator = ({ feathers }: { feathers: number }) => (
-  <article className="hud-module hud-module--feathers" aria-label="Plumas conquistadas">
+  <article
+    className="hud-module hud-module--feathers"
+    aria-label="Plumas conquistadas"
+  >
     <div className="hud-module__icon">
       <FeatherIcon />
     </div>
@@ -171,12 +235,21 @@ const FeatherIndicator = ({ feathers }: { feathers: number }) => (
   </article>
 );
 
-const StreakIndicator = ({ streak, maxStreak }: { streak: number; maxStreak: number }) => {
+const StreakIndicator = ({
+  streak,
+  maxStreak,
+}: {
+  streak: number;
+  maxStreak: number;
+}) => {
   const marks = 6;
   const activeMarks = Math.max(0, Math.min(marks, streak));
 
   return (
-    <article className="hud-module hud-module--streak" aria-label="Sequência de acertos">
+    <article
+      className="hud-module hud-module--streak"
+      aria-label="Sequência de acertos"
+    >
       <div className="hud-module__icon">
         <StreakIcon />
       </div>
@@ -230,7 +303,8 @@ const GameHud = ({
   total,
 }: GameHudProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const progress = total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
+  const progress =
+    total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
 
   const rootClassName = `hud-root ${isOpen ? "hud-root--open" : ""}`;
 
@@ -243,13 +317,17 @@ const GameHud = ({
         whileTap={{ scale: 0.94 }}
         aria-expanded={isOpen}
         aria-controls="hud-panel"
-        aria-label={isOpen ? "Fechar painel da jornada" : "Abrir painel da jornada"}
+        aria-label={
+          isOpen ? "Fechar painel da jornada" : "Abrir painel da jornada"
+        }
       >
         <span className="hud-toggle__icon" aria-hidden="true">
           <BasketIcon />
         </span>
         <span className="hud-toggle__label">Jornada</span>
-        <span className="hud-toggle__badge">{score.toLocaleString("pt-BR")}</span>
+        <span className="hud-toggle__badge">
+          {score.toLocaleString("pt-BR")}
+        </span>
       </motion.button>
 
       <AnimatePresence>
@@ -270,8 +348,8 @@ const GameHud = ({
               <div>
                 <h2 className="hud-panel__title">Jornada Boe</h2>
                 <p>
-                  Conduza cada ser ao seu clã. As texturas e ícones deste painel aguardam os
-                  grafismos oficiais do povo Boe.
+                  Conduza cada ser ao seu clã. As texturas e ícones deste painel
+                  aguardam os grafismos oficiais do povo Boe.
                 </p>
               </div>
             </header>
@@ -282,16 +360,24 @@ const GameHud = ({
                 <FeatherIndicator feathers={feathers} />
                 <StreakIndicator streak={streak} maxStreak={maxStreak} />
               </div>
-              <ProgressIndicator progress={progress} completed={completed} total={total} />
+              <ProgressIndicator
+                progress={progress}
+                completed={completed}
+                total={total}
+              />
             </div>
 
             <footer className="hud-panel__footer">
               <p>
-                Dica: repita o nome em Bororo a cada acerto e compartilhe uma história sobre o
-                clã correspondente.
+                Dica: repita o nome em Bororo a cada acerto e compartilhe uma
+                história sobre o clã correspondente.
               </p>
             </footer>
-            <button type="button" className="hud-panel__close" onClick={() => setIsOpen(false)}>
+            <button
+              type="button"
+              className="hud-panel__close"
+              onClick={() => setIsOpen(false)}
+            >
               Fechar
             </button>
           </motion.section>
