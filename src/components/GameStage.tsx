@@ -15,6 +15,7 @@ import RewardCelebration from "./RewardCelebration";
 import ClanInfoBubble from "./ClanInfoBubble";
 import ReturningItemOverlay from "./ReturningItemOverlay";
 import LoadingScreen from "./LoadingScreen";
+import { useGameAssetPreloader } from "../hooks/useGameAssetPreloader";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 
@@ -111,9 +112,37 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     registerOfferingArrival,
   } = useGameLogic(clans, initialItems, layout);
 
+  const { isReady: areAssetsReady, progress: assetProgress } =
+    useGameAssetPreloader();
+  const [shouldRenderScene, setShouldRenderScene] = useState(false);
   const [isStageReady, setStageReady] = useState(false);
   const [isForestReady, setForestReady] = useState(false);
-  const isGameReady = isStageReady && isForestReady;
+  const isGameReady = shouldRenderScene && isStageReady && isForestReady;
+  const shouldShowLoader = !areAssetsReady || !isGameReady;
+  const loaderLabel = areAssetsReady
+    ? "Preparando a aldeia..."
+    : "Carregando a aldeia...";
+
+  useEffect(() => {
+    if (!areAssetsReady) {
+      setShouldRenderScene(false);
+      return;
+    }
+
+    const frame = requestAnimationFrame(() => {
+      setShouldRenderScene(true);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [areAssetsReady]);
+
+  useEffect(() => {
+    if (shouldRenderScene) {
+      return;
+    }
+    setStageReady(false);
+    setForestReady(false);
+  }, [shouldRenderScene]);
 
   const [activeBubble, setActiveBubble] = useState<{
     clan: Clan;
@@ -174,10 +203,10 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
   };
   const chaoFlorestaSize = layout.raioPalco * 5;
   return (
-    <div className="game-container" aria-busy={!isGameReady}>
-      {!isGameReady && (
+    <div className="game-container" aria-busy={shouldShowLoader}>
+      {shouldShowLoader && (
         <div className="game-loading-overlay">
-          <LoadingScreen />
+          <LoadingScreen label={loaderLabel} progress={assetProgress} />
         </div>
       )}
       <div
@@ -185,7 +214,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
         aria-hidden={!isGameReady}
       >
         {/* Só renderizamos quando o centro foi calculado para evitar um "pulo" */}
-        {layout.raioPalco > 0 && (
+        {shouldRenderScene && layout.raioPalco > 0 && (
           <img
             src={chaoBororoFloresta}
             alt="" // Imagem puramente decorativa, alt vazio é apropriado
@@ -205,13 +234,15 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           />
         )}
         <div className="fg-overlay">
-          <ForestBackground
-            stageCenter={backgroundCenter}
-            stageRadius={layout.raioPalco}
-            width={window.innerWidth}
-            height={window.innerHeight}
-            onReady={() => setForestReady(true)}
-          />
+          {shouldRenderScene && (
+            <ForestBackground
+              stageCenter={backgroundCenter}
+              stageRadius={layout.raioPalco}
+              width={window.innerWidth}
+              height={window.innerHeight}
+              onReady={() => setForestReady(true)}
+            />
+          )}
 
           {isGameReady && (
             <ItemTray
@@ -223,39 +254,45 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           )}
         </div>
         <div className="game-area-wrapper" ref={gameAreaWrapperRef}>
-          <BororoStage
-            clans={clans}
-            clanTargets={clanTargets}
-            enteringOfferings={enteringOfferings}
-            feedbackPulse={feedbackPulse}
-            layout={layout}
-            onDragOver={handleDragOver}
-            onDrop={(e) => {
-              if (gameAreaWrapperRef.current) {
-                const stageRect =
-                  gameAreaWrapperRef.current.getBoundingClientRect();
-                handleDrop(e, stageRect);
-              }
-            }}
-            onPulseComplete={clearFeedbackPulse}
-            onOfferingComplete={handleOfferingAnimationComplete}
-            clanInventories={clanInventories}
-            recentDeliveries={recentDeliveries}
-            onClanClick={handleClanClick}
-            onReady={() => setStageReady(true)}
-          />
+          {shouldRenderScene && (
+            <BororoStage
+              clans={clans}
+              clanTargets={clanTargets}
+              enteringOfferings={enteringOfferings}
+              feedbackPulse={feedbackPulse}
+              layout={layout}
+              onDragOver={handleDragOver}
+              onDrop={(e) => {
+                if (gameAreaWrapperRef.current) {
+                  const stageRect =
+                    gameAreaWrapperRef.current.getBoundingClientRect();
+                  handleDrop(e, stageRect);
+                }
+              }}
+              onPulseComplete={clearFeedbackPulse}
+              onOfferingComplete={handleOfferingAnimationComplete}
+              clanInventories={clanInventories}
+              recentDeliveries={recentDeliveries}
+              onClanClick={handleClanClick}
+              onReady={() => setStageReady(true)}
+            />
+          )}
         </div>
-        <ReturningItemOverlay
-          returningItem={returningItem}
-          layout={layout}
-          containerRect={gameAreaRect}
-          onComplete={onReturnAnimationComplete}
-        />
-        <ClanInfoBubble
-          activeBubble={activeBubble}
-          containerRect={gameAreaRect}
-          onClose={closeBubble}
-        />
+        {shouldRenderScene && (
+          <ReturningItemOverlay
+            returningItem={returningItem}
+            layout={layout}
+            containerRect={gameAreaRect}
+            onComplete={onReturnAnimationComplete}
+          />
+        )}
+        {shouldRenderScene && (
+          <ClanInfoBubble
+            activeBubble={activeBubble}
+            containerRect={gameAreaRect}
+            onClose={closeBubble}
+          />
+        )}
         <GameHud
           score={score}
           streak={streak}
