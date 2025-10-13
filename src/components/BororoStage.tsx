@@ -1,11 +1,10 @@
 /* Arquivo: src/components/BororoStage.tsx */
 
-import React, { useState, useEffect } from "react"; // Importe useState e useEffect
+import React, { useEffect, useMemo, useState } from "react"; // Importe useState e useEffect
 import { Stage, Layer, Image as KonvaImage } from "react-konva"; // Importe KonvaImage
-import type { Clan, Item, PulseState, ReturningItemState } from "../types";
+import type { Clan, Item, PulseState } from "../types";
 import ClanTarget from "./ClanTarget";
 import FeedbackPulse from "./FeedbackPulse";
-import ReturningItem from "./ReturningItem";
 import EnteringOffering from "./EnteringOffering";
 import type { EnteringOffering as EnteringOfferingState } from "../hooks/useGameLogic";
 import ChaoBororo from "../assets/chãoBororo.svg"; // Seu SVG
@@ -15,7 +14,6 @@ interface BororoStageProps {
   clanTargets: { [key: string]: { x: number; y: number } };
   enteringOfferings: EnteringOfferingState[];
   feedbackPulse: PulseState;
-  returningItem: ReturningItemState;
   layout: {
     gameAreaWidth: number;
     gameAreaHeight: number;
@@ -26,7 +24,6 @@ interface BororoStageProps {
   onDragOver: (e: React.DragEvent) => void;
   onDrop: (e: React.DragEvent) => void;
   onPulseComplete: () => void;
-  onReturnAnimationComplete: () => void;
   onOfferingComplete: (offering: EnteringOfferingState) => void;
   clanInventories: Map<string, Item[]>;
   recentDeliveries: { [clanId: string]: number };
@@ -38,12 +35,10 @@ const BororoStage = ({
   clanTargets,
   enteringOfferings,
   feedbackPulse,
-  returningItem,
   layout,
   onDragOver,
   onDrop,
   onPulseComplete,
-  onReturnAnimationComplete,
   onOfferingComplete,
   clanInventories,
   recentDeliveries,
@@ -51,6 +46,12 @@ const BororoStage = ({
 }: BororoStageProps) => {
   const clanEntries = Object.entries(clanTargets);
   const clearingRadius = layout.raioPalco * 1.04;
+  const stagePixelRatio = useMemo(() => {
+    if (typeof window === "undefined") {
+      return 1;
+    }
+    return Math.min(window.devicePixelRatio || 1, 1.5);
+  }, []);
 
   // --- NOVO: Estado para a imagem SVG ---
   const [chaoImage, setChaoImage] = useState<HTMLImageElement | undefined>(
@@ -74,7 +75,11 @@ const BororoStage = ({
 
   return (
     <main className="game-area" onDragOver={onDragOver} onDrop={onDrop}>
-      <Stage width={layout.gameAreaWidth} height={layout.gameAreaHeight}>
+      <Stage
+        width={layout.gameAreaWidth}
+        height={layout.gameAreaHeight}
+        pixelRatio={stagePixelRatio}
+      >
         <Layer>
           {/* --- CHÃO DA MATA AO REDOR DA ALDEIA (AGORA SVG) --- */}
           {chaoImage && ( // Só renderiza a imagem depois que ela for carregada
@@ -128,17 +133,6 @@ const BororoStage = ({
               y={feedbackPulse.y}
               color={feedbackPulse.color}
               onComplete={onPulseComplete}
-            />
-          )}
-          {returningItem && (
-            <ReturningItem
-              itemData={returningItem.item}
-              startPos={{
-                x: returningItem.startPos.x,
-                y: returningItem.startPos.y,
-              }}
-              endPos={returningItem.endPos}
-              onComplete={onReturnAnimationComplete}
             />
           )}
         </Layer>

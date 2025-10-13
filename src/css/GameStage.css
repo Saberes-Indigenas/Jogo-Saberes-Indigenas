@@ -94,8 +94,21 @@ body {
 }
 
 .fg-overlay {
+  position: absolute;
+  inset: 0;
   z-index: 50;           /* MAIOR que o BororoStage (que usa z-index: 8) */
   pointer-events: none;  /* não bloqueia cliques/arraste do palco */
+}
+
+.returning-item-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 80;
+}
+
+.returning-item-stage {
+  pointer-events: none !important;
 }
 
 

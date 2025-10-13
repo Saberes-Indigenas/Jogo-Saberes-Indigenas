@@ -22,6 +22,11 @@ const ReturningItem = ({
 
   useEffect(() => {
     if (groupRef.current) {
+      if (startPos.x === endPos.x && startPos.y === endPos.y) {
+        groupRef.current.visible(false);
+        onComplete();
+        return;
+      }
       const tween = new Konva.Tween({
         node: groupRef.current,
         // Propriedades finais da animação agora usam o endPos das props.
@@ -48,7 +53,7 @@ const ReturningItem = ({
       // Função de limpeza para parar a animação se o componente for desmontado.
       return () => tween.destroy();
     }
-  }, [onComplete, endPos.x, endPos.y]);
+  }, [onComplete, endPos.x, endPos.y, startPos.x, startPos.y]);
 
   return (
     <Group
@@ -59,6 +64,7 @@ const ReturningItem = ({
       opacity={1}
       scaleX={1}
       scaleY={1}
+      listening={false}
     >
       {/* O ItemBall é renderizado no centro do grupo (0,0) */}
       <ItemBall

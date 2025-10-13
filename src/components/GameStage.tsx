@@ -13,6 +13,7 @@ import GameHud from "./GameHud";
 import LearningCard from "./LearningCard";
 import RewardCelebration from "./RewardCelebration";
 import ClanInfoBubble from "./ClanInfoBubble";
+import ReturningItemOverlay from "./ReturningItemOverlay";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 
@@ -210,7 +211,6 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           clanTargets={clanTargets}
           enteringOfferings={enteringOfferings}
           feedbackPulse={feedbackPulse}
-          returningItem={returningItem}
           layout={layout}
           onDragOver={handleDragOver}
           onDrop={(e) => {
@@ -221,13 +221,18 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             }
           }}
           onPulseComplete={clearFeedbackPulse}
-          onReturnAnimationComplete={onReturnAnimationComplete}
           onOfferingComplete={handleOfferingAnimationComplete}
           clanInventories={clanInventories}
           recentDeliveries={recentDeliveries}
           onClanClick={handleClanClick}
         />
       </div>
+      <ReturningItemOverlay
+        returningItem={returningItem}
+        layout={layout}
+        containerRect={gameAreaRect}
+        onComplete={onReturnAnimationComplete}
+      />
       <ClanInfoBubble
         activeBubble={activeBubble}
         containerRect={gameAreaRect}

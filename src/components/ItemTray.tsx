@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Item } from "../types";
 import "../css/ItemTray.css";
+import DraggableItemCard from "./DraggableItemCard";
 
 interface ItemTrayProps {
   items: Item[];
@@ -38,6 +39,21 @@ const ItemTray = ({
     }
   };
 
+  const displayItems = useMemo(
+    () =>
+      items.map((item) => {
+        const boeName = item.name_boe?.trim() || item.name;
+        const clanLabel = item.clan?.trim() || "clã misterioso";
+        return {
+          item,
+          boeName,
+          clanLabel,
+          ariaLabel: `${boeName}, do ${clanLabel}`,
+        };
+      }),
+    [items]
+  );
+
   return (
     <aside className="item-tray" aria-label="Bandeja de itens para arrastar">
       <header className="item-tray__header">
@@ -46,11 +62,7 @@ const ItemTray = ({
       </header>
       <div className="item-tray__list" role="list">
         <AnimatePresence>
-          {items.map((item, index) => {
-            const boeName = item.name_boe?.trim() || item.name;
-            const clanLabel = item.clan?.trim() || "clã misterioso";
-            const ariaLabel = `${boeName}, do ${clanLabel}`;
-
+          {displayItems.map(({ item, boeName, clanLabel, ariaLabel }, index) => {
             return (
               <motion.div
                 key={item.id}
@@ -91,31 +103,13 @@ const ItemTray = ({
                 whileHover={{ scale: 1.04, y: -6 }}
                 whileTap={{ scale: 0.92, cursor: "grabbing" }}
               >
-              <div
-                className="draggable-item__figure"
-                style={{ backgroundColor: item.color }}
-                title={boeName}
-              >
-                {item.media?.image ? (
-                  <img src={item.media.image} alt="" loading="lazy" />
-                ) : (
-                  <span className="item-icon">{item.icon}</span>
-                )}
-                <span className="draggable-item__shine" />
-              </div>
-              <div className="draggable-item__labels">
-                <span className="item-name-boe" title={boeName}>
-                  {boeName}
-                </span>
-                <span className="item-name-pt" title={item.name}>
-                  {item.name}
-                </span>
-                <span className="item-name-clan" title={clanLabel}>
-                  Clã: {clanLabel}
-                </span>
-              </div>
-            </motion.div>
-          );
+                <DraggableItemCard
+                  item={item}
+                  boeName={boeName}
+                  clanLabel={clanLabel}
+                />
+              </motion.div>
+            );
           })}
         </AnimatePresence>
       </div>
