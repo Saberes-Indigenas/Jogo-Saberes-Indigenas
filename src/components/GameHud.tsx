@@ -2,10 +2,10 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import "../css/GameHud.css";
 
-import BasketAsset from "../assets/hud/basket.svg?react";
-import FeatherAsset from "../assets/hud/feather.svg?react";
-import StreakAsset from "../assets/hud/streak.svg?react";
-import VillageAsset from "../assets/hud/village.svg?react";
+import basketSvg from "../assets/hud/basket.svg?raw";
+import featherSvg from "../assets/hud/feather.svg?raw";
+import streakSvg from "../assets/hud/streak.svg?raw";
+import villageSvg from "../assets/hud/village.svg?raw";
 import TexturaDeEsteira from "./TexturaDeEsteira";
 interface GameHudProps {
   score: number;
@@ -16,36 +16,31 @@ interface GameHudProps {
   total: number;
 }
 
-const BasketIcon = () => (
-  <BasketAsset
+const InlineHudIcon = ({
+  svg,
+  className = "",
+}: {
+  svg: string;
+  className?: string;
+}) => (
+  <span
     aria-hidden="true"
     role="img"
-    className="hud-icon hud-icon--basket"
+    className={`hud-icon ${className}`.trim()}
+    dangerouslySetInnerHTML={{ __html: svg }}
   />
 );
+
+const BasketIcon = () => <InlineHudIcon svg={basketSvg} className="hud-icon--basket" />;
 
 const FeatherIcon = () => (
-  <FeatherAsset
-    aria-hidden="true"
-    role="img"
-    className="hud-icon hud-icon--feather"
-  />
+  <InlineHudIcon svg={featherSvg} className="hud-icon--feather" />
 );
 
-const StreakIcon = () => (
-  <StreakAsset
-    aria-hidden="true"
-    role="img"
-    className="hud-icon hud-icon--streak"
-  />
-);
+const StreakIcon = () => <InlineHudIcon svg={streakSvg} className="hud-icon--streak" />;
 
 const VillageIcon = () => (
-  <VillageAsset
-    aria-hidden="true"
-    role="img"
-    className="hud-icon hud-icon--village"
-  />
+  <InlineHudIcon svg={villageSvg} className="hud-icon--village" />
 );
 
 const PaintMark = ({ isActive }: { isActive: boolean }) => (
