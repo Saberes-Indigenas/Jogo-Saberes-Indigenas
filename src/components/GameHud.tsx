@@ -291,9 +291,44 @@ const GameHud = ({
     return { left: `${stageCenter.x}px`, top: `${stageCenter.y}px` };
   }, [stageCenter]);
 
+  const panelVariants = {
+    hidden: { opacity: 0, scale: 0.9, y: 28 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: 0.42,
+        ease: [0.17, 0.67, 0.32, 0.97],
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.95,
+      y: 18,
+      transition: { duration: 0.28, ease: [0.19, 0.57, 0.3, 0.98] },
+    },
+  } as const;
+
+  const modulesWrapperVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.12,
+        staggerChildren: 0.08,
+      },
+    },
+  } as const;
+
   const moduleVariants = {
-    hidden: { opacity: 0, y: 20, scale: 0.92 },
-    visible: { opacity: 1, y: 0, scale: 1 },
+    hidden: { opacity: 0, y: 24, scale: 0.94 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { type: "spring", stiffness: 220, damping: 22 },
+    },
   } as const;
 
   return (
@@ -306,8 +341,6 @@ const GameHud = ({
         type="button"
         className={`hud-totem-button ${isOpen ? "is-open" : ""}`}
         onClick={() => setIsOpen((prev) => !prev)}
-        whileHover={{ scale: 1.06, rotate: isOpen ? 2 : -2 }}
-        whileTap={{ scale: 0.95 }}
         aria-expanded={isOpen}
         aria-controls="hud-panel"
         aria-label={
@@ -334,28 +367,45 @@ const GameHud = ({
 
       <AnimatePresence>
         {isOpen && (
-          <motion.section
-            id="hud-panel"
-            key="hud-panel"
-            className="hud-panel"
-            initial={{ opacity: 0, y: 40, scale: 0.92, rotate: -2 }}
-            animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
-            exit={{ opacity: 0, y: 30, scale: 0.9, rotate: 2 }}
-            transition={{ type: "spring", stiffness: 220, damping: 24 }}
-          >
-            <TexturaDeEsteira className="hud-panel__texture" tone="clay" />
-            <header className="hud-panel__header">
-              <div className="hud-panel__crest" aria-hidden="true">
-                <VillageIcon />
-              </div>
-              <div className="hud-panel__legend">
-                <h2 className="hud-panel__title">Ritual da Aldeia</h2>
-                <p className="hud-panel__subtitle">
-                  Celebre cada encontro correto e fortaleça os laços do povo Boe.
-                </p>
-              </div>
-              <motion.button
-                type="button"
+          <>
+            <motion.button
+              type="button"
+              className="hud-panel__backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+              aria-label="Fechar painel da jornada"
+              tabIndex={-1}
+              onClick={() => setIsOpen(false)}
+            />
+            <motion.section
+              id="hud-panel"
+              key="hud-panel"
+              className="hud-panel"
+              variants={panelVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="hud-panel-title"
+            >
+              <TexturaDeEsteira className="hud-panel__texture" tone="clay" />
+              <header className="hud-panel__header">
+                <div className="hud-panel__crest" aria-hidden="true">
+                  <VillageIcon />
+                </div>
+                <div className="hud-panel__legend">
+                  <h2 id="hud-panel-title" className="hud-panel__title">
+                    Ritual da Aldeia
+                  </h2>
+                  <p className="hud-panel__subtitle">
+                    Celebre cada encontro correto e fortaleça os laços do povo Boe.
+                  </p>
+                </div>
+                <motion.button
+                  type="button"
                 className="hud-panel__close"
                 onClick={() => setIsOpen(false)}
                 whileHover={{ scale: 1.08, rotate: 3 }}
@@ -364,45 +414,56 @@ const GameHud = ({
               >
                 ✕
               </motion.button>
-            </header>
+              </header>
 
-            <motion.div
-              className="hud-panel__modules"
-              initial="hidden"
-              animate="visible"
-            >
-              {[<ScoreIndicator score={score} key="score" />,
-              <FeatherIndicator feathers={feathers} key="feathers" />,
-              <StreakIndicator streak={streak} maxStreak={maxStreak} key="streak" />,
-              <ProgressIndicator
-                progress={progress}
-                completed={completed}
-                total={total}
-                key="progress"
-              />].map((module, index) => (
-                <motion.div
-                  key={`hud-module-${index}`}
-                  className="hud-panel__module"
-                  variants={moduleVariants}
-                  transition={{
-                    type: "spring",
-                    stiffness: 260,
-                    damping: 20,
-                    delay: 0.08 * index,
-                  }}
-                >
-                  {module}
-                </motion.div>
-              ))}
-            </motion.div>
+              <motion.div
+                className="hud-panel__body"
+                variants={modulesWrapperVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <div className="hud-panel__summary">
+                  <motion.div
+                    className="hud-panel__module"
+                    variants={moduleVariants}
+                  >
+                    <ScoreIndicator score={score} />
+                  </motion.div>
+                  <motion.div
+                    className="hud-panel__module"
+                    variants={moduleVariants}
+                  >
+                    <FeatherIndicator feathers={feathers} />
+                  </motion.div>
+                </div>
+                <div className="hud-panel__summary">
+                  <motion.div
+                    className="hud-panel__module"
+                    variants={moduleVariants}
+                  >
+                    <StreakIndicator streak={streak} maxStreak={maxStreak} />
+                  </motion.div>
+                  <motion.div
+                    className="hud-panel__module"
+                    variants={moduleVariants}
+                  >
+                    <ProgressIndicator
+                      progress={progress}
+                      completed={completed}
+                      total={total}
+                    />
+                  </motion.div>
+                </div>
+              </motion.div>
 
-            <footer className="hud-panel__footer">
-              <p>
-                Repita o nome em Bororo a cada acerto e compartilhe uma história
-                com a aldeia para ganhar novas plumas.
-              </p>
-            </footer>
-          </motion.section>
+              <footer className="hud-panel__footer">
+                <p>
+                  Repita o nome em Bororo a cada acerto e compartilhe uma história
+                  com a aldeia para ganhar novas plumas.
+                </p>
+              </footer>
+            </motion.section>
+          </>
         )}
       </AnimatePresence>
     </div>
