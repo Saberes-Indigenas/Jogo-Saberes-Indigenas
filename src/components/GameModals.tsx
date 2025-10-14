@@ -14,6 +14,8 @@ interface GameModalsProps {
   maxStreak: number;
   completed: number;
   total: number;
+  currentRound: number;
+  maxRounds: number;
 }
 
 // Variantes de animação (sem alterações)
@@ -76,7 +78,14 @@ const GameModals = ({
   maxStreak,
   completed,
   total,
+  currentRound,
+  maxRounds,
 }: GameModalsProps) => {
+  const displayMaxRounds = Math.max(maxRounds, 1);
+  const displayCompletedRounds = Math.min(
+    currentRound > 0 ? currentRound : displayMaxRounds,
+    displayMaxRounds
+  );
   return (
     <AnimatePresence>
       {/* Mensagem de Feedback */}
@@ -113,8 +122,8 @@ const GameModals = ({
               🎉 Parabéns! 🎉
             </motion.h1>
             <motion.p>
-              Você restaurou a ordem de todos os clãs! Compartilhe o que aprendeu com sua
-              aldeia.
+              Você concluiu as {maxRounds} rodadas do ritual Bororo! Compartilhe o que
+              aprendeu com sua aldeia.
             </motion.p>
             <motion.ul
               className="gameOverStats"
@@ -125,6 +134,12 @@ const GameModals = ({
               <li>
                 <span>Total de pontos</span>
                 <strong>{score.toLocaleString("pt-BR")}</strong>
+              </li>
+              <li>
+                <span>Rodadas concluídas</span>
+                <strong>
+                  {displayCompletedRounds}/{displayMaxRounds}
+                </strong>
               </li>
               <li>
                 <span>Plumas conquistadas</span>

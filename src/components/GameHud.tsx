@@ -10,6 +10,8 @@ interface GameHudProps {
   blackCompleted: number;
   redTotal: number;
   blackTotal: number;
+  currentRound: number;
+  maxRounds: number;
   stageCenter: { x: number; y: number } | null;
   isOpen: boolean; // Recebe o estado de visibilidade
   onToggle: () => void; // Recebe a função para alternar a visibilidade
@@ -207,10 +209,17 @@ const GameHud = ({
   blackCompleted,
   redTotal,
   blackTotal,
+  currentRound,
+  maxRounds,
   stageCenter,
   isOpen,
   onToggle,
 }: GameHudProps) => {
+  const displayMaxRounds = Math.max(maxRounds, 1);
+  const displayCurrentRound = Math.min(
+    currentRound > 0 ? currentRound : 1,
+    displayMaxRounds
+  );
   const redPercent = useMemo(
     () => (redTotal > 0 ? (redCompleted / redTotal) * 100 : 0),
     [redCompleted, redTotal]
@@ -240,6 +249,22 @@ const GameHud = ({
       style={hudStyle}
       aria-live="polite"
     >
+      <motion.div
+        className="hud-round-indicator"
+        key={`round-${currentRound}`}
+        initial={{ opacity: 0, y: -12 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -12 }}
+        transition={{ duration: 0.32, ease: [0.33, 1, 0.68, 1] }}
+        role="status"
+        aria-live="polite"
+      >
+        <span className="hud-round-indicator__label">Rodada</span>
+        <strong className="hud-round-indicator__value">
+          {displayCurrentRound}
+          <span aria-hidden="true">/{displayMaxRounds}</span>
+        </strong>
+      </motion.div>
       <motion.button
         type="button"
         className={`hud-totem-button ${isOpen ? "is-open" : ""}`}

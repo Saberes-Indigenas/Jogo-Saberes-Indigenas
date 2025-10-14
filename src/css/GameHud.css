@@ -17,6 +17,46 @@
   font-family: var(--hud-font-body);
 }
 
+.hud-round-indicator {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.55rem 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 238, 200, 0.92) 0%,
+    rgba(255, 202, 144, 0.94) 50%,
+    rgba(217, 115, 60, 0.9) 100%
+  );
+  box-shadow: 0 10px 0 rgba(81, 38, 11, 0.28), 0 18px 28px rgba(0, 0, 0, 0.25);
+  color: rgba(45, 22, 10, 0.95);
+  font-family: var(--hud-font-body);
+  pointer-events: none;
+}
+
+.hud-round-indicator__label {
+  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hud-round-indicator__value {
+  font-family: var(--hud-font-heading);
+  font-size: clamp(1.25rem, 2.4vw, 2.1rem);
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.hud-round-indicator__value span {
+  font-family: var(--hud-font-body);
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  font-weight: 600;
+}
+
 .hud-stage-anchor--open {
   pointer-events: auto;
 }
@@ -428,6 +468,11 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: rgba(181, 35, 35, 0.72);
+}
+
+.hud-module__hint--rounds {
+  color: rgba(54, 30, 12, 0.72);
+  font-weight: 700;
 }
 
 .hud-streak__marks {

@@ -87,6 +87,8 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     enteringOfferings,
     clanTargets,
     isGameOver,
+    currentRound,
+    maxRounds,
     isMessageVisible,
     message,
     messageType,
@@ -222,6 +224,8 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             blackCompleted={completedByColor.black}
             redTotal={totalItemsByColor.red}
             blackTotal={totalItemsByColor.black}
+            currentRound={currentRound}
+            maxRounds={maxRounds}
             isOpen={isHudPanelOpen}
             onToggle={() => setIsHudPanelOpen((prev) => !prev)} // Função para abrir/fechar
             stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
@@ -240,6 +244,8 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
                 blackCompleted={completedByColor.black}
                 redTotal={totalItemsByColor.red}
                 blackTotal={totalItemsByColor.black}
+                currentRound={currentRound}
+                maxRounds={maxRounds}
                 onClose={() => setIsHudPanelOpen(false)} // Função para fechar
                 stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
               />
@@ -309,6 +315,8 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           maxStreak={maxStreak}
           completed={completedCount}
           total={totalItems}
+          currentRound={currentRound}
+          maxRounds={maxRounds}
         />
       </div>
     </div>

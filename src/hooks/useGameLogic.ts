@@ -34,6 +34,8 @@ type DraggedItemInfo = {
   initialRect: DOMRect;
 } | null;
 
+const MAX_ROUNDS = 5;
+
 // --- FUNÇÕES UTILITÁRIAS (sem alterações) ---
 const shuffleArray = <T>(array: T[]): T[] => {
   const newArray = [...array];
@@ -82,6 +84,13 @@ export const useGameLogic = (
     red: 0,
     black: 0,
   });
+  const [maxRounds, setMaxRounds] = useState(MAX_ROUNDS);
+  const [currentRound, setCurrentRound] = useState(0);
+  const [sessionTotalItems, setSessionTotalItems] = useState(0);
+  const [sessionTotalByColor, setSessionTotalByColor] = useState({
+    red: 0,
+    black: 0,
+  });
   const [spotlightItem, setSpotlightItem] = useState<Item | null>(null);
   const [celebration, setCelebration] = useState<RewardCelebration | null>(
     null
@@ -95,23 +104,8 @@ export const useGameLogic = (
   const celebrationTimeoutRef = useRef<number | null>(null);
   const pronunciationAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  const totalItems = useMemo(() => initialItems.length, [initialItems]);
-  const totalItemsByColor = useMemo(
-    () =>
-      initialItems.reduce(
-        (acc, item) => {
-          const key = item.color?.toLowerCase() === "#b52323" ? "red" : "black";
-          acc[key] += 1;
-          return acc;
-        },
-        { red: 0, black: 0 }
-      ),
-    [initialItems]
-  );
-
-  useEffect(() => {
-    setCompletedByColor({ red: 0, black: 0 });
-  }, [initialItems]);
+  const totalItems = sessionTotalItems;
+  const totalItemsByColor = sessionTotalByColor;
 
   const getColorKey = (color: string | undefined): "red" | "black" =>
     color?.toLowerCase() === "#b52323" ? "red" : "black";
@@ -162,20 +156,26 @@ export const useGameLogic = (
   }, [clans, initialItems, layout]);
 
   // --- FUNÇÕES DE CONTROLE DE JOGO (sem alterações) ---
-  const loadNextBatch = (currentItemsByClan: Map<string, Item[]>) => {
+  const loadNextBatch = (
+    currentItemsByClan: Map<string, Item[]>,
+    nextRound?: number
+  ) => {
     const newBatch: Item[] = [];
-    const newRemainingMap = new Map(currentItemsByClan);
+    const newRemainingMap = new Map<string, Item[]>();
     let canCreateNextBatch = true;
 
-    newRemainingMap.forEach((items) => {
-      if (items.length === 0) {
+    currentItemsByClan.forEach((items, clanId) => {
+      const itemsQueue = [...items];
+      if (itemsQueue.length === 0) {
         canCreateNextBatch = false;
+        newRemainingMap.set(clanId, itemsQueue);
         return;
       }
-      const nextItem = items.shift();
+      const nextItem = itemsQueue.shift();
       if (nextItem) {
         newBatch.push(nextItem);
       }
+      newRemainingMap.set(clanId, itemsQueue);
     });
 
     if (!canCreateNextBatch) {
@@ -183,9 +183,19 @@ export const useGameLogic = (
       return;
     }
 
+    if (newBatch.length === 0) {
+      setIsGameOver(true);
+      return;
+    }
+
     setMenuItems(shuffleArray(newBatch));
     setRemainingItemsByClan(newRemainingMap);
     setSpotlightItem(null);
+    if (typeof nextRound === "number") {
+      setCurrentRound(nextRound);
+    } else {
+      setCurrentRound((prev) => prev + 1);
+    }
   };
 
   useEffect(() => {
@@ -205,16 +215,50 @@ export const useGameLogic = (
         [...itemsByClan].filter(([, items]) => items.length > 0)
       );
 
+      if (filteredItemsByClan.size === 0) {
+        setIsGameOver(true);
+        return;
+      }
+
+      const roundsAvailable = Math.min(
+        MAX_ROUNDS,
+        ...Array.from(filteredItemsByClan.values()).map((items) => items.length)
+      );
+
+      if (roundsAvailable === 0) {
+        setIsGameOver(true);
+        return;
+      }
+
+      const preparedItemsByClan = new Map<string, Item[]>();
+      const totalsByColor = { red: 0, black: 0 };
+
+      filteredItemsByClan.forEach((items, clanId) => {
+        const selected = items.slice(0, roundsAvailable);
+        preparedItemsByClan.set(clanId, selected);
+        selected.forEach((item) => {
+          const key = getColorKey(item.color);
+          totalsByColor[key] += 1;
+        });
+      });
+
+      const totalForSession = roundsAvailable * preparedItemsByClan.size;
+      setSessionTotalItems(totalForSession);
+      setSessionTotalByColor(totalsByColor);
+      setMaxRounds(roundsAvailable);
+      setCompletedByColor({ red: 0, black: 0 });
+
       const initialInventory = new Map<string, Item[]>();
-      filteredItemsByClan.forEach((_, clanId) => {
+      preparedItemsByClan.forEach((_, clanId) => {
         initialInventory.set(clanId, []);
       });
 
       setClanInventories(initialInventory);
-      setRemainingItemsByClan(filteredItemsByClan);
-      loadNextBatch(filteredItemsByClan);
+      setRemainingItemsByClan(preparedItemsByClan);
+      setCurrentRound(0);
+      loadNextBatch(preparedItemsByClan, 1);
     }
-  }, [initialItems, remainingItemsByClan.size]);
+  }, [clans, initialItems, remainingItemsByClan.size]);
 
   const showFeedback = (
     msg: string,
@@ -420,12 +464,17 @@ export const useGameLogic = (
         ).some((arr) => arr.length > 0);
         if (hasRemainingItems) {
           clearClanDisplays();
+          const finishedRound = Math.min(currentRound, maxRounds);
+          const upcomingRound = Math.min(currentRound + 1, maxRounds);
           showFeedback(
-            "Rodada completa! Prepare-se para novos desafios.",
+            `Rodada ${finishedRound} concluída! Prepare-se para novos desafios.`,
             "roundComplete",
             2500
           );
-          setTimeout(() => loadNextBatch(remainingItemsByClan), 2500);
+          setTimeout(
+            () => loadNextBatch(remainingItemsByClan, upcomingRound),
+            2500
+          );
         } else {
           clearClanDisplays();
           triggerCelebration({
@@ -433,6 +482,7 @@ export const useGameLogic = (
             label: "Você reuniu todo o círculo sagrado!",
             accentColor: "#b39ddb",
           });
+          setCurrentRound(maxRounds);
           setTimeout(() => setIsGameOver(true), 500);
         }
       }
@@ -479,6 +529,8 @@ export const useGameLogic = (
 
   return {
     isGameOver,
+    currentRound,
+    maxRounds,
     enteringOfferings,
     menuItems,
     message,

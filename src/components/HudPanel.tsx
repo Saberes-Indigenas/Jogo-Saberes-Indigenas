@@ -24,6 +24,8 @@ interface HudPanelProps {
   blackCompleted: number;
   redTotal: number;
   blackTotal: number;
+  currentRound: number;
+  maxRounds: number;
   stageCenter: { x: number; y: number } | null;
   onClose: () => void;
 }
@@ -145,6 +147,8 @@ const ProgressIndicator = ({
   blackCompleted,
   redTotal,
   blackTotal,
+  currentRound,
+  maxRounds,
 }: {
   progress: number;
   completed: number;
@@ -153,6 +157,8 @@ const ProgressIndicator = ({
   blackCompleted: number;
   redTotal: number;
   blackTotal: number;
+  currentRound: number;
+  maxRounds: number;
 }) => {
   const getProgressLabel = (progressValue: number): string => {
     if (progressValue === 100) return "Círculo Completo";
@@ -161,6 +167,12 @@ const ProgressIndicator = ({
     if (progressValue >= 25) return "Tecendo as Relações";
     return "Iniciando o Círculo";
   };
+
+  const displayMaxRounds = Math.max(maxRounds, 1);
+  const displayCurrentRound = Math.min(
+    currentRound > 0 ? currentRound : 1,
+    displayMaxRounds
+  );
 
   return (
     <section
@@ -182,6 +194,9 @@ const ProgressIndicator = ({
         </strong>
         <span className="hud-module__hint">
           {completed} de {total} seres reunidos
+        </span>
+        <span className="hud-module__hint hud-module__hint--rounds">
+          Rodada atual: {displayCurrentRound} de {displayMaxRounds}
         </span>
         <div className="hud-module__breakdown" aria-hidden="true">
           <span className="hud-module__breakdown-item hud-module__breakdown-item--red">
@@ -208,6 +223,8 @@ const HudPanel = ({
   blackCompleted,
   redTotal,
   blackTotal,
+  currentRound,
+  maxRounds,
   stageCenter,
   onClose,
 }: HudPanelProps) => {
@@ -344,6 +361,8 @@ const HudPanel = ({
               blackCompleted={blackCompleted}
               redTotal={redTotal}
               blackTotal={blackTotal}
+              currentRound={currentRound}
+              maxRounds={maxRounds}
             />
           </motion.div>
           <motion.div className="hud-panel__module" variants={moduleVariants}>
