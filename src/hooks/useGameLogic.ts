@@ -78,6 +78,10 @@ export const useGameLogic = (
   const [maxStreak, setMaxStreak] = useState(0);
   const [featherCount, setFeatherCount] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
+  const [completedByColor, setCompletedByColor] = useState({
+    red: 0,
+    black: 0,
+  });
   const [spotlightItem, setSpotlightItem] = useState<Item | null>(null);
   const [celebration, setCelebration] = useState<RewardCelebration | null>(
     null
@@ -92,6 +96,25 @@ export const useGameLogic = (
   const pronunciationAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const totalItems = useMemo(() => initialItems.length, [initialItems]);
+  const totalItemsByColor = useMemo(
+    () =>
+      initialItems.reduce(
+        (acc, item) => {
+          const key = item.color?.toLowerCase() === "#b52323" ? "red" : "black";
+          acc[key] += 1;
+          return acc;
+        },
+        { red: 0, black: 0 }
+      ),
+    [initialItems]
+  );
+
+  useEffect(() => {
+    setCompletedByColor({ red: 0, black: 0 });
+  }, [initialItems]);
+
+  const getColorKey = (color: string | undefined): "red" | "black" =>
+    color?.toLowerCase() === "#b52323" ? "red" : "black";
 
   useEffect(() => {
     return () => {
@@ -344,6 +367,11 @@ export const useGameLogic = (
       setStreak(newStreak);
       setMaxStreak((prev) => Math.max(prev, newStreak));
       setCompletedCount((prev) => prev + 1);
+      const colorKey = getColorKey(item.color);
+      setCompletedByColor((prev) => ({
+        ...prev,
+        [colorKey]: Math.min(prev[colorKey] + 1, totalItemsByColor[colorKey]),
+      }));
 
       const successMessage = `Você conectou ${item.name_boe} ao clã ${targetClan.name}!`;
       showFeedback(successMessage, "success", 1800);
@@ -466,6 +494,8 @@ export const useGameLogic = (
     featherCount,
     completedCount,
     totalItems,
+    completedByColor,
+    totalItemsByColor,
     spotlightItem,
     celebration,
     clearFeedbackPulse: () => setFeedbackPulse(null),

@@ -6,9 +6,10 @@ import "../css/GameHud.css";
 import villageSvg from "../assets/hud/village.svg?raw";
 
 interface GameHudProps {
-  score: number;
-  total: number;
-  completed: number;
+  redCompleted: number;
+  blackCompleted: number;
+  redTotal: number;
+  blackTotal: number;
   stageCenter: { x: number; y: number } | null;
   isOpen: boolean; // Recebe o estado de visibilidade
   onToggle: () => void; // Recebe a função para alternar a visibilidade
@@ -33,8 +34,44 @@ const VillageIcon = () => (
   <InlineHudIcon svg={villageSvg} className="hud-icon--village" />
 );
 
-interface ProgressRingProps {
-  value: number;
+const clampPercentage = (value: number) => Math.min(100, Math.max(0, value));
+
+const polarToCartesian = (
+  centerX: number,
+  centerY: number,
+  radius: number,
+  angleInDegrees: number
+) => {
+  const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
+
+  return {
+    x: centerX + radius * Math.cos(angleInRadians),
+    y: centerY + radius * Math.sin(angleInRadians),
+  };
+};
+
+const describeArc = (
+  centerX: number,
+  centerY: number,
+  radius: number,
+  startAngle: number,
+  endAngle: number,
+  sweepFlag: 0 | 1
+) => {
+  const start = polarToCartesian(centerX, centerY, radius, startAngle);
+  const end = polarToCartesian(centerX, centerY, radius, endAngle);
+  const largeArcFlag = Math.abs(endAngle - startAngle) >= 180 ? 1 : 0;
+
+  if (Math.abs(endAngle - startAngle) < 0.001) {
+    return `M ${start.x} ${start.y}`;
+  }
+
+  return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${end.x} ${end.y}`;
+};
+
+interface DualProgressRingProps {
+  redPercent: number;
+  blackPercent: number;
   size?: number;
   strokeWidth?: number;
   trackWidth?: number;
@@ -42,14 +79,15 @@ interface ProgressRingProps {
   children?: ReactNode;
 }
 
-const ProgressRing = ({
-  value,
+const DualProgressRing = ({
+  redPercent,
+  blackPercent,
   size = 128,
   strokeWidth = 10,
   trackWidth = strokeWidth + 2,
   className = "",
   children,
-}: ProgressRingProps) => {
+}: DualProgressRingProps) => {
   const radius = useMemo(() => {
     const maxStroke = Math.max(strokeWidth, trackWidth);
     return Math.max(12, (size - maxStroke) / 2);
@@ -60,11 +98,31 @@ const ProgressRing = ({
     return Math.max(8, radius - reduction);
   }, [radius, trackWidth]);
 
-  const circumference = 2 * Math.PI * radius;
-  const clampedValue = Math.max(0, Math.min(100, value));
-  const dashOffset = useMemo(
-    () => circumference - (clampedValue / 100) * circumference,
-    [circumference, clampedValue]
+  const cx = size / 2;
+  const cy = size / 2;
+  const startAngle = 180;
+
+  const safeRed = clampPercentage(redPercent) / 100;
+  const safeBlack = clampPercentage(blackPercent) / 100;
+
+  const redAngle = useMemo(
+    () => Math.max(0, startAngle - safeRed * 180),
+    [safeRed]
+  );
+
+  const blackAngle = useMemo(
+    () => Math.min(360, startAngle + safeBlack * 180),
+    [safeBlack]
+  );
+
+  const redPath = useMemo(
+    () => describeArc(cx, cy, radius, startAngle, redAngle, 0),
+    [cx, cy, radius, redAngle]
+  );
+
+  const blackPath = useMemo(
+    () => describeArc(cx, cy, radius, startAngle, blackAngle, 1),
+    [cx, cy, radius, blackAngle]
   );
 
   return (
@@ -103,40 +161,37 @@ const ProgressRing = ({
             />
             <feBlend in="SourceGraphic" in2="textured" mode="multiply" />
           </filter>
-          <linearGradient
-            id="hud-progress-gradient"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor="rgba(181, 35, 35, 0.95)" />
-            <stop offset="65%" stopColor="rgba(15, 15, 15, 0.9)" />
-          </linearGradient>
         </defs>
         <circle
           className="hud-progress-ring__track"
-          cx={size / 2}
-          cy={size / 2}
+          cx={cx}
+          cy={cy}
           r={radius}
           strokeWidth={trackWidth}
           filter="url(#hud-earth-texture)"
         />
-        <motion.circle
-          className="hud-progress-ring__value"
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
+        <motion.path
+          className="hud-progress-ring__value hud-progress-ring__value--black"
           strokeWidth={strokeWidth}
-          strokeDasharray={circumference}
-          strokeDashoffset={circumference}
-          animate={{ strokeDashoffset: dashOffset }}
-          transition={{ type: "spring", stiffness: 180, damping: 24 }}
+          d={blackPath}
+          fill="none"
+          strokeLinecap="round"
+          animate={{ d: blackPath }}
+          transition={{ type: "spring", stiffness: 200, damping: 26 }}
+        />
+        <motion.path
+          className="hud-progress-ring__value hud-progress-ring__value--red"
+          strokeWidth={strokeWidth}
+          d={redPath}
+          fill="none"
+          strokeLinecap="round"
+          animate={{ d: redPath }}
+          transition={{ type: "spring", stiffness: 200, damping: 26 }}
         />
         <circle
           className="hud-progress-ring__center"
-          cx={size / 2}
-          cy={size / 2}
+          cx={cx}
+          cy={cy}
           r={centerRadius}
           filter="url(#hud-earth-texture)"
         />
@@ -147,15 +202,23 @@ const ProgressRing = ({
 };
 
 const GameHud = ({
-  score,
-  total,
-  completed,
+  redCompleted,
+  blackCompleted,
+  redTotal,
+  blackTotal,
   stageCenter,
   isOpen,
   onToggle,
 }: GameHudProps) => {
-  const progress =
-    total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
+  const redPercent = useMemo(
+    () => (redTotal > 0 ? (redCompleted / redTotal) * 100 : 0),
+    [redCompleted, redTotal]
+  );
+
+  const blackPercent = useMemo(
+    () => (blackTotal > 0 ? (blackCompleted / blackTotal) * 100 : 0),
+    [blackCompleted, blackTotal]
+  );
 
   // A lógica de posicionamento do totem permanece a mesma.
   const hudStyle = useMemo(() => {
@@ -183,12 +246,15 @@ const GameHud = ({
         aria-expanded={isOpen}
         aria-controls="hud-panel"
         aria-label={
-          isOpen ? "Fechar painel da jornada" : "Abrir painel da jornada"
+          isOpen
+            ? "Fechar painel da jornada"
+            : "Abrir painel da jornada"
         }
       >
         <span className="hud-totem-button__pulse" aria-hidden="true" />
-        <ProgressRing
-          value={progress}
+        <DualProgressRing
+          redPercent={redPercent}
+          blackPercent={blackPercent}
           size={180}
           strokeWidth={12}
           trackWidth={16}
@@ -197,11 +263,7 @@ const GameHud = ({
           <span className="hud-totem-button__icon" aria-hidden="true">
             <VillageIcon />
           </span>
-        </ProgressRing>
-        <span className="hud-totem-button__label">Jornada Boe</span>
-        <span className="hud-totem-button__score">
-          {score.toLocaleString("pt-BR")}
-        </span>
+        </DualProgressRing>
       </motion.button>
     </div>
   );

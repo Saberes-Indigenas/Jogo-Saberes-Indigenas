@@ -125,10 +125,16 @@
 
 .hud-progress-ring__value {
   fill: none;
-  stroke: url(#hud-progress-gradient);
-  transform-origin: center;
-  transform: rotate(-90deg);
   stroke-linecap: round;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+}
+
+.hud-progress-ring__value--red {
+  stroke: rgba(181, 35, 35, 0.95);
+}
+
+.hud-progress-ring__value--black {
+  stroke: rgba(24, 18, 16, 0.92);
 }
 
 .hud-progress-ring__center {
@@ -151,7 +157,7 @@
 
 .hud-panel {
   position: absolute;
-  width: min(92vw, 920px);
+  width: min(88vw, 880px);
   background: linear-gradient(
       150deg,
       rgba(255, 242, 214, 0.96) 0%,
@@ -161,7 +167,7 @@
     rgba(240, 225, 188, 0.9);
   border-radius: clamp(26px, 4vw, 38px);
   border: 3px solid rgba(40, 21, 8, 0.4);
-  padding: clamp(1.6rem, 2.2vw, 2.2rem);
+  padding: clamp(1.8rem, 2.6vw, 2.6rem);
   box-shadow: 0 28px 0 rgba(40, 18, 6, 0.35),
     0 32px 60px rgba(0, 0, 0, 0.4);
   overflow: hidden;
@@ -295,7 +301,19 @@
 .hud-panel__body {
   position: relative;
   display: grid;
-  gap: clamp(1.1rem, 2vw, 1.5rem);
+  gap: clamp(1.2rem, 2.4vw, 1.8rem);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  align-items: stretch;
+}
+
+.hud-panel__module--wide {
+  grid-column: span 2;
+}
+
+@media (max-width: 720px) {
+  .hud-panel__module--wide {
+    grid-column: span 1;
+  }
 }
 
 .hud-panel__summary {
@@ -306,6 +324,7 @@
 
 .hud-panel__module {
   display: flex;
+  width: 100%;
 }
 
 .hud-module {
@@ -320,6 +339,30 @@
   padding: clamp(0.9rem, 1.2vw, 1.2rem);
   align-items: center;
   overflow: hidden;
+  height: 100%;
+}
+
+.hud-module__breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  margin-top: 0.4rem;
+  font-size: clamp(0.65rem, 0.85vw, 0.8rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(40, 21, 8, 0.58);
+}
+
+.hud-module__breakdown-item {
+  font-weight: 800;
+}
+
+.hud-module__breakdown-item--red {
+  color: rgba(181, 35, 35, 0.82);
+}
+
+.hud-module__breakdown-item--black {
+  color: rgba(33, 20, 9, 0.78);
 }
 
 .hud-module::after {

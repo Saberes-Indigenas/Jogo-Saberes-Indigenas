@@ -20,6 +20,10 @@ interface HudPanelProps {
   feathers: number;
   completed: number;
   total: number;
+  redCompleted: number;
+  blackCompleted: number;
+  redTotal: number;
+  blackTotal: number;
   stageCenter: { x: number; y: number } | null;
   onClose: () => void;
 }
@@ -137,10 +141,18 @@ const ProgressIndicator = ({
   progress,
   completed,
   total,
+  redCompleted,
+  blackCompleted,
+  redTotal,
+  blackTotal,
 }: {
   progress: number;
   completed: number;
   total: number;
+  redCompleted: number;
+  blackCompleted: number;
+  redTotal: number;
+  blackTotal: number;
 }) => {
   const getProgressLabel = (progressValue: number): string => {
     if (progressValue === 100) return "Círculo Completo";
@@ -171,6 +183,14 @@ const ProgressIndicator = ({
         <span className="hud-module__hint">
           {completed} de {total} seres reunidos
         </span>
+        <div className="hud-module__breakdown" aria-hidden="true">
+          <span className="hud-module__breakdown-item hud-module__breakdown-item--red">
+            Vermelho: {redCompleted}/{redTotal}
+          </span>
+          <span className="hud-module__breakdown-item hud-module__breakdown-item--black">
+            Preto: {blackCompleted}/{blackTotal}
+          </span>
+        </div>
       </div>
     </section>
   );
@@ -184,6 +204,10 @@ const HudPanel = ({
   feathers,
   completed,
   total,
+  redCompleted,
+  blackCompleted,
+  redTotal,
+  blackTotal,
   stageCenter,
   onClose,
 }: HudPanelProps) => {
@@ -308,26 +332,29 @@ const HudPanel = ({
           initial="hidden"
           animate="visible"
         >
-          <div className="hud-panel__summary">
-            <motion.div className="hud-panel__module" variants={moduleVariants}>
-              <ScoreIndicator score={score} />
-            </motion.div>
-            <motion.div className="hud-panel__module" variants={moduleVariants}>
-              <FeatherIndicator feathers={feathers} />
-            </motion.div>
-          </div>
-          <div className="hud-panel__summary">
-            <motion.div className="hud-panel__module" variants={moduleVariants}>
-              <StreakIndicator streak={streak} maxStreak={maxStreak} />
-            </motion.div>
-            <motion.div className="hud-panel__module" variants={moduleVariants}>
-              <ProgressIndicator
-                progress={progress}
-                completed={completed}
-                total={total}
-              />
-            </motion.div>
-          </div>
+          <motion.div
+            className="hud-panel__module hud-panel__module--wide"
+            variants={moduleVariants}
+          >
+            <ProgressIndicator
+              progress={progress}
+              completed={completed}
+              total={total}
+              redCompleted={redCompleted}
+              blackCompleted={blackCompleted}
+              redTotal={redTotal}
+              blackTotal={blackTotal}
+            />
+          </motion.div>
+          <motion.div className="hud-panel__module" variants={moduleVariants}>
+            <ScoreIndicator score={score} />
+          </motion.div>
+          <motion.div className="hud-panel__module" variants={moduleVariants}>
+            <FeatherIndicator feathers={feathers} />
+          </motion.div>
+          <motion.div className="hud-panel__module" variants={moduleVariants}>
+            <StreakIndicator streak={streak} maxStreak={maxStreak} />
+          </motion.div>
         </motion.div>
         <footer className="hud-panel__footer">
           <p>

@@ -99,6 +99,8 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     featherCount,
     completedCount,
     totalItems,
+    completedByColor,
+    totalItemsByColor,
     spotlightItem,
     celebration,
     clearFeedbackPulse,
@@ -216,9 +218,10 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             onReady={() => setForestReady(true)}
           />
           <GameHud
-            score={score}
-            completed={completedCount}
-            total={totalItems}
+            redCompleted={completedByColor.red}
+            blackCompleted={completedByColor.black}
+            redTotal={totalItemsByColor.red}
+            blackTotal={totalItemsByColor.black}
             isOpen={isHudPanelOpen}
             onToggle={() => setIsHudPanelOpen((prev) => !prev)} // Função para abrir/fechar
             stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
@@ -233,6 +236,10 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
                 feathers={featherCount}
                 completed={completedCount}
                 total={totalItems}
+                redCompleted={completedByColor.red}
+                blackCompleted={completedByColor.black}
+                redTotal={totalItemsByColor.red}
+                blackTotal={totalItemsByColor.black}
                 onClose={() => setIsHudPanelOpen(false)} // Função para fechar
                 stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
               />
