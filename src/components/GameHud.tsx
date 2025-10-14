@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import "../css/GameHud.css";
 
-import villageSvg from "../assets/hud/village.svg?raw";
+import villageSvg from "../assets/hud/bororo.svg?raw";
 
 interface GameHudProps {
   redCompleted: number;
@@ -140,15 +140,15 @@ const DualProgressRing = ({
           <filter id="hud-earth-texture">
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.04"
+              baseFrequency="0.035" /* Levemente ajustado para um grão mais orgânico */
               numOctaves="3"
               seed="10"
               result="noise"
             />
             <feDiffuseLighting
               in="noise"
-              lightingColor="#d7b47b"
-              surfaceScale="2"
+              lightingColor="#532804" /* A sua nova cor */
+              surfaceScale="3" /* Aumentado para dar mais profundidade */
               result="lighting"
             >
               <feDistantLight azimuth="235" elevation="60" />
@@ -159,7 +159,8 @@ const DualProgressRing = ({
               operator="in"
               result="textured"
             />
-            <feBlend in="SourceGraphic" in2="textured" mode="multiply" />
+            {/* O modo "overlay" funciona melhor com cores escuras, misturando a textura sem escurecer demais */}
+            <feBlend in="SourceGraphic" in2="textured" mode="overlay" />
           </filter>
         </defs>
         <circle
@@ -246,16 +247,14 @@ const GameHud = ({
         aria-expanded={isOpen}
         aria-controls="hud-panel"
         aria-label={
-          isOpen
-            ? "Fechar painel da jornada"
-            : "Abrir painel da jornada"
+          isOpen ? "Fechar painel da jornada" : "Abrir painel da jornada"
         }
       >
         <span className="hud-totem-button__pulse" aria-hidden="true" />
         <DualProgressRing
           redPercent={redPercent}
           blackPercent={blackPercent}
-          size={180}
+          size={215}
           strokeWidth={12}
           trackWidth={16}
           className="hud-progress-ring--totem"

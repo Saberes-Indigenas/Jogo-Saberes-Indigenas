@@ -199,17 +199,17 @@ body {
 }
 
 .game-loader__group .game-loader__ball--index-0 {
-  background-color: #99e2d0;
+  background-color: #b52323;
   animation: game-loader-ball-1 1000ms infinite;
 }
 
 .game-loader__group .game-loader__ball--index-1 {
-  background-color: #ff79da;
+  background-color: #36454F;
   animation: game-loader-ball-2 1000ms infinite;
 }
 
 .game-loader__group .game-loader__ball--index-2 {
-  background-color: #9356dc;
+  background-color: #f5ead3;
   animation: game-loader-ball-3 1000ms infinite;
 }
 
