@@ -17,6 +17,8 @@ import ReturningItemOverlay from "./ReturningItemOverlay";
 import LoadingScreen from "./LoadingScreen";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
+import { AnimatePresence } from "framer-motion";
+import HudPanel from "./HudPanel";
 
 interface GameStageProps {
   clans: Clan[];
@@ -113,6 +115,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
 
   const [isStageReady, setStageReady] = useState(false);
   const [isForestReady, setForestReady] = useState(false);
+  const [isHudPanelOpen, setIsHudPanelOpen] = useState(false);
   const isGameReady = isStageReady && isForestReady;
 
   const [activeBubble, setActiveBubble] = useState<{
@@ -214,13 +217,27 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           />
           <GameHud
             score={score}
-            streak={streak}
-            maxStreak={maxStreak}
-            feathers={featherCount}
             completed={completedCount}
             total={totalItems}
+            isOpen={isHudPanelOpen}
+            onToggle={() => setIsHudPanelOpen((prev) => !prev)} // Função para abrir/fechar
             stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
           />
+          <AnimatePresence>
+            {isHudPanelOpen && (
+              <HudPanel
+                key="hud-panel" // Chave é importante para AnimatePresence
+                score={score}
+                streak={streak}
+                maxStreak={maxStreak}
+                feathers={featherCount}
+                completed={completedCount}
+                total={totalItems}
+                onClose={() => setIsHudPanelOpen(false)} // Função para fechar
+                stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
+              />
+            )}
+          </AnimatePresence>
 
           {isGameReady && (
             <ItemTray

@@ -1,21 +1,17 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import "../css/GameHud.css";
 
-import basketSvg from "../assets/hud/basket.svg?raw";
-import featherSvg from "../assets/hud/feather.svg?raw";
-import streakSvg from "../assets/hud/streak.svg?raw";
 import villageSvg from "../assets/hud/village.svg?raw";
-import TexturaDeEsteira from "./TexturaDeEsteira";
+
 interface GameHudProps {
   score: number;
-  streak: number;
-  maxStreak: number;
-  feathers: number;
-  completed: number;
   total: number;
+  completed: number;
   stageCenter: { x: number; y: number } | null;
+  isOpen: boolean; // Recebe o estado de visibilidade
+  onToggle: () => void; // Recebe a função para alternar a visibilidade
 }
 
 const InlineHudIcon = ({
@@ -33,28 +29,8 @@ const InlineHudIcon = ({
   />
 );
 
-const BasketIcon = () => <InlineHudIcon svg={basketSvg} className="hud-icon--basket" />;
-
-const FeatherIcon = () => (
-  <InlineHudIcon svg={featherSvg} className="hud-icon--feather" />
-);
-
-const StreakIcon = () => <InlineHudIcon svg={streakSvg} className="hud-icon--streak" />;
-
 const VillageIcon = () => (
   <InlineHudIcon svg={villageSvg} className="hud-icon--village" />
-);
-
-const PaintMark = ({ isActive }: { isActive: boolean }) => (
-  <svg
-    width="12"
-    height="12"
-    viewBox="0 0 12 12"
-    role="presentation"
-    className={`hud-streak__mark-svg ${isActive ? "is-active" : ""}`}
-  >
-    <path d="M2 6L6 10 10 6 6 2Z" />
-  </svg>
 );
 
 interface ProgressRingProps {
@@ -119,7 +95,12 @@ const ProgressRing = ({
             >
               <feDistantLight azimuth="235" elevation="60" />
             </feDiffuseLighting>
-            <feComposite in="lighting" in2="SourceGraphic" operator="in" result="textured" />
+            <feComposite
+              in="lighting"
+              in2="SourceGraphic"
+              operator="in"
+              result="textured"
+            />
             <feBlend in="SourceGraphic" in2="textured" mode="multiply" />
           </filter>
           <linearGradient
@@ -160,178 +141,36 @@ const ProgressRing = ({
           filter="url(#hud-earth-texture)"
         />
       </svg>
-      <div className="hud-progress-ring__totem">
-        {children}
-      </div>
+      <div className="hud-progress-ring__totem">{children}</div>
     </div>
   );
 };
-
-const ScoreIndicator = ({ score }: { score: number }) => (
-  <article
-    className="hud-module hud-module--score"
-    aria-label="Pontuação acumulada"
-  >
-    <TexturaDeEsteira />
-    <div className="hud-module__icon">
-      <BasketIcon />
-    </div>
-    <div className="hud-module__content">
-      <span className="hud-module__label">Pontos</span>
-      <strong className="hud-module__value">
-        {score.toLocaleString("pt-BR")}
-      </strong>
-      <span className="hud-module__hint">Cesto de honrarias</span>
-    </div>
-  </article>
-);
-
-const FeatherIndicator = ({ feathers }: { feathers: number }) => (
-  <article
-    className="hud-module hud-module--feathers"
-    aria-label="Plumas conquistadas"
-  >
-    <TexturaDeEsteira />
-    <div className="hud-module__icon">
-      <FeatherIcon />
-    </div>
-    <div className="hud-module__content">
-      <span className="hud-module__label">Plumas</span>
-      <strong className="hud-module__value">{feathers}</strong>
-      <span className="hud-module__hint">Celebrações compartilhadas</span>
-    </div>
-  </article>
-);
-
-const StreakIndicator = ({
-  streak,
-  maxStreak,
-}: {
-  streak: number;
-  maxStreak: number;
-}) => {
-  const marks = 6;
-  const activeMarks = Math.max(0, Math.min(marks, streak));
-
-  return (
-    <article
-      className="hud-module hud-module--streak"
-      aria-label="Sequência de acertos"
-    >
-      <TexturaDeEsteira />
-      <div className="hud-module__icon">
-        <StreakIcon />
-      </div>
-      <div className="hud-module__content">
-        <span className="hud-module__label">Sequência</span>
-        <strong className="hud-module__value">{streak}</strong>
-        <span className="hud-module__hint">máx. {maxStreak}</span>
-        <div className="hud-streak__marks" aria-hidden="true">
-          {Array.from({ length: marks }).map((_, index) => (
-            <PaintMark key={index} isActive={index < activeMarks} />
-          ))}
-        </div>
-      </div>
-    </article>
-  );
-};
-
-const ProgressIndicator = ({
-  progress,
-  completed,
-  total,
-}: {
-  progress: number;
-  completed: number;
-  total: number;
-}) => (
-  <section
-    className="hud-module hud-module--progress"
-    role="group"
-    aria-label="Progresso da aldeia"
-  >
-    <TexturaDeEsteira />
-    <div className="hud-module__icon" aria-hidden="true">
-      <ProgressRing
-        value={progress}
-        size={108}
-        strokeWidth={8}
-        trackWidth={11}
-      >
-        <VillageIcon />
-      </ProgressRing>
-    </div>
-    <div className="hud-module__content">
-      <span className="hud-module__label">Aldeia</span>
-      <strong className="hud-module__value">{progress}%</strong>
-      <span className="hud-module__hint">
-        {completed}/{total} encontros
-      </span>
-    </div>
-  </section>
-);
 
 const GameHud = ({
   score,
-  streak,
-  maxStreak,
-  feathers,
-  completed,
   total,
+  completed,
   stageCenter,
+  isOpen,
+  onToggle,
 }: GameHudProps) => {
-  const [isOpen, setIsOpen] = useState(false);
   const progress =
     total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
 
+  // A lógica de posicionamento do totem permanece a mesma.
   const hudStyle = useMemo(() => {
     if (!stageCenter) {
-      return { left: "50%", top: "50%" };
+      return { left: "50%", top: "50%", opacity: 0 };
     }
-    return { left: `${stageCenter.x}px`, top: `${stageCenter.y}px` };
+    return {
+      left: `${stageCenter.x}px`,
+      top: `${stageCenter.y}px`,
+      opacity: 1,
+    };
   }, [stageCenter]);
 
-  const panelVariants = {
-    hidden: { opacity: 0, scale: 0.9, y: 28 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 0.42,
-        ease: [0.17, 0.67, 0.32, 0.97],
-      },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.95,
-      y: 18,
-      transition: { duration: 0.28, ease: [0.19, 0.57, 0.3, 0.98] },
-    },
-  } as const;
-
-  const modulesWrapperVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        delayChildren: 0.12,
-        staggerChildren: 0.08,
-      },
-    },
-  } as const;
-
-  const moduleVariants = {
-    hidden: { opacity: 0, y: 24, scale: 0.94 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { type: "spring", stiffness: 220, damping: 22 },
-    },
-  } as const;
-
   return (
+    // A âncora agora contém APENAS o botão.
     <div
       className={`hud-stage-anchor ${isOpen ? "hud-stage-anchor--open" : ""}`}
       style={hudStyle}
@@ -340,7 +179,7 @@ const GameHud = ({
       <motion.button
         type="button"
         className={`hud-totem-button ${isOpen ? "is-open" : ""}`}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={onToggle} // Chama a função do componente pai
         aria-expanded={isOpen}
         aria-controls="hud-panel"
         aria-label={
@@ -364,108 +203,6 @@ const GameHud = ({
           {score.toLocaleString("pt-BR")}
         </span>
       </motion.button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            <motion.button
-              type="button"
-              className="hud-panel__backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.28, ease: "easeOut" }}
-              aria-label="Fechar painel da jornada"
-              tabIndex={-1}
-              onClick={() => setIsOpen(false)}
-            />
-            <motion.section
-              id="hud-panel"
-              key="hud-panel"
-              className="hud-panel"
-              variants={panelVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="hud-panel-title"
-            >
-              <TexturaDeEsteira className="hud-panel__texture" tone="clay" />
-              <header className="hud-panel__header">
-                <div className="hud-panel__crest" aria-hidden="true">
-                  <VillageIcon />
-                </div>
-                <div className="hud-panel__legend">
-                  <h2 id="hud-panel-title" className="hud-panel__title">
-                    Ritual da Aldeia
-                  </h2>
-                  <p className="hud-panel__subtitle">
-                    Celebre cada encontro correto e fortaleça os laços do povo Boe.
-                  </p>
-                </div>
-                <motion.button
-                  type="button"
-                className="hud-panel__close"
-                onClick={() => setIsOpen(false)}
-                whileHover={{ scale: 1.08, rotate: 3 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Fechar painel da jornada"
-              >
-                ✕
-              </motion.button>
-              </header>
-
-              <motion.div
-                className="hud-panel__body"
-                variants={modulesWrapperVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                <div className="hud-panel__summary">
-                  <motion.div
-                    className="hud-panel__module"
-                    variants={moduleVariants}
-                  >
-                    <ScoreIndicator score={score} />
-                  </motion.div>
-                  <motion.div
-                    className="hud-panel__module"
-                    variants={moduleVariants}
-                  >
-                    <FeatherIndicator feathers={feathers} />
-                  </motion.div>
-                </div>
-                <div className="hud-panel__summary">
-                  <motion.div
-                    className="hud-panel__module"
-                    variants={moduleVariants}
-                  >
-                    <StreakIndicator streak={streak} maxStreak={maxStreak} />
-                  </motion.div>
-                  <motion.div
-                    className="hud-panel__module"
-                    variants={moduleVariants}
-                  >
-                    <ProgressIndicator
-                      progress={progress}
-                      completed={completed}
-                      total={total}
-                    />
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              <footer className="hud-panel__footer">
-                <p>
-                  Repita o nome em Bororo a cada acerto e compartilhe uma história
-                  com a aldeia para ganhar novas plumas.
-                </p>
-              </footer>
-            </motion.section>
-          </>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
