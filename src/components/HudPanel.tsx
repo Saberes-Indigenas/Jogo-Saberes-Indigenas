@@ -1,6 +1,6 @@
 import { useMemo, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import "../css/GameHud.css";
+import "../css/HudPanel.css";
 import {
   DEFAULT_MAX_ROUNDS,
   FEATHERS_PER_ROUND,
@@ -230,6 +230,7 @@ const ProgressIndicator = ({
   blackTotal,
   currentRound,
   maxRounds,
+  circleSize = 196,
 }: {
   progress: number;
   completed: number;
@@ -240,6 +241,7 @@ const ProgressIndicator = ({
   blackTotal: number;
   currentRound: number;
   maxRounds: number;
+  circleSize?: number;
 }) => {
   const getProgressLabel = (progressValue: number): string => {
     if (progressValue === 100) return "Círculo Completo";
@@ -265,24 +267,24 @@ const ProgressIndicator = ({
       <motion.div
         className="hud-module__icon hud-module__icon--village"
         aria-hidden="true"
-        initial={{ y: 28, scale: 0.85 }}
-        animate={{ y: 0, scale: 1 }}
+        initial={{ scale: 0.85 }}
+        animate={{ scale: 1 }}
         transition={{
           type: "spring",
-          stiffness: 260,
-          damping: 16,
+          stiffness: 240,
+          damping: 18,
           delay: 0.08,
         }}
       >
-        <ProgressCircle progress={progress} size={88}>
+        <ProgressCircle progress={progress} size={circleSize}>
           <motion.span
             className="hud-progress-circle__crest"
-            initial={{ y: 16, scale: 0.85 }}
-            animate={{ y: 0, scale: 1.05 }}
+            initial={{ scale: 0.85, rotate: -6 }}
+            animate={{ scale: 1, rotate: 0 }}
             transition={{
               type: "spring",
               stiffness: 260,
-              damping: 14,
+              damping: 18,
               delay: 0.18,
             }}
           >
@@ -426,6 +428,20 @@ const HudPanel = ({
       >
         <TexturaDeEsteira className="hud-panel__texture" tone="clay" />
         <header className="hud-panel__header">
+          <div className="hud-panel__header-left">
+            <span className="hud-panel__crest" aria-hidden="true">
+              <VillageIcon />
+            </span>
+            <div className="hud-panel__legend">
+              <span className="hud-panel__eyebrow">Jornada Boé</span>
+              <h2 className="hud-panel__title" id="hud-panel-title">
+                Painel da Aldeia
+              </h2>
+              <p className="hud-panel__subtitle">
+                Harmonia entre sementes, plumas e conquistas
+              </p>
+            </div>
+          </div>
           <motion.button
             type="button"
             className="hud-panel__close"
@@ -444,7 +460,13 @@ const HudPanel = ({
           animate="visible"
         >
           <motion.div
-            className="hud-panel__module hud-panel__module--wide"
+            className="hud-panel__module hud-panel__module--score"
+            variants={moduleVariants}
+          >
+            <ScoreIndicator score={score} />
+          </motion.div>
+          <motion.div
+            className="hud-panel__module hud-panel__module--progress"
             variants={moduleVariants}
           >
             <ProgressIndicator
@@ -457,18 +479,19 @@ const HudPanel = ({
               blackTotal={blackTotal}
               currentRound={currentRound}
               maxRounds={maxRounds}
+              circleSize={196}
             />
           </motion.div>
-          <motion.div className="hud-panel__module" variants={moduleVariants}>
-            <ScoreIndicator score={score} />
-          </motion.div>
           <motion.div
-            className="hud-panel__module hud-panel__module--wide hud-panel__module--feather"
+            className="hud-panel__module hud-panel__module--feather"
             variants={moduleVariants}
           >
             <FeatherRack feathers={feathers} maxRounds={effectiveMaxRounds} />
           </motion.div>
-          <motion.div className="hud-panel__module" variants={moduleVariants}>
+          <motion.div
+            className="hud-panel__module hud-panel__module--streak"
+            variants={moduleVariants}
+          >
             <StreakIndicator streak={streak} maxStreak={maxStreak} />
           </motion.div>
         </motion.div>
