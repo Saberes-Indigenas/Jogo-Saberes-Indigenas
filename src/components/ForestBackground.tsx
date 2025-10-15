@@ -3,19 +3,20 @@
 import React, { useMemo, memo, useRef, useEffect } from "react";
 import { useImageLoader } from "../hooks/useImageLoader";
 
-// Importações das imagens (sem alterações)
-import tree1Url from "../assets/tree1.svg";
-import tree2Url from "../assets/tree2.svg";
-import tree3Url from "../assets/tree3.svg";
-import tree4Url from "../assets/tree4.svg";
-import bushUrl from "../assets/bush.svg";
-import rockUrl from "../assets/rock.svg";
-import pieceForestUrl1 from "../assets/pieceForest1.svg";
-import pieceForestUrl2 from "../assets/pieceForest2.svg";
-import pieceForestUrl3 from "../assets/pieceForest3.svg";
-import pieceForestUrl4 from "../assets/pieceForest4.svg";
-import floorParticlesUrl from "../assets/floorparticles.svg";
-import floorParticle2Url from "../assets/floorparticle2.svg";
+// --- Importações das imagens (ATUALIZADAS PARA WEBP) ---
+// Note que todas as importações agora apontam para a pasta /webp e usam a extensão .webp
+import tree1Url from "../assets/webp/tree1.webp";
+import tree2Url from "../assets/webp/tree2.webp";
+import tree3Url from "../assets/webp/tree3.webp";
+import tree4Url from "../assets/webp/tree4.webp";
+import bushUrl from "../assets/webp/bush.webp";
+import rockUrl from "../assets/webp/rock.webp";
+import pieceForestUrl1 from "../assets/webp/pieceForest1.webp";
+import pieceForestUrl2 from "../assets/webp/pieceForest2.webp";
+import pieceForestUrl3 from "../assets/webp/pieceForest3.webp";
+import pieceForestUrl4 from "../assets/webp/pieceForest4.webp";
+import floorParticlesUrl from "../assets/webp/floorparticles.webp";
+import floorParticle2Url from "../assets/webp/floorparticle2.webp";
 
 // --- Constantes e Tipos (sem alterações) ---
 const pieceForestUrls = [
@@ -41,580 +42,36 @@ interface StaticAsset {
   zIndex?: number;
 }
 
-const FOREST_LAYOUT: StaticAsset[] = [
-  {
-    id: 901,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 0, // Direita
-    distance: 1.2,
-    size: 0.9,
-    rotation: 0,
-    zIndex: -50,
-  },
-  {
-    id: 902,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 45, // Diagonal superior-direita
-    distance: 1.2,
-    size: 0.9,
-    rotation: 45,
-    zIndex: -50,
-  },
-  {
-    id: 903,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 90, // Topo
-    distance: 1.2,
-    size: 0.9,
-    rotation: 90,
-    zIndex: -50,
-  },
-  {
-    id: 904,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 135, // Diagonal superior-esquerda
-    distance: 1.2,
-    size: 0.9,
-    rotation: 135,
-    zIndex: -50,
-  },
-  {
-    id: 905,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 180, // Esquerda
-    distance: 1.2,
-    size: 0.9,
-    rotation: 180,
-    zIndex: -50,
-  },
-  {
-    id: 906,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 225, // Diagonal inferior-esquerda
-    distance: 1.2,
-    size: 0.9,
-    rotation: 225,
-    zIndex: -50,
-  },
-  {
-    id: 907,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 270, // Fundo
-    distance: 1.2,
-    size: 0.9,
-    rotation: 270,
-    zIndex: -50,
-  },
-  {
-    id: 908,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 315, // Diagonal inferior-direita
-    distance: 1.2,
-    size: 0.9,
-    rotation: 315,
-    zIndex: -50,
-  }, // ========================================================
-  //     INÍCIO DA SEÇÃO DE PARTÍCULAS DE CHÃO (EXPANDIDA)
-  // ========================================================
-  // --- Anel Interno (Mais denso) ---
-  {
-    id: 901,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 0,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 0,
-    zIndex: -50,
-  },
-  {
-    id: 902,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 15,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 15,
-    zIndex: -50,
-  },
-  {
-    id: 903,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 30,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 30,
-    zIndex: -50,
-  },
-  {
-    id: 904,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 45,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 45,
-    zIndex: -50,
-  },
-  {
-    id: 905,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 60,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 60,
-    zIndex: -50,
-  },
-  {
-    id: 906,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 75,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 75,
-    zIndex: -50,
-  },
-  {
-    id: 907,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 90,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 90,
-    zIndex: -50,
-  },
-  {
-    id: 908,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 105,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 105,
-    zIndex: -50,
-  },
-  {
-    id: 909,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 120,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 120,
-    zIndex: -50,
-  },
-  {
-    id: 910,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 135,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 135,
-    zIndex: -50,
-  },
-  {
-    id: 911,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 150,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 150,
-    zIndex: -50,
-  },
-  {
-    id: 912,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 165,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 165,
-    zIndex: -50,
-  },
-  {
-    id: 913,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 180,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 180,
-    zIndex: -50,
-  },
-  {
-    id: 914,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 195,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 195,
-    zIndex: -50,
-  },
-  {
-    id: 915,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 210,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 210,
-    zIndex: -50,
-  },
-  {
-    id: 916,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 225,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 225,
-    zIndex: -50,
-  },
-  {
-    id: 917,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 240,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 240,
-    zIndex: -50,
-  },
-  {
-    id: 918,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 255,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 255,
-    zIndex: -50,
-  },
-  {
-    id: 919,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 270,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 270,
-    zIndex: -50,
-  },
-  {
-    id: 920,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 285,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 285,
-    zIndex: -50,
-  },
-  {
-    id: 921,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 300,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 300,
-    zIndex: -50,
-  },
-  {
-    id: 922,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 315,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 315,
-    zIndex: -50,
-  },
-  {
-    id: 923,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 330,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 330,
-    zIndex: -50,
-  },
-  {
-    id: 924,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 345,
-    distance: 1.2,
-    size: 0.9,
-    rotation: 345,
-    zIndex: -50,
-  },
+// O restante do arquivo permanece exatamente o mesmo, pois a lógica não depende do formato da imagem.
 
-  // --- Anel Externo (Para profundidade) ---
-  {
-    id: 951,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 7.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 7.5,
-    zIndex: -51,
-  },
-  {
-    id: 952,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 22.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 22.5,
-    zIndex: -51,
-  },
-  {
-    id: 953,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 37.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 37.5,
-    zIndex: -51,
-  },
-  {
-    id: 954,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 52.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 52.5,
-    zIndex: -51,
-  },
-  {
-    id: 955,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 67.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 67.5,
-    zIndex: -51,
-  },
-  {
-    id: 956,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 82.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 82.5,
-    zIndex: -51,
-  },
-  {
-    id: 957,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 97.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 97.5,
-    zIndex: -51,
-  },
-  {
-    id: 958,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 112.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 112.5,
-    zIndex: -51,
-  },
-  {
-    id: 959,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 127.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 127.5,
-    zIndex: -51,
-  },
-  {
-    id: 960,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 142.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 142.5,
-    zIndex: -51,
-  },
-  {
-    id: 961,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 157.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 157.5,
-    zIndex: -51,
-  },
-  {
-    id: 962,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 172.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 172.5,
-    zIndex: -51,
-  },
-  {
-    id: 963,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 187.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 187.5,
-    zIndex: -51,
-  },
-  {
-    id: 964,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 202.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 202.5,
-    zIndex: -51,
-  },
-  {
-    id: 965,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 217.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 217.5,
-    zIndex: -51,
-  },
-  {
-    id: 966,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 232.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 232.5,
-    zIndex: -51,
-  },
-  {
-    id: 967,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 247.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 247.5,
-    zIndex: -51,
-  },
-  {
-    id: 968,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 262.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 262.5,
-    zIndex: -51,
-  },
-  {
-    id: 969,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 277.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 277.5,
-    zIndex: -51,
-  },
-  {
-    id: 970,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 292.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 292.5,
-    zIndex: -51,
-  },
-  {
-    id: 971,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 307.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 307.5,
-    zIndex: -51,
-  },
-  {
-    id: 972,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 322.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 322.5,
-    zIndex: -51,
-  },
-  {
-    id: 973,
-    type: "GROUND_PARTICLE",
-    variant: 1,
-    angle: 337.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 337.5,
-    zIndex: -51,
-  },
-  {
-    id: 974,
-    type: "GROUND_PARTICLE",
-    variant: 0,
-    angle: 352.5,
-    distance: 1.28,
-    size: 0.85,
-    rotation: 352.5,
-    zIndex: -51,
-  },
-  // ========================================================
-  //     FIM DA SEÇÃO DE PARTÍCULAS DE CHÃO
-  // ========================================================
+const createGroundParticleRing = (
+  baseId: number,
+  options: {
+    step: number;
+    distance: number;
+    size: number;
+    zIndex: number;
+    angleOffset?: number;
+  }
+): StaticAsset[] => {
+  const { step, distance, size, zIndex, angleOffset = 0 } = options;
+  const count = Math.max(1, Math.round(360 / step));
+  return Array.from({ length: count }, (_, index) => {
+    const angle = angleOffset + index * step;
+    return {
+      id: baseId + index,
+      type: "GROUND_PARTICLE" as const,
+      variant: index % groundParticleUrls.length,
+      angle,
+      distance,
+      size,
+      rotation: angle,
+      zIndex,
+    };
+  });
+};
 
-  // ... (a sua lista de assets permanece exatamente a mesma)
-  // ========================================================
-  // CAMADA DE FUNDO (SEUS ITENS ORIGINAIS - INTOCADOS)
-  // ========================================================
+const STATIC_FOREST_ASSETS: StaticAsset[] = [
   {
     id: 1,
     type: "PIECE_FOREST",
@@ -881,6 +338,23 @@ const FOREST_LAYOUT: StaticAsset[] = [
   },
 ];
 
+const FOREST_LAYOUT: StaticAsset[] = [
+  ...createGroundParticleRing(1000, {
+    step: 15,
+    distance: 1.2,
+    size: 0.9,
+    zIndex: -50,
+  }),
+  ...createGroundParticleRing(1100, {
+    step: 15,
+    distance: 1.28,
+    size: 0.85,
+    zIndex: -51,
+    angleOffset: 7.5,
+  }),
+  ...STATIC_FOREST_ASSETS,
+];
+
 interface RenderableAsset {
   id: number;
   src: string;
@@ -892,7 +366,7 @@ interface RenderableAsset {
   zIndex?: number;
 }
 
-// ---- SUBCOMPONENTE OTIMIZADO PARA DESENHAR NO CANVAS ----
+// ---- SUBCOMPONENTE OTIMIZADO PARA DESENHAR NO CANVAS (sem alterações) ----
 const ForestCanvas = memo<{
   assets: RenderableAsset[];
   loadedImages: Map<string, HTMLImageElement>;
@@ -915,7 +389,7 @@ const ForestCanvas = memo<{
 
     sortedAssets.forEach((asset) => {
       const img = loadedImages.get(asset.src);
-      if (!img || img.naturalWidth === 0) return; // Garante que a imagem carregou e tem dimensões
+      if (!img || img.naturalWidth === 0) return;
 
       ctx.save();
       ctx.translate(asset.x, asset.y);
@@ -923,15 +397,10 @@ const ForestCanvas = memo<{
       ctx.scale(asset.isFlipped ? -1 : 1, 1);
       ctx.filter = "drop-shadow(2px 2px 4px rgba(0,0,0,0.4))";
 
-      // *** A CORREÇÃO ESTÁ AQUI ***
-      // 1. Calcula a proporção da imagem original (largura / altura)
       const aspectRatio = img.naturalWidth / img.naturalHeight;
-      // 2. Define a nova largura com base no 'size' do layout
       const drawWidth = asset.size;
-      // 3. Calcula a nova altura mantendo a proporção original
       const drawHeight = drawWidth / aspectRatio;
 
-      // 4. Desenha a imagem com as dimensões corrigidas, centralizando-a
       ctx.drawImage(
         img,
         -drawWidth / 2,
@@ -954,7 +423,7 @@ const ForestCanvas = memo<{
   );
 });
 
-// ------------------- COMPONENTE PRINCIPAL (ORQUESTRADOR) -------------------
+// --- COMPONENTE PRINCIPAL (ORQUESTRADOR) (sem alterações na lógica) ---
 const ForestBackground: React.FC<{
   stageCenter: { x: number; y: number };
   stageRadius: number;

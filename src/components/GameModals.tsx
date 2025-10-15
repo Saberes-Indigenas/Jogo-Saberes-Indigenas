@@ -122,8 +122,8 @@ const GameModals = ({
               🎉 Parabéns! 🎉
             </motion.h1>
             <motion.p>
-              Você concluiu as {maxRounds} rodadas do ritual Bororo! Compartilhe o que
-              aprendeu com sua aldeia.
+              Você concluiu as {maxRounds} rodadas do ritual Bororo! Compartilhe
+              o que aprendeu com sua aldeia.
             </motion.p>
             <motion.ul
               className="gameOverStats"

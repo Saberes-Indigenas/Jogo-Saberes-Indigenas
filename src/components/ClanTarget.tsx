@@ -12,7 +12,7 @@ interface ClanTargetProps {
   clanName: string;
   x: number;
   y: number;
-  stageRadius: number; // Referência para dimensionamento responsivo
+  stageRadius: number;
   centerX: number;
   hasOfferings: boolean;
   deliveryTrigger: number;
@@ -35,6 +35,7 @@ const ClanTarget = ({
   const groupRef = useRef<Konva.Group>(null);
   const imageRef = useRef<Konva.Image>(null);
   const glowRef = useRef<Konva.Circle>(null);
+  const textRef = useRef<Konva.Text>(null);
 
   const isRightSide = useMemo(() => x >= centerX, [x, centerX]);
   const selectedImageUrl = isRightSide ? ocaEsquerdaUrl : ocaDireitaUrl;
@@ -57,9 +58,7 @@ const ClanTarget = ({
       img.addEventListener("load", handleLoad);
     }
 
-    return () => {
-      img.removeEventListener("load", handleLoad);
-    };
+    return () => img.removeEventListener("load", handleLoad);
   }, [selectedImageUrl]);
 
   const targetRadius = stageRadius * 0.12;
@@ -71,46 +70,104 @@ const ClanTarget = ({
   const fontSize = targetRadius * 0.4;
 
   useEffect(() => {
-    if (!deliveryTrigger || !imageRef.current) return;
+    if (image && imageRef.current && textRef.current) {
+      imageRef.current.cache();
+      textRef.current.cache();
+    }
+    if (hasOfferings && glowRef.current) {
+      glowRef.current.cache();
+    }
+  }, [image, hasOfferings]);
 
-    const bounce = new Konva.Tween({
-      node: imageRef.current,
-      duration: 0.45,
-      scaleX: 1.06,
-      scaleY: 0.94,
-      rotation: isRightSide ? 4.5 : -4.5,
-      y: imageRef.current.y() - imageHeight * 0.08,
-      easing: Konva.Easings.EaseInOut,
-      yoyo: true,
-      repeat: 1,
+  // ==================================================================
+  // ===== INÍCIO DA NOVA LÓGICA DE ANIMAÇÃO DE PULO "CARTOON" =====
+  // ==================================================================
+  useEffect(() => {
+    if (!deliveryTrigger || !groupRef.current) return;
+
+    const groupNode = groupRef.current;
+    const jumpHeight = imageHeight * 0.25; // Quão alto o grupo vai pular
+    const tweens: Konva.Tween[] = []; // Array para guardar os tweens e destruí-los depois
+
+    // 1. Antecipação (achata antes de pular)
+    const tweenAnticipation = new Konva.Tween({
+      node: groupNode,
+      duration: 1,
+      scaleX: 2,
+      scaleY: 0.85,
+      easing: Konva.Easings.EaseOut,
     });
+    tweens.push(tweenAnticipation);
 
+    // 2. O Pulo (sobe e estica)
+    const tweenJump = new Konva.Tween({
+      node: groupNode,
+      duration: 0.8,
+      y: groupNode.y() - jumpHeight,
+      scaleX: 0.5,
+      scaleY: 1.1,
+      easing: Konva.Easings.EaseOut,
+    });
+    tweens.push(tweenJump);
+
+    // 3. A Queda (volta para a posição original)
+    const tweenFall = new Konva.Tween({
+      node: groupNode,
+      duration: 0.8,
+      y: groupNode.y(), // Volta para o Y original
+      scaleX: 1,
+      scaleY: 1,
+      easing: Konva.Easings.EaseIn,
+    });
+    tweens.push(tweenFall);
+
+    // 4. Impacto (achata com força ao aterrissar)
+    const tweenImpact = new Konva.Tween({
+      node: groupNode,
+      duration: 0.7,
+      scaleX: 1.2,
+      scaleY: 0.8,
+      easing: Konva.Easings.EaseOut,
+      yoyo: true, // yoyo aqui faz ele achatar e voltar ao normal rapidamente
+    });
+    tweens.push(tweenImpact);
+
+    // Encadeando as animações
+    tweenAnticipation.onFinish = () => tweenJump.play();
+    tweenJump.onFinish = () => tweenFall.play();
+    tweenFall.onFinish = () => tweenImpact.play();
+
+    // Inicia a primeira animação da cadeia
+    tweenAnticipation.play();
+
+    // Animação do brilho (pode continuar separada)
     const halo = glowRef.current
       ? new Konva.Tween({
           node: glowRef.current,
-          duration: 0.45,
-          scaleX: 1.15,
-          scaleY: 1.15,
+          duration: 0.4,
+          scaleX: 1.25,
+          scaleY: 1.25,
           opacity: 0.95,
           easing: Konva.Easings.EaseOut,
           yoyo: true,
-          repeat: 1,
         })
       : null;
-
-    bounce.play();
     halo?.play();
+    if (halo) tweens.push(halo);
 
+    // Função de limpeza: para todos os tweens se o componente desmontar
     return () => {
-      bounce.destroy();
-      halo?.destroy();
+      tweens.forEach((t) => t.destroy());
     };
-  }, [deliveryTrigger, imageHeight, isRightSide]);
+  }, [deliveryTrigger, imageHeight]); // Adicionamos imageHeight como dependência
+  // ================================================================
+  // ===== FIM DA NOVA LÓGICA DE ANIMAÇÃO =====
+  // ================================================================
 
   useEffect(() => {
-    if (!groupRef.current) return;
-    const stage = groupRef.current.getStage();
-    if (!stage) return;
+    const node = groupRef.current;
+    const stage = node?.getStage();
+    if (!node || !stage) return;
 
     const container = stage.container();
     const handleEnter = () => {
@@ -121,16 +178,12 @@ const ClanTarget = ({
       container.style.cursor = "default";
     };
 
-    const node = groupRef.current;
     node.on("mouseenter", handleEnter);
     node.on("mouseleave", handleLeave);
-
     return () => {
       node.off("mouseenter", handleEnter);
       node.off("mouseleave", handleLeave);
-      if (container) {
-        container.style.cursor = "default";
-      }
+      if (container) container.style.cursor = "default";
     };
   }, [hasOfferings]);
 
@@ -176,6 +229,7 @@ const ClanTarget = ({
         />
       )}
       <Text
+        ref={textRef}
         text={clanName}
         x={-targetRadius * 1}
         y={targetRadius * 1.15}
@@ -189,7 +243,6 @@ const ClanTarget = ({
         shadowBlur={5}
         shadowOpacity={0.85}
         stroke="rgba(0, 0, 0, 0.9)"
-        // A espessura do contorno. Ajuste este valor se achar muito grosso ou fino.
         strokeWidth={0.5}
       />
     </Group>

@@ -33,10 +33,10 @@ const DraggableItemCard = ({
         <span className="item-name-pt" title={item.name}>
           {item.name}
         </span>
-        <span className="item-name-clan" title={clanLabel}>
-          Clã: {clanLabel}
-        </span>
       </div>
+      <span className="item-name-clan" title={clanLabel}>
+        {clanLabel}
+      </span>
     </>
   );
 };

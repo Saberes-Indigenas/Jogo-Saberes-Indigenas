@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import type { Clan, Item, RewardCelebration } from "../types";
+import { DEFAULT_MAX_ROUNDS } from "../config/gameSession";
 // A importação do HEADER_HEIGHT não é mais necessária para o cálculo do drop
 // import { HEADER_HEIGHT } from "../config/layoutConstants";
 
@@ -33,8 +34,6 @@ type DraggedItemInfo = {
   item: Item;
   initialRect: DOMRect;
 } | null;
-
-const MAX_ROUNDS = 5;
 
 // --- FUNÇÕES UTILITÁRIAS (sem alterações) ---
 const shuffleArray = <T>(array: T[]): T[] => {
@@ -84,7 +83,7 @@ export const useGameLogic = (
     red: 0,
     black: 0,
   });
-  const [maxRounds, setMaxRounds] = useState(MAX_ROUNDS);
+  const [maxRounds, setMaxRounds] = useState(DEFAULT_MAX_ROUNDS);
   const [currentRound, setCurrentRound] = useState(0);
   const [sessionTotalItems, setSessionTotalItems] = useState(0);
   const [sessionTotalByColor, setSessionTotalByColor] = useState({
@@ -103,6 +102,7 @@ export const useGameLogic = (
   }>({});
   const celebrationTimeoutRef = useRef<number | null>(null);
   const pronunciationAudioRef = useRef<HTMLAudioElement | null>(null);
+  const feedbackTimeoutRef = useRef<number | null>(null);
 
   const totalItems = sessionTotalItems;
   const totalItemsByColor = sessionTotalByColor;
@@ -117,6 +117,10 @@ export const useGameLogic = (
       }
       if (pronunciationAudioRef.current) {
         pronunciationAudioRef.current.pause();
+      }
+      if (feedbackTimeoutRef.current) {
+        window.clearTimeout(feedbackTimeoutRef.current);
+        feedbackTimeoutRef.current = null;
       }
     };
   }, []);
@@ -221,7 +225,7 @@ export const useGameLogic = (
       }
 
       const roundsAvailable = Math.min(
-        MAX_ROUNDS,
+        DEFAULT_MAX_ROUNDS,
         ...Array.from(filteredItemsByClan.values()).map((items) => items.length)
       );
 
@@ -265,10 +269,16 @@ export const useGameLogic = (
     type: MessageType,
     duration: number = 2000
   ) => {
+    if (feedbackTimeoutRef.current) {
+      window.clearTimeout(feedbackTimeoutRef.current);
+    }
     setMessage(msg);
     setMessageType(type);
     setIsMessageVisible(true);
-    setTimeout(() => setIsMessageVisible(false), duration);
+    feedbackTimeoutRef.current = window.setTimeout(() => {
+      setIsMessageVisible(false);
+      feedbackTimeoutRef.current = null;
+    }, duration);
   };
 
   const scheduleCelebrationClear = () => {
@@ -303,12 +313,18 @@ export const useGameLogic = (
     });
   };
 
+  const clansById = useMemo(() => {
+    const map = new Map<string, Clan>();
+    clans.forEach((clan) => map.set(clan.id, clan));
+    return map;
+  }, [clans]);
+
   const findNearestClan = (dropPos: { x: number; y: number }): Clan | null => {
     let nearestClan: Clan | null = null;
     let minDistance = Infinity;
 
     Object.keys(clanTargets).forEach((clanId) => {
-      const clan = clans.find((c) => c.id === clanId);
+      const clan = clansById.get(clanId);
       const targetPos = clanTargets[clanId];
       if (clan && targetPos) {
         const distance = getDistance(dropPos, targetPos);

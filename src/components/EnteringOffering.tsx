@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react";
-import { Group, Circle, Text, RegularPolygon, Star } from "react-konva";
+import { Group, Circle, Text } from "react-konva";
 import Konva from "konva";
 import type { EnteringOffering as EnteringOfferingState } from "../hooks/useGameLogic";
 
@@ -11,99 +11,95 @@ interface EnteringOfferingProps {
 const BASE_RADIUS = 52;
 
 const EnteringOffering = ({ offering, onComplete }: EnteringOfferingProps) => {
-  const groupRef = useRef<Konva.Group>(null);
-  const sparkleRef = useRef<Konva.Group>(null);
+  const groupRef = useRef<Konva.Group>(null); // grupo fixo
+  const textRef = useRef<Konva.Text>(null); // apenas o texto vai girar
 
   const accentColor = useMemo(() => {
     const hueSeed = Math.abs(offering.item.id.length * 37) % 360;
     return `hsl(${hueSeed}, 82%, 64%)`;
   }, [offering.item.id.length]);
 
+  // ================================================================
+  // ===== ANIMAÇÃO =====
+  // ================================================================
   useEffect(() => {
     if (!groupRef.current) return;
 
-    const travelTween = new Konva.Tween({
-      node: groupRef.current,
-      duration: 0.9,
-      x: offering.endPos.x,
-      y: offering.endPos.y - BASE_RADIUS * 0.2,
-      scaleX: 0.25,
-      scaleY: 0.25,
-      opacity: 0,
-      rotation: offering.startPos.x < offering.endPos.x ? -18 : 18,
-      easing: Konva.Easings.EaseInOut,
+    const tweens: Konva.Tween[] = [];
+    const node = groupRef.current;
+
+    // Começa no tamanho original
+    node.scale({ x: 1, y: 1 });
+
+    // --- FASE 1: Crescimento suave ---
+    const growTween = new Konva.Tween({
+      node,
+      duration: 0.3,
+      scaleX: 1.5,
+      scaleY: 1.5,
+      easing: Konva.Easings.BackEaseOut, // ✅ nome correto
+    });
+    tweens.push(growTween);
+
+    // --- FASE 2: Contração / sucção ---
+    const shrinkTween = new Konva.Tween({
+      node,
+      duration: 0.25,
+      scaleX: 0,
+      scaleY: 0,
+      easing: Konva.Easings.EaseIn, // ✅ nome correto
       onFinish: () => onComplete(offering),
     });
+    tweens.push(shrinkTween);
 
-    const wobble = new Konva.Tween({
-      node: groupRef.current,
-      duration: 0.3,
-      scaleX: 1.12,
-      scaleY: 0.92,
-      yoyo: true,
-      repeat: 3,
-      easing: Konva.Easings.EaseInOut,
-    });
+    // Encadeamento
+    growTween.onFinish = () => shrinkTween.play();
 
-    travelTween.play();
-    wobble.play();
+    // Inicia a sequência
+    growTween.play();
 
-    return () => {
-      travelTween.destroy();
-      wobble.destroy();
-    };
+    // --- ROTAÇÃO DO TEXTO (somente o ícone gira) ---
+    if (textRef.current) {
+      const textTween = new Konva.Tween({
+        node: textRef.current,
+        duration: 0.55,
+        rotation: 360,
+        easing: Konva.Easings.Linear,
+      });
+      textTween.play();
+      tweens.push(textTween);
+    }
+
+    return () => tweens.forEach((t) => t.destroy());
   }, [offering, onComplete]);
 
-  useEffect(() => {
-    if (!sparkleRef.current) return;
-
-    const sparkleAnim = new Konva.Animation((frame) => {
-      if (!frame) return;
-      const pulse = (Math.sin(frame.time / 160) + 1) / 2;
-      sparkleRef.current?.scale({ x: 0.9 + pulse * 0.2, y: 0.9 + pulse * 0.2 });
-      sparkleRef.current?.opacity(0.6 + pulse * 0.3);
-    }, sparkleRef.current.getLayer());
-
-    sparkleAnim.start();
-
-    return () => {
-      sparkleAnim.stop();
-    };
-  }, []);
-
+  // ================================================================
+  // ===== RENDERIZAÇÃO =====
+  // ================================================================
   return (
     <Group
       ref={groupRef}
-      x={offering.startPos.x}
-      y={offering.startPos.y}
-      opacity={0.98}
+      x={offering.endPos.x}
+      y={offering.endPos.y}
+      offsetX={BASE_RADIUS}
+      offsetY={BASE_RADIUS}
       listening={false}
+      opacity={0.98}
     >
-      <Group ref={sparkleRef} opacity={0.75} listening={false}>
-        <Star
-          numPoints={6}
-          innerRadius={BASE_RADIUS * 0.32}
-          outerRadius={BASE_RADIUS * 0.62}
-          fill={`${accentColor}55`}
-          rotation={12}
-        />
-        <RegularPolygon
-          sides={4}
-          radius={BASE_RADIUS * 0.55}
-          fill={`${accentColor}66`}
-          rotation={45}
-        />
-      </Group>
+      {/* Bola principal */}
       <Circle
         radius={BASE_RADIUS}
         fill={offering.item.color}
-        stroke="#ffffff"
+        stroke={accentColor}
         strokeWidth={4}
         shadowColor="rgba(0,0,0,0.55)"
-        shadowBlur={14}
-        shadowOffset={{ x: 0, y: 10 }}
+        shadowBlur={12}
+        shadowOffset={{ x: 0, y: 6 }}
       />
+
+      {/* Ícone central rotativo */}
       <Text
+        ref={textRef}
         text={offering.item.icon}
         fontSize={38}
         align="center"

@@ -434,8 +434,27 @@
   color: rgba(40, 21, 8, 0.9);
 }
 
-.hud-module--feathers .hud-module__icon {
-  color: rgba(40, 70, 120, 0.85);
+.hud-module__icon--village {
+  background: radial-gradient(
+    circle at 50% 65%,
+    rgba(255, 225, 170, 0.9) 0%,
+    rgba(232, 147, 68, 0.85) 55%,
+    rgba(125, 58, 20, 0.75) 100%
+  );
+  box-shadow: inset 0 0 0 2px rgba(255, 246, 218, 0.65),
+    0 12px 22px rgba(21, 10, 4, 0.28);
+}
+
+.hud-module--feather-rack {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(0.9rem, 1.6vw, 1.2rem);
+  padding: clamp(1rem, 1.6vw, 1.4rem);
+}
+
+.hud-module--feather-rack::after {
+  display: none;
 }
 
 .hud-module--streak .hud-module__icon {
@@ -473,6 +492,139 @@
 .hud-module__hint--rounds {
   color: rgba(54, 30, 12, 0.72);
   font-weight: 700;
+}
+
+.hud-feather-rack__header {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.7rem, 1.2vw, 1rem);
+}
+
+.hud-feather-rack__crest {
+  width: clamp(54px, 6vw, 72px);
+  height: clamp(54px, 6vw, 72px);
+  border-radius: clamp(16px, 2vw, 20px);
+  background: radial-gradient(
+    circle at 45% 45%,
+    rgba(255, 238, 204, 0.96) 0%,
+    rgba(240, 184, 110, 0.9) 55%,
+    rgba(140, 74, 28, 0.85) 100%
+  );
+  display: grid;
+  place-items: center;
+  box-shadow: inset 0 0 0 2px rgba(255, 246, 218, 0.75),
+    0 12px 18px rgba(0, 0, 0, 0.22);
+  transform: rotate(-4deg);
+}
+
+.hud-feather-rack__crest .hud-icon {
+  width: 64%;
+  height: 64%;
+  color: rgba(48, 30, 14, 0.92);
+}
+
+.hud-feather-rack__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.hud-feather-rack__total {
+  font-size: 0.55em;
+  font-weight: 700;
+  margin-left: 0.25em;
+  color: rgba(40, 21, 8, 0.6);
+}
+
+.hud-feather-rack__slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: clamp(0.6rem, 1.1vw, 0.9rem);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hud-feather-rack__slot {
+  position: relative;
+  min-height: clamp(94px, 12vw, 128px);
+  border-radius: clamp(16px, 2vw, 22px);
+  border: 2px solid rgba(40, 21, 8, 0.22);
+  background: linear-gradient(
+    155deg,
+    rgba(255, 244, 214, 0.95) 0%,
+    rgba(235, 182, 120, 0.35) 100%
+  );
+  box-shadow: 0 12px 0 rgba(40, 21, 8, 0.22);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(0.35rem, 0.9vw, 0.6rem);
+  padding: clamp(0.6rem, 0.9vw, 0.75rem)
+    clamp(0.45rem, 0.8vw, 0.65rem)
+    clamp(0.9rem, 1.3vw, 1.1rem);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.hud-feather-rack__slot.is-empty {
+  opacity: 0.55;
+}
+
+.hud-feather-rack__slot.is-filled {
+  opacity: 1;
+  border-color: rgba(40, 21, 8, 0.35);
+  box-shadow: 0 14px 0 rgba(40, 21, 8, 0.26),
+    0 18px 24px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(
+    155deg,
+    rgba(255, 243, 210, 0.98) 0%,
+    rgba(240, 195, 132, 0.75) 45%,
+    rgba(205, 140, 72, 0.65) 100%
+  );
+}
+
+.hud-feather-rack__pin {
+  width: clamp(10px, 1.2vw, 12px);
+  height: clamp(10px, 1.2vw, 12px);
+  border-radius: 50%;
+  background: rgba(128, 70, 24, 0.92);
+  box-shadow: inset 0 0 0 2px rgba(255, 246, 218, 0.85),
+    0 4px 0 rgba(40, 21, 8, 0.35);
+}
+
+.hud-feather-rack__pendant {
+  width: clamp(36px, 4vw, 48px);
+  height: clamp(52px, 7vw, 74px);
+  border-radius: clamp(14px, 2vw, 18px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hud-feather-rack__pendant[data-filled="false"] {
+  border: 2px dashed rgba(40, 21, 8, 0.25);
+  background: rgba(255, 244, 214, 0.55);
+}
+
+.hud-feather-rack__pendant[data-filled="true"] {
+  border: none;
+  background: none;
+}
+
+.hud-feather-rack__pendant .hud-icon {
+  width: 100%;
+  height: 100%;
+  display: block;
+  color: rgba(48, 28, 12, 0.96);
+}
+
+.hud-feather-rack__pendant .hud-icon svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 6px 6px rgba(27, 16, 12, 0.35));
 }
 
 .hud-streak__marks {
@@ -680,6 +832,18 @@
   width: 55%;
   height: 55%;
   color: rgba(33, 20, 9, 0.94);
+}
+
+.hud-progress-circle__crest {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.hud-progress-circle__crest .hud-icon {
+  width: 88%;
+  height: 88%;
 }
 
 .hud-progress-circle__icon svg {

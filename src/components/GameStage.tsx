@@ -1,6 +1,4 @@
-/* Arquivo: src/components/GameStage.tsx */
-
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import type { Clan, Item } from "../types";
 import { useGameLogic } from "../hooks/useGameLogic";
 import type { EnteringOffering } from "../hooks/useGameLogic";
@@ -10,8 +8,6 @@ import GameModals from "./GameModals";
 import "../css/GameStage.css";
 import ForestBackground from "./ForestBackground";
 import GameHud from "./GameHud";
-import LearningCard from "./LearningCard";
-import RewardCelebration from "./RewardCelebration";
 import ClanInfoBubble from "./ClanInfoBubble";
 import ReturningItemOverlay from "./ReturningItemOverlay";
 import LoadingScreen from "./LoadingScreen";
@@ -33,22 +29,58 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     left: 0,
   });
   const gameAreaWrapperRef = useRef<HTMLDivElement>(null);
+  const latestRectRef = useRef(gameAreaRect);
 
   useEffect(() => {
-    const measureGameArea = () => {
-      if (gameAreaWrapperRef.current) {
-        const rect = gameAreaWrapperRef.current.getBoundingClientRect();
-        setGameAreaRect({
-          width: rect.width,
-          height: rect.height,
-          top: rect.top,
-          left: rect.left,
-        });
+    const element = gameAreaWrapperRef.current;
+    if (!element) {
+      return;
+    }
+
+    let rafId: number | null = null;
+
+    const updateRect = () => {
+      if (!element) return;
+      const rect = element.getBoundingClientRect();
+      const nextRect = {
+        width: rect.width,
+        height: rect.height,
+        top: rect.top,
+        left: rect.left,
+      };
+
+      const prevRect = latestRectRef.current;
+      const hasChanged =
+        prevRect.width !== nextRect.width ||
+        prevRect.height !== nextRect.height ||
+        prevRect.top !== nextRect.top ||
+        prevRect.left !== nextRect.left;
+
+      if (hasChanged) {
+        latestRectRef.current = nextRect;
+        setGameAreaRect(nextRect);
       }
     };
-    measureGameArea();
-    window.addEventListener("resize", measureGameArea);
-    return () => window.removeEventListener("resize", measureGameArea);
+
+    const scheduleUpdate = () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      rafId = requestAnimationFrame(updateRect);
+    };
+
+    const resizeObserver = new ResizeObserver(scheduleUpdate);
+    resizeObserver.observe(element);
+    window.addEventListener("scroll", scheduleUpdate, true);
+    scheduleUpdate();
+
+    return () => {
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      resizeObserver.disconnect();
+      window.removeEventListener("scroll", scheduleUpdate, true);
+    };
   }, []);
 
   const layout = useMemo(() => {
@@ -104,9 +136,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     completedByColor,
     totalItemsByColor,
     spotlightItem,
-    celebration,
     clearFeedbackPulse,
-    clearCelebration,
     onReturnAnimationComplete,
     handleDragStart,
     handleDragEnd,
@@ -129,7 +159,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     orientation: { vertical: "above" | "below"; horizontal: "left" | "right" };
   } | null>(null);
 
-  const closeBubble = () => setActiveBubble(null);
+  const closeBubble = useCallback(() => setActiveBubble(null), []);
 
   useEffect(() => {
     if (!activeBubble) return;
@@ -148,37 +178,43 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     }
   }, [activeBubble, clanInventories]);
 
-  const handleClanClick = (clanId: string) => {
-    const storedItems = clanInventories.get(clanId) || [];
-    if (storedItems.length === 0) {
-      setActiveBubble(null);
-      return;
-    }
-
-    const clan = clans.find((c) => c.id === clanId);
-    const anchor = clanTargets[clanId];
-    if (!clan || !anchor) return;
-
-    setActiveBubble((prev) => {
-      if (prev?.clan.id === clanId) {
-        return null;
+  const handleClanClick = useCallback(
+    (clanId: string) => {
+      const storedItems = clanInventories.get(clanId) || [];
+      if (storedItems.length === 0) {
+        setActiveBubble(null);
+        return;
       }
 
-      const vertical = anchor.y < layout.centroY ? "below" : "above";
-      const horizontal = anchor.x < layout.centroX ? "right" : "left";
+      const clan = clans.find((c) => c.id === clanId);
+      const anchor = clanTargets[clanId];
+      if (!clan || !anchor) return;
 
-      return {
-        clan,
-        items: storedItems,
-        anchor,
-        orientation: { vertical, horizontal },
-      };
-    });
-  };
+      setActiveBubble((prev) => {
+        if (prev?.clan.id === clanId) {
+          return null;
+        }
 
-  const handleOfferingAnimationComplete = (offering: EnteringOffering) => {
-    registerOfferingArrival(offering.key, offering.clanId, offering.item);
-  };
+        const vertical = anchor.y < layout.centroY ? "below" : "above";
+        const horizontal = anchor.x < layout.centroX ? "right" : "left";
+
+        return {
+          clan,
+          items: storedItems,
+          anchor,
+          orientation: { vertical, horizontal },
+        };
+      });
+    },
+    [clanInventories, clans, clanTargets, layout.centroX, layout.centroY]
+  );
+
+  const handleOfferingAnimationComplete = useCallback(
+    (offering: EnteringOffering) => {
+      registerOfferingArrival(offering.key, offering.clanId, offering.item);
+    },
+    [registerOfferingArrival]
+  );
   const chaoFlorestaSize = layout.raioPalco * 5;
   return (
     <div className="game-container" aria-busy={!isGameReady}>
@@ -256,6 +292,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             <ItemTray
               items={menuItems}
               draggingItemId={draggingItemId}
+              spotlightItem={spotlightItem}
               onDragStart={handleDragStart}
               onDragEnd={handleDragEnd}
             />
@@ -296,15 +333,6 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           onClose={closeBubble}
         />
 
-        <LearningCard
-          item={spotlightItem}
-          streak={streak}
-          feathers={featherCount}
-        />
-        <RewardCelebration
-          celebration={celebration}
-          onDismiss={clearCelebration}
-        />
         <GameModals
           isGameOver={isGameOver}
           isMessageVisible={isMessageVisible}
