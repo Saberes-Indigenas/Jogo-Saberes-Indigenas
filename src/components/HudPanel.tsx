@@ -431,32 +431,7 @@ const HudPanel = ({
         aria-labelledby="hud-panel-title"
       >
         <TexturaDeEsteira className="hud-panel__texture" tone="clay" />
-        <header className="hud-panel__header">
-          <div className="hud-panel__header-left">
-            <span className="hud-panel__crest" aria-hidden="true">
-              <VillageIcon />
-            </span>
-            <div className="hud-panel__legend">
-              <span className="hud-panel__eyebrow">Jornada Boé</span>
-              <h2 className="hud-panel__title" id="hud-panel-title">
-                Painel da Aldeia
-              </h2>
-              <p className="hud-panel__subtitle">
-                Harmonia entre sementes, plumas e conquistas
-              </p>
-            </div>
-          </div>
-          <motion.button
-            type="button"
-            className="hud-panel__close"
-            onClick={onClose}
-            whileHover={{ scale: 1.08, rotate: 3 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="Fechar painel da jornada"
-          >
-            ✕
-          </motion.button>
-        </header>
+
         <motion.div
           className="hud-panel__body"
           variants={modulesWrapperVariants}
@@ -499,12 +474,6 @@ const HudPanel = ({
             <StreakIndicator streak={streak} maxStreak={maxStreak} />
           </motion.div>
         </motion.div>
-        <footer className="hud-panel__footer">
-          <p>
-            A cada acerto, entoe o nome Boé. A cada história compartilhada, as
-            almas (Aroe) honram a sua sabedoria.
-          </p>
-        </footer>
       </motion.section>
     </>
   );

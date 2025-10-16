@@ -145,6 +145,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     clanInventories,
     recentDeliveries,
     registerOfferingArrival,
+    resetClanAnimationsKey,
   } = useGameLogic(clans, initialItems, layout);
 
   const [isStageReady, setStageReady] = useState(false);
@@ -300,6 +301,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
         </div>
         <div className="game-area-wrapper" ref={gameAreaWrapperRef}>
           <BororoStage
+            resetClanAnimationsKey={resetClanAnimationsKey}
             clans={clans}
             clanTargets={clanTargets}
             enteringOfferings={enteringOfferings}

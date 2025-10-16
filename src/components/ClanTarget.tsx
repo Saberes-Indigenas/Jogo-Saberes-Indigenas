@@ -16,6 +16,7 @@ interface ClanTargetProps {
   centerX: number;
   hasOfferings: boolean;
   deliveryTrigger: number;
+  resetTrigger: number;
   onClick: () => void;
 }
 
@@ -29,6 +30,7 @@ const ClanTarget = ({
   hasOfferings,
   deliveryTrigger,
   onClick,
+  resetTrigger,
 }: ClanTargetProps) => {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [naturalSize, setNaturalSize] = useState({ width: 1, height: 1 });
@@ -163,6 +165,17 @@ const ClanTarget = ({
   // ================================================================
   // ===== FIM DA NOVA LÓGICA DE ANIMAÇÃO =====
   // ================================================================
+  useEffect(() => {
+    const node = groupRef.current;
+    if (!node) return;
+
+    node.to({
+      scaleX: 1,
+      scaleY: 1,
+      duration: 0.3,
+      easing: Konva.Easings.EaseOut,
+    });
+  }, [resetTrigger]);
 
   useEffect(() => {
     const node = groupRef.current;

@@ -1,13 +1,13 @@
 /* Arquivo: src/components/BororoStage.tsx */
 
-import React, { useEffect, useMemo, useRef, useState } from "react"; // Importe useState e useEffect
-import { Stage, Layer, Image as KonvaImage } from "react-konva"; // Importe KonvaImage
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Stage, Layer, Image as KonvaImage } from "react-konva";
 import type { Clan, Item, PulseState } from "../types";
 import ClanTarget from "./ClanTarget";
 import FeedbackPulse from "./FeedbackPulse";
 import EnteringOffering from "./EnteringOffering";
 import type { EnteringOffering as EnteringOfferingState } from "../hooks/useGameLogic";
-import ChaoBororo from "../assets/chãoBororo.svg"; // Seu SVG
+import ChaoBororo from "../assets/chãoBororo.svg";
 
 interface BororoStageProps {
   clans: Clan[];
@@ -29,6 +29,7 @@ interface BororoStageProps {
   recentDeliveries: { [clanId: string]: number };
   onClanClick: (clanId: string) => void;
   onReady?: () => void;
+  resetClanAnimationsKey: number;
 }
 
 const BororoStage = ({
@@ -45,46 +46,70 @@ const BororoStage = ({
   recentDeliveries,
   onClanClick,
   onReady,
+  resetClanAnimationsKey,
 }: BororoStageProps) => {
   const clanEntries = Object.entries(clanTargets);
   const clearingRadius = layout.raioPalco * 1.04;
+
   const stagePixelRatio = useMemo(() => {
-    if (typeof window === "undefined") {
-      return 1;
-    }
+    if (typeof window === "undefined") return 1;
     return Math.min(window.devicePixelRatio || 1, 1.5);
   }, []);
 
-  // --- NOVO: Estado para a imagem SVG ---
-  const [chaoImage, setChaoImage] = useState<HTMLImageElement | undefined>(
-    undefined
-  );
+  // --- ESTADOS DE IMAGEM E CONTROLE ---
+  const [chaoImage, setChaoImage] = useState<HTMLImageElement | null>(null);
   const [isGroundReady, setIsGroundReady] = useState(false);
   const hasSignaledReadyRef = useRef(false);
 
-  // --- NOVO: Efeito para carregar a imagem SVG ---
+  // --- CARREGAMENTO ROBUSTO DO SVG (EVITA WIDTH/HEIGHT = 0) ---
   useEffect(() => {
-    const image = new window.Image();
-    image.src = ChaoBororo;
-    image.onload = () => {
-      setChaoImage(image);
-      setIsGroundReady(true);
-    };
-    image.onerror = (err) => {
-      console.error("Erro ao carregar a imagem do chão Bororo:", err);
-      setIsGroundReady(true);
-    };
-  }, []); // O array vazio garante que o efeito só roda uma vez ao montar o componente
+    let url: string | null = null;
 
+    const loadSvg = async () => {
+      try {
+        const response = await fetch(ChaoBororo);
+        const svgText = await response.text();
+        const blob = new Blob([svgText], { type: "image/svg+xml" });
+        url = URL.createObjectURL(blob);
+
+        const img = new Image();
+        img.onload = () => {
+          if (img.width > 0 && img.height > 0) {
+            setChaoImage(img);
+          } else {
+            console.warn("⚠️ SVG carregado mas sem dimensões válidas.");
+          }
+          setIsGroundReady(true);
+          URL.revokeObjectURL(url!);
+        };
+        img.onerror = (err) => {
+          console.error("❌ Erro ao carregar imagem SVG:", err);
+          setIsGroundReady(true);
+          if (url) URL.revokeObjectURL(url);
+        };
+        img.src = url;
+      } catch (err) {
+        console.error("❌ Falha ao processar o SVG:", err);
+        setIsGroundReady(true);
+        if (url) URL.revokeObjectURL(url);
+      }
+    };
+
+    loadSvg();
+
+    return () => {
+      if (url) URL.revokeObjectURL(url);
+    };
+  }, []);
+
+  // --- AVISO AO GAMESTAGE QUANDO ESTIVER PRONTO ---
   useEffect(() => {
-    if (!isGroundReady || hasSignaledReadyRef.current) {
-      return;
-    }
+    if (!isGroundReady || hasSignaledReadyRef.current) return;
     hasSignaledReadyRef.current = true;
     onReady?.();
   }, [isGroundReady, onReady]);
 
-  // O tamanho do SVG será o diâmetro do círculo, que é 2 * raio.
+  // --- TAMANHO FINAL DO CHÃO ---
   const svgSize = clearingRadius * 2;
 
   return (
@@ -95,22 +120,22 @@ const BororoStage = ({
         pixelRatio={stagePixelRatio}
       >
         <Layer>
-          {/* --- CHÃO DA MATA AO REDOR DA ALDEIA (AGORA SVG) --- */}
-          {chaoImage && ( // Só renderiza a imagem depois que ela for carregada
+          {/* --- CHÃO BORORO (SEGURANÇA ADICIONAL) --- */}
+          {chaoImage && chaoImage.width > 0 && chaoImage.height > 0 && (
             <KonvaImage
               image={chaoImage}
               x={layout.centroX}
               y={layout.centroY}
               width={svgSize}
               height={svgSize}
-              offsetX={svgSize / 2} // Define o centro da imagem como ponto de origem
-              offsetY={svgSize / 2} // para que a rotação e posicionamento sejam corretos
-              rotation={90} // Rotação de 90 graus
+              offsetX={svgSize / 2}
+              offsetY={svgSize / 2}
+              rotation={90}
+              listening={false}
             />
           )}
 
-          {/* O restante do seu código permanece o mesmo */}
-          {/* --- TOTENS DE CLÃ --- */}
+          {/* --- TOTENS DOS CLÃS --- */}
           {clanEntries.map(([clanId, pos]) => {
             const clan = clans.find((c) => c.id === clanId);
             if (!clan) return null;
@@ -124,6 +149,7 @@ const BororoStage = ({
                 y={pos.y}
                 stageRadius={layout.raioPalco}
                 centerX={layout.centroX}
+                resetTrigger={resetClanAnimationsKey}
                 hasOfferings={inventory.length > 0}
                 deliveryTrigger={recentDeliveries[clan.id] ?? 0}
                 onClick={() => onClanClick(clan.id)}
@@ -131,6 +157,7 @@ const BororoStage = ({
             );
           })}
 
+          {/* --- ANIMAÇÕES DE OFERENDAS --- */}
           {enteringOfferings.map((offering) => (
             <EnteringOffering
               key={offering.key}
@@ -139,7 +166,7 @@ const BororoStage = ({
             />
           ))}
 
-          {/* --- FEEDBACKS E ANIMAÇÕES --- */}
+          {/* --- FEEDBACK VISUAL (PULSO DE COR) --- */}
           {feedbackPulse && (
             <FeedbackPulse
               key={feedbackPulse.key}

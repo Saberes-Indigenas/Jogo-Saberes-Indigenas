@@ -100,6 +100,8 @@ export const useGameLogic = (
   const [recentDeliveries, setRecentDeliveries] = useState<{
     [clanId: string]: number;
   }>({});
+  const [resetClanAnimationsKey, setResetClanAnimationsKey] = useState(0);
+
   const celebrationTimeoutRef = useRef<number | null>(null);
   const pronunciationAudioRef = useRef<HTMLAudioElement | null>(null);
   const feedbackTimeoutRef = useRef<number | null>(null);
@@ -396,6 +398,7 @@ export const useGameLogic = (
       return cleared;
     });
     setRecentDeliveries({});
+    setResetClanAnimationsKey((prev) => prev + 1); // 🔥 força reset nas animações
   };
 
   // --- LÓGICA DE DROP CORRIGIDA ---
@@ -582,5 +585,6 @@ export const useGameLogic = (
     clanInventories,
     recentDeliveries,
     registerOfferingArrival,
+    resetClanAnimationsKey,
   };
 };
