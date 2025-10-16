@@ -14,7 +14,7 @@ import LoadingScreen from "./LoadingScreen";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 import { AnimatePresence } from "framer-motion";
-import HudPanel from "./HudPanel";
+import HudPanel from "./hud-panel/HudPanel";
 
 interface GameStageProps {
   clans: Clan[];

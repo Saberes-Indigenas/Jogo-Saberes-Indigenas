@@ -1,0 +1,225 @@
+.hud-panel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 920px);
+  background: linear-gradient(
+      150deg,
+      rgba(255, 242, 214, 0.96) 0%,
+      rgba(255, 210, 140, 0.94) 60%,
+      rgba(235, 150, 80, 0.92) 100%
+    ),
+    rgba(240, 225, 188, 0.9);
+  border-radius: clamp(26px, 4vw, 36px);
+  border: 3px solid rgba(40, 21, 8, 0.4);
+  padding: clamp(2rem, 3vw, 2.8rem);
+  box-shadow: 0 30px 0 rgba(40, 18, 6, 0.35), 0 36px 64px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  pointer-events: auto;
+  isolation: isolate;
+  max-height: min(660px, 90vh);
+  display: flex;
+  flex-direction: column;
+  color: rgba(38, 22, 12, 0.92);
+  z-index: 170;
+}
+
+.hud-panel::before,
+.hud-panel::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.22) 0%,
+    rgba(255, 255, 255, 0) 70%
+  );
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.hud-panel::before {
+  width: 360px;
+  height: 360px;
+  top: -220px;
+  left: clamp(-140px, -6vw, -30px);
+}
+
+.hud-panel::after {
+  width: 300px;
+  height: 300px;
+  bottom: -190px;
+  right: clamp(-120px, -6vw, -30px);
+}
+
+.hud-panel__texture {
+  opacity: 0.32;
+}
+
+.hud-panel__body {
+  position: relative;
+  display: grid;
+  gap: clamp(1.4rem, 2.8vw, 2.1rem);
+  grid-template-columns: minmax(220px, 1fr) minmax(260px, 1.2fr) minmax(220px, 1fr);
+  grid-template-areas:
+    "score progress feathers"
+    "streak streak streak";
+  align-items: stretch;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-right: -10px;
+}
+
+.hud-panel__module {
+  display: flex;
+  width: 100%;
+}
+
+.hud-panel__module--score {
+  grid-area: score;
+}
+
+.hud-panel__module--progress {
+  grid-area: progress;
+  justify-content: center;
+}
+
+.hud-panel__module--feather {
+  grid-area: feathers;
+}
+
+.hud-panel__module--streak {
+  grid-area: streak;
+}
+
+.hud-module {
+  position: relative;
+  width: 100%;
+  border-radius: clamp(18px, 3vw, 26px);
+  border: 2.4px solid rgba(40, 21, 8, 0.25);
+  box-shadow: 0 16px 0 rgba(47, 25, 9, 0.22);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(0.8rem, 1.3vw, 1.1rem);
+  padding: clamp(1rem, 1.6vw, 1.4rem);
+  align-items: center;
+  background: rgba(255, 243, 214, 0.92);
+}
+
+.hud-module::after {
+  content: "";
+  position: absolute;
+  inset: clamp(12px, 1.8vw, 18px);
+  border-radius: clamp(14px, 2vw, 18px);
+  border: 2px dashed rgba(40, 21, 8, 0.22);
+  pointer-events: none;
+}
+
+.hud-module__icon {
+  width: clamp(64px, 7.5vw, 88px);
+  height: clamp(64px, 7.5vw, 88px);
+  border-radius: clamp(18px, 2.6vw, 24px);
+  background: rgba(255, 230, 176, 0.65);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: rgba(40, 21, 8, 0.84);
+  box-shadow: inset 0 0 0 2px rgba(255, 246, 218, 0.65);
+}
+
+.hud-module__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.hud-module__label {
+  font-size: clamp(0.7rem, 0.95vw, 0.9rem);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(40, 21, 8, 0.65);
+}
+
+.hud-module__value {
+  font-size: clamp(1.6rem, 2.7vw, 2.1rem);
+  line-height: 1.05;
+  font-weight: 900;
+  color: rgba(33, 20, 9, 0.94);
+  text-shadow: 0 2px 0 rgba(255, 244, 214, 0.8);
+}
+
+.hud-module__hint {
+  font-size: clamp(0.75rem, 1vw, 0.95rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(181, 35, 35, 0.72);
+}
+
+.hud-module__hint--rounds {
+  color: rgba(54, 30, 12, 0.72);
+  font-weight: 700;
+}
+
+.hud-panel__backdrop {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 236, 204, 0.08) 0%,
+      rgba(15, 9, 4, 0.45) 65%
+    ),
+    rgba(18, 9, 4, 0.35);
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  z-index: 165;
+}
+
+@media (max-width: 1024px) {
+  .hud-panel__body {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    grid-template-areas:
+      "score progress"
+      "feathers progress"
+      "streak streak";
+  }
+}
+
+@media (max-width: 780px) {
+  .hud-panel {
+    padding: clamp(1.6rem, 4vw, 2rem);
+    border-radius: clamp(22px, 5vw, 30px);
+  }
+
+  .hud-panel__body {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "score"
+      "progress"
+      "feathers"
+      "streak";
+    gap: clamp(1rem, 4vw, 1.4rem);
+  }
+
+  .hud-module {
+    text-align: center;
+  }
+
+  .hud-module__icon {
+    margin: 0 auto;
+  }
+
+  .hud-module__content {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .hud-panel {
+    width: min(94vw, 480px);
+  }
+}
