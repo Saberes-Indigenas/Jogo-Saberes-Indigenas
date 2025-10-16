@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import "../css/GameHud.css";
+import "./GameHud.css";
 
 import villageSvg from "../assets/hud/bororo.svg?raw";
 

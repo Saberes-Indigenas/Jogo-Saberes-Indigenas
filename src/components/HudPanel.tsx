@@ -1,6 +1,6 @@
 import { useMemo, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import "../css/HudPanel.css";
+import "./HudPanel.css";
 import {
   DEFAULT_MAX_ROUNDS,
   FEATHERS_PER_ROUND,

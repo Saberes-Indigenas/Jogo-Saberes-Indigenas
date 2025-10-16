@@ -1,7 +1,7 @@
 /* Arquivo: src/components/GameModals.tsx */
 
 import { motion, AnimatePresence } from "framer-motion";
-import "../css/GameModal.css";
+import "./GameModals.css";
 
 // A interface agora espera o tipo da mensagem
 interface GameModalsProps {

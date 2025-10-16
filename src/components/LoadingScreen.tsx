@@ -1,4 +1,5 @@
 import React from "react";
+import "./LoadingScreen.css";
 
 const LoadingScreen: React.FC = () => {
   const groups = ["item1", "item2", "item3"] as const;

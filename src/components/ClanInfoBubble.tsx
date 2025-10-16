@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { Clan, Item } from "../types";
-import "../css/ClanInfoBubble.css";
+import "./ClanInfoBubble.css";
 
 interface ActiveBubbleState {
   clan: Clan;

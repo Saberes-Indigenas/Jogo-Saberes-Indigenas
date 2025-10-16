@@ -1,0 +1,8 @@
+.game-floor__image {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.9;
+  transform: translate(-50%, -50%);
+}

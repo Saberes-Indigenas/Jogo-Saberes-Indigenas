@@ -2,6 +2,7 @@ import { memo, useMemo } from "react";
 import { Stage, Layer } from "react-konva";
 import ReturningItem from "./ReturningItem";
 import type { ReturningItemState } from "../types";
+import "./ReturningItemOverlay.css";
 
 interface ReturningItemOverlayProps {
   returningItem: ReturningItemState;

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import type { Item } from "../types";
-import "../css/LearningCard.css";
+import "./LearningCard.css";
 
 // Ícones simples para representar as metades. Substitua por SVGs mais elaborados se desejar.
 const TugoaregeIcon = () => (

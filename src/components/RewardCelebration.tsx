@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import type { RewardCelebration as RewardCelebrationType } from "../types";
-import "../css/RewardCelebration.css";
+import "./RewardCelebration.css";
 
 interface RewardCelebrationProps {
   celebration: RewardCelebrationType | null;

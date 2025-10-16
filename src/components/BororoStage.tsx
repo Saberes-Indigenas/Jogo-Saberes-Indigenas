@@ -6,6 +6,7 @@ import type { Clan, Item, PulseState } from "../types";
 import ClanTarget from "./ClanTarget";
 import FeedbackPulse from "./FeedbackPulse";
 import EnteringOffering from "./EnteringOffering";
+import "./BororoStage.css";
 import type { EnteringOffering as EnteringOfferingState } from "../hooks/useGameLogic";
 import ChaoBororo from "../assets/chãoBororo.svg";
 

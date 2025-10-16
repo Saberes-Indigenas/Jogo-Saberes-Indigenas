@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Item } from "../types";
-import "../css/ItemTray.css";
+import "./ItemTray.css";
 import DraggableItemCard from "./DraggableItemCard";
 import LearningCard from "./LearningCard";
 
