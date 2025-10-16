@@ -1,0 +1,168 @@
+.hud-module--progress {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+  background: linear-gradient(
+      145deg,
+      rgba(255, 239, 214, 0.94) 0%,
+      rgba(232, 210, 188, 0.92) 50%,
+      rgba(212, 176, 150, 0.9) 100%
+    ),
+    rgba(255, 242, 221, 0.92);
+  box-shadow: 0 18px 0 rgba(95, 62, 32, 0.18);
+}
+
+.hud-module--progress .hud-module__content {
+  align-items: center;
+  text-align: center;
+}
+
+.hud-module--progress .hud-module__icon {
+  background: none;
+  box-shadow: none;
+  width: auto;
+  height: auto;
+  padding: clamp(0.3rem, 0.6vw, 0.5rem);
+}
+
+.hud-module__breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin-top: 0.4rem;
+  font-size: clamp(0.65rem, 0.85vw, 0.8rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(40, 21, 8, 0.58);
+  justify-content: center;
+}
+
+.hud-module__breakdown-item {
+  font-weight: 800;
+}
+
+.hud-module__breakdown-item--red {
+  color: rgba(181, 35, 35, 0.82);
+}
+
+.hud-module__breakdown-item--black {
+  color: rgba(33, 20, 9, 0.78);
+}
+
+.hud-progress-circle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 3px rgba(40, 21, 8, 0.25),
+    0 10px 16px rgba(15, 15, 15, 0.18);
+  background: rgba(255, 243, 214, 0.92);
+}
+
+.hud-progress-circle__track {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 243, 214, 0.92);
+  border-radius: 50%;
+}
+
+.hud-progress-circle__fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+.hud-progress-circle__wave-container {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  border-radius: 40%;
+  opacity: 0.7;
+  animation: wave-rotate 30s infinite linear;
+}
+
+.wave:nth-of-type(2) {
+  animation-duration: 40s;
+  opacity: 0.5;
+}
+
+.wave:nth-of-type(3) {
+  animation-duration: 50s;
+  opacity: 0.3;
+}
+
+.wave--red {
+  background: linear-gradient(
+    45deg,
+    rgba(181, 35, 35, 0.85),
+    rgba(215, 70, 70, 0.7)
+  );
+}
+
+.wave--black {
+  background: linear-gradient(
+    45deg,
+    rgba(15, 15, 15, 0.85),
+    rgba(50, 50, 50, 0.7)
+  );
+}
+
+.hud-progress-circle__divider {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 2px solid rgba(40, 21, 8, 0.25);
+}
+
+.hud-progress-circle__crest {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(48, 26, 12, 0.92);
+}
+
+.hud-progress-circle__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 70%;
+  height: 70%;
+  background: transparent;
+  box-shadow: none;
+}
+
+.hud-progress-circle__icon svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 6px 6px rgba(21, 12, 6, 0.28));
+}
+
+@keyframes wave-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 780px) {
+  .hud-module__breakdown {
+    justify-content: center;
+  }
+}

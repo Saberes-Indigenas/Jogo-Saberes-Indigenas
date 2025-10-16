@@ -1,0 +1,9 @@
+.hud-module--score {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 240, 184, 0.98) 0%,
+      rgba(255, 215, 120, 0.92) 55%,
+      rgba(241, 180, 60, 0.9) 100%
+    ),
+    rgba(255, 236, 175, 0.92);
+}
