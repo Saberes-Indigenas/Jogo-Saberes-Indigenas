@@ -1,4 +1,6 @@
 .hud-module--score {
+  display: flex;
+  flex-direction: column;
   background: linear-gradient(
       135deg,
       rgba(255, 240, 184, 0.98) 0%,

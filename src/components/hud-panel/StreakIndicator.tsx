@@ -1,5 +1,3 @@
-import TexturaDeEsteira from "../TexturaDeEsteira";
-
 import { StreakIcon } from "./HudIcons";
 
 import "./StreakIndicator.css";
@@ -26,8 +24,10 @@ const StreakIndicator = ({ streak, maxStreak }: StreakIndicatorProps) => {
   const activeMarks = Math.max(0, Math.min(marks, streak));
 
   return (
-    <article className="hud-module hud-module--streak" aria-label="Ritmo ritual de acertos">
-      <TexturaDeEsteira />
+    <article
+      className="hud-module--streak"
+      aria-label="Ritmo ritual de acertos"
+    >
       <div className="hud-module__icon">
         <StreakIcon />
       </div>

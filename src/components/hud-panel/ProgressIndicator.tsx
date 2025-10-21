@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 
-import TexturaDeEsteira from "../TexturaDeEsteira";
 import ProgressCircle from "../ProgressCircle";
 
 import { VillageIcon } from "./HudIcons";
@@ -48,11 +47,10 @@ const ProgressIndicator = ({
 
   return (
     <section
-      className="hud-module hud-module--progress"
+      className="hud-module--progress"
       role="group"
       aria-label="Progresso do Círculo da Aldeia"
     >
-      <TexturaDeEsteira />
       <motion.div
         className="hud-module__icon hud-module__icon--village"
         aria-hidden="true"
@@ -68,7 +66,7 @@ const ProgressIndicator = ({
         <ProgressCircle progress={progress} size={circleSize}>
           <motion.span
             className="hud-progress-circle__crest"
-            initial={{ scale: 0.85, rotate: -6 }}
+            initial={{ scale: 0.85, rotate: 90 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{
               type: "spring",
@@ -83,7 +81,9 @@ const ProgressIndicator = ({
       </motion.div>
       <div className="hud-module__content">
         <span className="hud-module__label">Círculo da Aldeia</span>
-        <strong className="hud-module__value">{getProgressLabel(progress)}</strong>
+        <strong className="hud-module__value">
+          {getProgressLabel(progress)}
+        </strong>
         <span className="hud-module__hint">
           {completed} de {total} seres reunidos
         </span>

@@ -5,7 +5,6 @@ import {
   FEATHERS_PER_ROUND,
   getFeatherCapacity,
 } from "../../config/gameSession";
-import TexturaDeEsteira from "../TexturaDeEsteira";
 
 import { FeatherIcon } from "./HudIcons";
 
@@ -23,10 +22,9 @@ const FeatherRack = ({ feathers, maxRounds }: FeatherRackProps) => {
 
   return (
     <article
-      className="hud-module hud-module--feather-rack"
+      className="hud-module--feather-rack"
       aria-label={`Painel de plumas: ${filledSlots} de ${totalSlots}`}
     >
-      <TexturaDeEsteira />
       <header className="hud-feather-rack__header">
         <div className="hud-feather-rack__crest" aria-hidden="true">
           <FeatherIcon />
@@ -42,10 +40,16 @@ const FeatherRack = ({ feathers, maxRounds }: FeatherRackProps) => {
           </span>
         </div>
       </header>
-      <ul className="hud-feather-rack__slots" role="list" aria-label="Plumas conquistadas até agora">
+      <ul
+        className="hud-feather-rack__slots"
+        role="list"
+        aria-label="Plumas conquistadas até agora"
+      >
         {slots.map((_, index) => {
           const isFilled = index < filledSlots;
-          const slotKey = `feather-slot-${index}-${isFilled ? "filled" : "empty"}`;
+          const slotKey = `feather-slot-${index}-${
+            isFilled ? "filled" : "empty"
+          }`;
           const entryDelay = 0.18 + index * 0.06;
           const initialState = isFilled
             ? { opacity: 0, y: -18, rotate: -12 }
@@ -73,7 +77,9 @@ const FeatherRack = ({ feathers, maxRounds }: FeatherRackProps) => {
           return (
             <motion.li
               key={slotKey}
-              className={`hud-feather-rack__slot ${isFilled ? "is-filled" : "is-empty"}`}
+              className={`hud-feather-rack__slot ${
+                isFilled ? "is-filled" : "is-empty"
+              }`}
               initial={initialState}
               animate={animateState}
               transition={transition}

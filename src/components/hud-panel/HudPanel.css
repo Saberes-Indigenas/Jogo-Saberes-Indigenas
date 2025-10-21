@@ -4,6 +4,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: min(92vw, 920px);
+  height: min(92vw, 920px);
   background: linear-gradient(
       150deg,
       rgba(255, 242, 214, 0.96) 0%,
@@ -18,25 +19,11 @@
   overflow: hidden;
   pointer-events: auto;
   isolation: isolate;
-  max-height: min(660px, 90vh);
+  max-height: min(660px);
   display: flex;
   flex-direction: column;
   color: rgba(38, 22, 12, 0.92);
   z-index: 170;
-}
-
-.hud-panel::before,
-.hud-panel::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.22) 0%,
-    rgba(255, 255, 255, 0) 70%
-  );
-  opacity: 0.45;
-  pointer-events: none;
 }
 
 .hud-panel::before {
