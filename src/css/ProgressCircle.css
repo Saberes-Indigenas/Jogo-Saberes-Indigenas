@@ -10,6 +10,19 @@
   overflow: hidden;
 }
 
+.e-card__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.e-card__content > * {
+  pointer-events: auto;
+}
+
 .wave {
   position: absolute;
   width: 540px;

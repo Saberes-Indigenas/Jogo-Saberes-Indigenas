@@ -2,7 +2,14 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import type { Clan, Item, RewardCelebration } from "../types";
-import { DEFAULT_MAX_ROUNDS } from "../config/gameSession";
+import {
+  DEFAULT_MAX_ROUNDS,
+  FEATHER_REWARD_MULTIPLIER,
+  FEATHER_STREAK_REQUIREMENT,
+  URUCUM_SEED_BASE_REWARD,
+  calculateMaxUrucumSeeds,
+  getFeatherCapacity,
+} from "../config/gameSession";
 // A importação do HEADER_HEIGHT não é mais necessária para o cálculo do drop
 // import { HEADER_HEIGHT } from "../config/layoutConstants";
 
@@ -108,6 +115,14 @@ export const useGameLogic = (
 
   const totalItems = sessionTotalItems;
   const totalItemsByColor = sessionTotalByColor;
+  const maxFeatherCapacity = useMemo(
+    () => getFeatherCapacity(sessionTotalItems),
+    [sessionTotalItems]
+  );
+  const maxUrucumSeeds = useMemo(
+    () => calculateMaxUrucumSeeds(sessionTotalItems),
+    [sessionTotalItems]
+  );
 
   const getColorKey = (color: string | undefined): "red" | "black" =>
     color?.toLowerCase() === "#b52323" ? "red" : "black";
@@ -425,8 +440,10 @@ export const useGameLogic = (
 
     if (targetClan && item.correct_clan_id === targetClan.id) {
       const newStreak = streak + 1;
-      const earnedPoints = 100 + newStreak * 25;
-      setScore((prev) => prev + earnedPoints);
+      const earnedSeeds =
+        URUCUM_SEED_BASE_REWARD *
+        Math.pow(FEATHER_REWARD_MULTIPLIER, Math.max(featherCount, 0));
+      setScore((prev) => prev + earnedSeeds);
       setStreak(newStreak);
       setMaxStreak((prev) => Math.max(prev, newStreak));
       setCompletedCount((prev) => prev + 1);
@@ -458,13 +475,27 @@ export const useGameLogic = (
       setSpotlightItem({ ...item });
       playPronunciation(item);
 
-      if (newStreak > 0 && newStreak % 3 === 0) {
-        setFeatherCount((prev) => prev + 1);
-        triggerCelebration({
-          icon: "🪶",
-          label: "Você ganhou uma Pluma do Conhecimento!",
-          accentColor: "#ffe082",
+      if (
+        newStreak > 0 &&
+        newStreak % FEATHER_STREAK_REQUIREMENT === 0
+      ) {
+        let hasGainedFeather = false;
+        setFeatherCount((prev) => {
+          const tentativeCount = prev + 1;
+          const cappedCount =
+            maxFeatherCapacity > 0
+              ? Math.min(tentativeCount, maxFeatherCapacity)
+              : tentativeCount;
+          hasGainedFeather = cappedCount > prev;
+          return cappedCount;
         });
+        if (hasGainedFeather) {
+          triggerCelebration({
+            icon: "🪶",
+            label: "Você ganhou uma Pluma do Conhecimento!",
+            accentColor: "#ffe082",
+          });
+        }
       } else if (newStreak === 1) {
         triggerCelebration({
           icon: "🔥",
@@ -565,6 +596,8 @@ export const useGameLogic = (
     featherCount,
     completedCount,
     totalItems,
+    maxFeatherCapacity,
+    maxUrucumSeeds,
     completedByColor,
     totalItemsByColor,
     spotlightItem,

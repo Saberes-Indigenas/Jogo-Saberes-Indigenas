@@ -1,10 +1,7 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 
-import {
-  FEATHERS_PER_ROUND,
-  getFeatherCapacity,
-} from "../../config/gameSession";
+import { FEATHER_STREAK_REQUIREMENT } from "../../config/gameSession";
 
 import { FeatherIcon } from "./HudIcons";
 
@@ -12,13 +9,23 @@ import "./FeatherRack.css";
 
 interface FeatherRackProps {
   feathers: number;
-  maxRounds: number;
+  maxFeathers: number;
 }
 
-const FeatherRack = ({ feathers, maxRounds }: FeatherRackProps) => {
-  const totalSlots = useMemo(() => getFeatherCapacity(maxRounds), [maxRounds]);
+const FeatherRack = ({ feathers, maxFeathers }: FeatherRackProps) => {
+  const totalSlots = useMemo(
+    () => Math.max(Math.floor(maxFeathers), 0),
+    [maxFeathers]
+  );
+  const displaySlots = useMemo(
+    () => Math.max(totalSlots, 1),
+    [totalSlots]
+  );
   const filledSlots = Math.min(Math.max(feathers, 0), totalSlots);
-  const slots = useMemo(() => Array.from({ length: totalSlots }), [totalSlots]);
+  const slots = useMemo(
+    () => Array.from({ length: displaySlots }),
+    [displaySlots]
+  );
 
   return (
     <article
@@ -36,7 +43,7 @@ const FeatherRack = ({ feathers, maxRounds }: FeatherRackProps) => {
             <span className="hud-feather-rack__total">/{totalSlots}</span>
           </strong>
           <span className="hud-module__hint">
-            {FEATHERS_PER_ROUND} pluma por rodada concluída
+            1 pluma a cada {FEATHER_STREAK_REQUIREMENT} acertos consecutivos
           </span>
         </div>
       </header>

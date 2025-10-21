@@ -14,6 +14,7 @@ interface HudPanelProps {
   streak: number;
   maxStreak: number;
   feathers: number;
+  maxFeathers: number;
   completed: number;
   total: number;
   redCompleted: number;
@@ -29,6 +30,7 @@ interface HudPanelProps {
 const HudPanel = ({
   score,
   feathers,
+  maxFeathers,
   completed,
   total,
   redCompleted,
@@ -74,6 +76,10 @@ const HudPanel = ({
 
   const effectiveMaxRounds =
     maxRounds && maxRounds > 0 ? maxRounds : DEFAULT_MAX_ROUNDS;
+  const safeCurrentRound = Math.min(
+    Math.max(currentRound, 0),
+    effectiveMaxRounds
+  );
 
   const panelVariants = {
     hidden: { opacity: 0, scale: 0.9, x: "-50%", y: "-45%" },
@@ -158,8 +164,8 @@ const HudPanel = ({
               blackCompleted={blackCompleted}
               redTotal={redTotal}
               blackTotal={blackTotal}
-              currentRound={currentRound}
-              maxRounds={maxRounds}
+              currentRound={safeCurrentRound}
+              maxRounds={effectiveMaxRounds}
               circleSize={196}
             />
           </motion.div>
@@ -167,7 +173,7 @@ const HudPanel = ({
             className="hud-panel__module hud-panel__module--feather"
             variants={moduleVariants}
           >
-            <FeatherRack feathers={feathers} maxRounds={effectiveMaxRounds} />
+            <FeatherRack feathers={feathers} maxFeathers={maxFeathers} />
           </motion.div>
         </motion.div>
       </motion.section>

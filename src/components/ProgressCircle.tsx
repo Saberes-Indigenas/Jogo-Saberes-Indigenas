@@ -46,6 +46,7 @@ const ProgressCircle = ({
         animate={{ marginTop: waveOffset }}
         transition={{ duration: 0.9, ease: "easeInOut" }}
       />
+      {children ? <div className="e-card__content">{children}</div> : null}
     </div>
   );
 };

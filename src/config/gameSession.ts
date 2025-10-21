@@ -3,12 +3,40 @@
 // Valor padrão de rodadas que pode ser ajustado conforme a jornada.
 export const DEFAULT_MAX_ROUNDS = 5;
 
-// Quantidade de plumas concedidas por rodada concluída.
-export const FEATHERS_PER_ROUND = 1;
+// Quantidade necessária de acertos consecutivos para conquistar uma nova pluma.
+export const FEATHER_STREAK_REQUIREMENT = 4;
 
-export const getFeatherCapacity = (rounds: number): number => {
-  const normalizedRounds = Math.max(rounds, 0);
-  const effectiveRounds =
-    normalizedRounds > 0 ? normalizedRounds : DEFAULT_MAX_ROUNDS;
-  return effectiveRounds * FEATHERS_PER_ROUND;
+// Recompensa base de sementes de urucum por acerto correto.
+export const URUCUM_SEED_BASE_REWARD = 10;
+
+// Multiplicador aplicado à recompensa de sementes para cada pluma conquistada.
+export const FEATHER_REWARD_MULTIPLIER = 2;
+
+export const getFeatherCapacity = (totalDeliveries: number): number => {
+  const normalizedDeliveries = Math.max(totalDeliveries, 0);
+  if (normalizedDeliveries === 0) {
+    return 0;
+  }
+
+  return Math.floor(normalizedDeliveries / FEATHER_STREAK_REQUIREMENT);
+};
+
+export const calculateMaxUrucumSeeds = (totalDeliveries: number): number => {
+  const normalizedDeliveries = Math.max(totalDeliveries, 0);
+
+  let feathers = 0;
+  let totalSeeds = 0;
+
+  for (let deliveryIndex = 0; deliveryIndex < normalizedDeliveries; deliveryIndex += 1) {
+    const deliveryPosition = deliveryIndex + 1;
+    totalSeeds +=
+      URUCUM_SEED_BASE_REWARD *
+      Math.pow(FEATHER_REWARD_MULTIPLIER, Math.max(feathers, 0));
+
+    if (deliveryPosition % FEATHER_STREAK_REQUIREMENT === 0) {
+      feathers += 1;
+    }
+  }
+
+  return totalSeeds;
 };

@@ -133,6 +133,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     featherCount,
     completedCount,
     totalItems,
+    maxFeatherCapacity,
     completedByColor,
     totalItemsByColor,
     spotlightItem,
@@ -275,6 +276,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
                 streak={streak}
                 maxStreak={maxStreak}
                 feathers={featherCount}
+                maxFeathers={maxFeatherCapacity}
                 completed={completedCount}
                 total={totalItems}
                 redCompleted={completedByColor.red}
