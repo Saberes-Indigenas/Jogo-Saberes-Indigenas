@@ -138,22 +138,14 @@ const HudPanel = ({
           initial="hidden"
           animate="visible"
         >
-          BORORO
-        </motion.div>
-        <motion.div
-          className="hud-panel__body"
-          variants={modulesWrapperVariants}
-          initial="hidden"
-          animate="visible"
-        >
           <motion.div
-            className="hud-panel__module hud-panel__module--score"
+            className="hud-panel__module--score"
             variants={moduleVariants}
           >
             <ScoreIndicator score={score} />
           </motion.div>
           <motion.div
-            className="hud-panel__module hud-panel__module--progress"
+            className="hud-panel__module--progress"
             variants={moduleVariants}
           >
             <ProgressIndicator
@@ -170,7 +162,7 @@ const HudPanel = ({
             />
           </motion.div>
           <motion.div
-            className="hud-panel__module hud-panel__module--feather"
+            className="hud-panel__module--feather"
             variants={moduleVariants}
           >
             <FeatherRack feathers={feathers} maxFeathers={maxFeathers} />

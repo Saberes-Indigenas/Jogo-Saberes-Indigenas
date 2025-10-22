@@ -52,8 +52,7 @@
   grid-template-areas:
     "score progress feathers"
     "streak streak streak";
-  align-items: stretch;
-  overflow-y: auto;
+  height: 100%;
   padding-right: 10px;
   margin-right: -10px;
 }
@@ -63,9 +62,6 @@
   width: 100%;
 }
 
-.hud-panel__module--score {
-  grid-area: score;
-}
 
 .hud-panel__module--progress {
   grid-area: progress;
@@ -119,7 +115,7 @@
 .hud-module__content {
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.2rem;
 }
 
 .hud-module__label {
