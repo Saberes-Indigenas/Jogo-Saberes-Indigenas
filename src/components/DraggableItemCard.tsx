@@ -26,16 +26,13 @@ const DraggableItemCard = ({
         )}
         <span className="draggable-item__shine" />
       </div>
-      <div className="draggable-item__labels">
+      <div className="">
         <span className="item-name-boe" title={boeName}>
           {boeName}
         </span>
-        <span className="item-name-pt" title={item.name}>
-          {item.name}
-        </span>
       </div>
       <span className="item-name-clan" title={clanLabel}>
-        {clanLabel}
+        {item.name}
       </span>
     </>
   );

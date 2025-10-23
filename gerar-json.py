@@ -127,7 +127,7 @@ for clan_data in data:
                 if len(parts) > 1:
                     name_portuguese = parts[1].replace(')', '').strip()
                 else:
-                    # Se não houver parênteses, usamos o nome Boe como nome em português
+                    # Se não houver parênteses, usamos o nome Boe como nome em português (fallback)
                     name_portuguese = name_boe 
 
                 # Passo 2: Formatar ID e determinar atributos
