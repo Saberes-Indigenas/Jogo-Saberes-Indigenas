@@ -6,12 +6,6 @@ import "../css/GameHud.css";
 import villageSvg from "../assets/hud/bororo.svg?raw";
 
 interface GameHudProps {
-  redCompleted: number;
-  blackCompleted: number;
-  redTotal: number;
-  blackTotal: number;
-  currentRound: number;
-  maxRounds: number;
   stageCenter: { x: number; y: number } | null;
   isOpen: boolean; // Recebe o estado de visibilidade
   onToggle: () => void; // Recebe a função para alternar a visibilidade
@@ -204,15 +198,17 @@ const DualProgressRing = ({
   );
 };
 
+import { useGameStore } from "../store/useGameStore";
+
 const GameHud = ({
-  redCompleted,
-  blackCompleted,
-  redTotal,
-  blackTotal,
   stageCenter,
   isOpen,
   onToggle,
 }: GameHudProps) => {
+  const redCompleted = useGameStore(s => s.completedByColor.red);
+  const blackCompleted = useGameStore(s => s.completedByColor.black);
+  const redTotal = useGameStore(s => s.sessionTotalByColor.red);
+  const blackTotal = useGameStore(s => s.sessionTotalByColor.black);
   const redPercent = useMemo(
     () => (redTotal > 0 ? (redCompleted / redTotal) * 100 : 0),
     [redCompleted, redTotal]

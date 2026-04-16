@@ -1,25 +1,18 @@
 import React, { useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Item } from "../types";
+import { useGameStore } from "../store/useGameStore";
 import "../css/ItemTray.css";
 import DraggableItemCard from "./DraggableItemCard";
 import LearningCard from "./LearningCard";
 
-interface ItemTrayProps {
-  items: Item[];
-  draggingItemId: string | null;
-  spotlightItem: Item | null;
-  onDragStart: (e: React.DragEvent, item: Item, rect: DOMRect) => void;
-  onDragEnd: () => void;
-}
+const ItemTray = () => {
+  const items = useGameStore(s => s.menuItems);
+  const draggingItemId = useGameStore(s => s.draggingItemId);
+  const spotlightItem = useGameStore(s => s.spotlightItem);
+  const onDragStart = useGameStore(s => s.handleDragStart);
+  const onDragEnd = useGameStore(s => s.handleDragEnd);
 
-const ItemTray = ({
-  items,
-  draggingItemId,
-  spotlightItem,
-  onDragStart,
-  onDragEnd,
-}: ItemTrayProps) => {
   const itemRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
 
   const handleDragStart = (e: React.DragEvent, item: Item) => {
@@ -28,7 +21,6 @@ const ItemTray = ({
       const rect = node.getBoundingClientRect();
       if (e.dataTransfer) {
         e.dataTransfer.effectAllowed = "move";
-        // Definir dados garante que navegadores como Firefox disparem o evento de drop
         e.dataTransfer.setData("application/x-item-id", item.id);
         e.dataTransfer.setData("text/plain", item.id);
         const pixelRatio = window.devicePixelRatio || 1;
