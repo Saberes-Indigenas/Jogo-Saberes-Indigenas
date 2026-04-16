@@ -1,24 +1,7 @@
-/* Arquivo: src/components/GameModals.tsx */
-
 import { motion, AnimatePresence } from "framer-motion";
+import { useGameStore } from "../store/useGameStore";
 import "../css/GameModal.css";
 
-// A interface agora espera o tipo da mensagem
-interface GameModalsProps {
-  isGameOver: boolean;
-  isMessageVisible: boolean;
-  message: string;
-  messageType: "success" | "error" | "roundComplete"; // Tipos possíveis
-  score: number;
-  feathers: number;
-  maxStreak: number;
-  completed: number;
-  total: number;
-  currentRound: number;
-  maxRounds: number;
-}
-
-// Variantes de animação (sem alterações)
 const feedbackVariants = {
   initial: { y: -100, scale: 0.5, rotate: 15, opacity: 0 },
   animate: {
@@ -67,31 +50,29 @@ const gameOverContentVariants = {
   },
 };
 
-// O componente agora recebe 'messageType' via props
-const GameModals = ({
-  isGameOver,
-  isMessageVisible,
-  message,
-  messageType,
-  score,
-  feathers,
-  maxStreak,
-  completed,
-  total,
-  currentRound,
-  maxRounds,
-}: GameModalsProps) => {
+const GameModals = () => {
+  const isGameOver = useGameStore(s => s.isGameOver);
+  const isMessageVisible = useGameStore(s => s.isMessageVisible);
+  const message = useGameStore(s => s.message);
+  const messageType = useGameStore(s => s.messageType);
+  const score = useGameStore(s => s.score);
+  const feathers = useGameStore(s => s.featherCount);
+  const maxStreak = useGameStore(s => s.maxStreak);
+  const completed = useGameStore(s => s.completedCount);
+  const total = useGameStore(s => s.sessionTotalItems);
+  const currentRound = useGameStore(s => s.currentRound);
+  const maxRounds = useGameStore(s => s.maxRounds);
+
   const displayMaxRounds = Math.max(maxRounds, 1);
   const displayCompletedRounds = Math.min(
     currentRound > 0 ? currentRound : displayMaxRounds,
     displayMaxRounds
   );
+
   return (
     <AnimatePresence>
-      {/* Mensagem de Feedback */}
       {isMessageVisible && (
         <motion.div
-          // A classe é construída dinamicamente para aplicar o estilo correto
           className={`feedbackMessage ${messageType}`}
           variants={feedbackVariants}
           initial="initial"
@@ -102,7 +83,6 @@ const GameModals = ({
         </motion.div>
       )}
 
-      {/* Tela de Fim de Jogo */}
       {isGameOver && (
         <motion.div
           className="gameOverScreen"

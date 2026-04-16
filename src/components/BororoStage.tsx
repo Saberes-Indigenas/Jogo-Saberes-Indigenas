@@ -1,53 +1,31 @@
-/* Arquivo: src/components/BororoStage.tsx */
-
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Stage, Layer, Image as KonvaImage } from "react-konva";
-import type { Clan, Item, PulseState } from "../types";
+import { useGameStore } from "../store/useGameStore";
 import ClanTarget from "./ClanTarget";
 import FeedbackPulse from "./FeedbackPulse";
 import EnteringOffering from "./EnteringOffering";
-import type { EnteringOffering as EnteringOfferingState } from "../hooks/useGameLogic";
 import ChaoBororo from "../assets/chãoBororo.svg";
 
 interface BororoStageProps {
-  clans: Clan[];
-  clanTargets: { [key: string]: { x: number; y: number } };
-  enteringOfferings: EnteringOfferingState[];
-  feedbackPulse: PulseState;
-  layout: {
-    gameAreaWidth: number;
-    gameAreaHeight: number;
-    centroX: number;
-    centroY: number;
-    raioPalco: number;
-  };
-  onDragOver: (e: React.DragEvent) => void;
-  onDrop: (e: React.DragEvent) => void;
-  onPulseComplete: () => void;
-  onOfferingComplete: (offering: EnteringOfferingState) => void;
-  clanInventories: Map<string, Item[]>;
-  recentDeliveries: { [clanId: string]: number };
   onClanClick: (clanId: string) => void;
   onReady?: () => void;
-  resetClanAnimationsKey: number;
+  gameAreaWrapperRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const BororoStage = ({
-  clans,
-  clanTargets,
-  enteringOfferings,
-  feedbackPulse,
-  layout,
-  onDragOver,
-  onDrop,
-  onPulseComplete,
-  onOfferingComplete,
-  clanInventories,
-  recentDeliveries,
-  onClanClick,
-  onReady,
-  resetClanAnimationsKey,
-}: BororoStageProps) => {
+const BororoStage = ({ onClanClick, onReady, gameAreaWrapperRef }: BororoStageProps) => {
+  const clans = useGameStore(s => s.clans);
+  const clanTargets = useGameStore(s => s.clanTargets);
+  const enteringOfferings = useGameStore(s => s.enteringOfferings);
+  const feedbackPulse = useGameStore(s => s.feedbackPulse);
+  const layout = useGameStore(s => s.layout);
+  const clanInventories = useGameStore(s => s.clanInventories);
+  const recentDeliveries = useGameStore(s => s.recentDeliveries);
+  const resetClanAnimationsKey = useGameStore(s => s.resetClanAnimationsKey);
+  const handleDragOver = useGameStore(s => s.handleDragOver);
+  const handleDrop = useGameStore(s => s.handleDrop);
+  const onPulseComplete = useGameStore(s => s.clearFeedbackPulse);
+  const onOfferingComplete = useGameStore(s => s.registerOfferingArrival);
+
   const clanEntries = Object.entries(clanTargets);
   const clearingRadius = layout.raioPalco * 1.04;
 
@@ -56,12 +34,10 @@ const BororoStage = ({
     return Math.min(window.devicePixelRatio || 1, 1.5);
   }, []);
 
-  // --- ESTADOS DE IMAGEM E CONTROLE ---
   const [chaoImage, setChaoImage] = useState<HTMLImageElement | null>(null);
   const [isGroundReady, setIsGroundReady] = useState(false);
   const hasSignaledReadyRef = useRef(false);
 
-  // --- CARREGAMENTO ROBUSTO DO SVG (EVITA WIDTH/HEIGHT = 0) ---
   useEffect(() => {
     let url: string | null = null;
 
@@ -102,25 +78,29 @@ const BororoStage = ({
     };
   }, []);
 
-  // --- AVISO AO GAMESTAGE QUANDO ESTIVER PRONTO ---
   useEffect(() => {
     if (!isGroundReady || hasSignaledReadyRef.current) return;
     hasSignaledReadyRef.current = true;
     onReady?.();
   }, [isGroundReady, onReady]);
 
-  // --- TAMANHO FINAL DO CHÃO ---
   const svgSize = clearingRadius * 2;
 
+  const handleStageDrop = (e: React.DragEvent) => {
+    if (gameAreaWrapperRef.current) {
+      const stageRect = gameAreaWrapperRef.current.getBoundingClientRect();
+      handleDrop(e, stageRect);
+    }
+  };
+
   return (
-    <main className="game-area" onDragOver={onDragOver} onDrop={onDrop}>
+    <main className="game-area" onDragOver={handleDragOver} onDrop={handleStageDrop}>
       <Stage
         width={layout.gameAreaWidth}
         height={layout.gameAreaHeight}
         pixelRatio={stagePixelRatio}
       >
         <Layer>
-          {/* --- CHÃO BORORO (SEGURANÇA ADICIONAL) --- */}
           {chaoImage && chaoImage.width > 0 && chaoImage.height > 0 && (
             <KonvaImage
               image={chaoImage}
@@ -135,7 +115,6 @@ const BororoStage = ({
             />
           )}
 
-          {/* --- TOTENS DOS CLÃS --- */}
           {clanEntries.map(([clanId, pos]) => {
             const clan = clans.find((c) => c.id === clanId);
             if (!clan) return null;
@@ -157,16 +136,14 @@ const BororoStage = ({
             );
           })}
 
-          {/* --- ANIMAÇÕES DE OFERENDAS --- */}
           {enteringOfferings.map((offering) => (
             <EnteringOffering
               key={offering.key}
               offering={offering}
-              onComplete={onOfferingComplete}
+              onComplete={(off) => onOfferingComplete(off.key, off.clanId, off.item)}
             />
           ))}
 
-          {/* --- FEEDBACK VISUAL (PULSO DE COR) --- */}
           {feedbackPulse && (
             <FeedbackPulse
               key={feedbackPulse.key}

@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import type { Clan, Item } from "../types";
 import { useGameLogic } from "../hooks/useGameLogic";
-import type { EnteringOffering } from "../hooks/useGameLogic";
+import { useGameStore } from "../store/useGameStore";
 import ItemTray from "./ItemTray";
 import BororoStage from "./BororoStage";
 import GameModals from "./GameModals";
@@ -92,16 +92,12 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     return { gameAreaWidth, gameAreaHeight, centroX, centroY, raioPalco };
   }, [gameAreaRect]);
 
-  // --- CÁLCULO DO CENTRO ABSOLUTO CORRIGIDO ---
   const backgroundCenter = useMemo(
     () => ({
-      // A posição do centro do palco na TELA (eixo X)
       x: gameAreaRect.left + layout.centroX,
-      // CORREÇÃO: A posição Y é simplesmente a metade da altura total do container.
-      // O `centroY` do layout já lida com o offset do header internamente para o palco.
       y: gameAreaRect.top + gameAreaRect.height / 2,
     }),
-    [gameAreaRect, layout.centroX] // Removida a dependência de layout.centroY
+    [gameAreaRect, layout.centroX] 
   );
 
   useEffect(() => {
@@ -114,40 +110,15 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     }
   }, [backgroundCenter]);
 
-  const {
-    menuItems,
-    enteringOfferings,
-    clanTargets,
-    isGameOver,
-    currentRound,
-    maxRounds,
-    isMessageVisible,
-    message,
-    messageType,
-    draggingItemId,
-    feedbackPulse,
-    returningItem,
-    score,
-    streak,
-    maxStreak,
-    featherCount,
-    completedCount,
-    totalItems,
-    maxFeatherCapacity,
-    completedByColor,
-    totalItemsByColor,
-    spotlightItem,
-    clearFeedbackPulse,
-    onReturnAnimationComplete,
-    handleDragStart,
-    handleDragEnd,
-    handleDragOver,
-    handleDrop,
-    clanInventories,
-    recentDeliveries,
-    registerOfferingArrival,
-    resetClanAnimationsKey,
-  } = useGameLogic(clans, initialItems, layout);
+  // Inicializa o game logic apenas atuando como vinculador
+  useGameLogic(clans, initialItems, layout);
+
+  const clanInventories = useGameStore((state) => state.clanInventories);
+  const clanTargets = useGameStore((state) => state.clanTargets);
+  const returningItem = useGameStore((state) => state.returningItem);
+  const isGameOver = useGameStore((state) => state.isGameOver);
+  const isMessageVisible = useGameStore((state) => state.isMessageVisible);
+  const celebration = useGameStore((state) => state.celebration);
 
   const [isStageReady, setStageReady] = useState(false);
   const [isForestReady, setForestReady] = useState(false);
@@ -211,12 +182,6 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
     [clanInventories, clans, clanTargets, layout.centroX, layout.centroY]
   );
 
-  const handleOfferingAnimationComplete = useCallback(
-    (offering: EnteringOffering) => {
-      registerOfferingArrival(offering.key, offering.clanId, offering.item);
-    },
-    [registerOfferingArrival]
-  );
   const chaoFlorestaSize = layout.raioPalco * 5;
   return (
     <div className="game-container" aria-busy={!isGameReady}>
@@ -229,22 +194,16 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
         className={`game-content${isGameReady ? " game-content--visible" : ""}`}
         aria-hidden={!isGameReady}
       >
-        {/* Só renderizamos quando o centro foi calculado para evitar um "pulo" */}
         {layout.raioPalco > 0 && (
           <img
             src={chaoBororoFloresta}
-            alt="" // Imagem puramente decorativa, alt vazio é apropriado
+            alt="" 
             className="chao-floresta-background"
             style={{
               width: chaoFlorestaSize,
               height: chaoFlorestaSize,
-              // A mágica da centralização acontece aqui:
-              // Pegamos o ponto central (backgroundCenter) e subtraímos metade
-              // do tamanho da imagem para encontrar o ponto top-left correto.
               left: backgroundCenter.x,
               top: backgroundCenter.y,
-              // 2. Usamos 'transform' para que o CSS mova a imagem para trás
-              //    em 50% da sua própria largura e altura, centralizando-a perfeitamente.
               transform: "translate(-50%, -50%)",
             }}
           />
@@ -258,98 +217,50 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             onReady={() => setForestReady(true)}
           />
           <GameHud
-            redCompleted={completedByColor.red}
-            blackCompleted={completedByColor.black}
-            redTotal={totalItemsByColor.red}
-            blackTotal={totalItemsByColor.black}
-            currentRound={currentRound}
-            maxRounds={maxRounds}
             isOpen={isHudPanelOpen}
-            onToggle={() => setIsHudPanelOpen((prev) => !prev)} // Função para abrir/fechar
+            onToggle={() => setIsHudPanelOpen((prev) => !prev)} 
             stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
           />
           <AnimatePresence>
             {isHudPanelOpen && (
               <HudPanel
-                key="hud-panel" // Chave é importante para AnimatePresence
-                score={score}
-                streak={streak}
-                maxStreak={maxStreak}
-                feathers={featherCount}
-                maxFeathers={maxFeatherCapacity}
-                completed={completedCount}
-                total={totalItems}
-                redCompleted={completedByColor.red}
-                blackCompleted={completedByColor.black}
-                redTotal={totalItemsByColor.red}
-                blackTotal={totalItemsByColor.black}
-                currentRound={currentRound}
-                maxRounds={maxRounds}
-                onClose={() => setIsHudPanelOpen(false)} // Função para fechar
+                key="hud-panel" 
+                onClose={() => setIsHudPanelOpen(false)} 
                 stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
               />
             )}
           </AnimatePresence>
 
           {isGameReady && (
-            <ItemTray
-              items={menuItems}
-              draggingItemId={draggingItemId}
-              spotlightItem={spotlightItem}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-            />
+            <ItemTray />
           )}
         </div>
         <div className="game-area-wrapper" ref={gameAreaWrapperRef}>
           <BororoStage
-            resetClanAnimationsKey={resetClanAnimationsKey}
-            clans={clans}
-            clanTargets={clanTargets}
-            enteringOfferings={enteringOfferings}
-            feedbackPulse={feedbackPulse}
-            layout={layout}
-            onDragOver={handleDragOver}
-            onDrop={(e) => {
-              if (gameAreaWrapperRef.current) {
-                const stageRect =
-                  gameAreaWrapperRef.current.getBoundingClientRect();
-                handleDrop(e, stageRect);
-              }
-            }}
-            onPulseComplete={clearFeedbackPulse}
-            onOfferingComplete={handleOfferingAnimationComplete}
-            clanInventories={clanInventories}
-            recentDeliveries={recentDeliveries}
             onClanClick={handleClanClick}
             onReady={() => setStageReady(true)}
+            gameAreaWrapperRef={gameAreaWrapperRef}
           />
         </div>
-        <ReturningItemOverlay
-          returningItem={returningItem}
-          layout={layout}
-          containerRect={gameAreaRect}
-          onComplete={onReturnAnimationComplete}
-        />
+        
+        {returningItem && (
+          <ReturningItemOverlay
+            returningItem={returningItem}
+            layout={layout}
+            containerRect={gameAreaRect}
+            onComplete={() => useGameStore.getState().onReturnAnimationComplete()}
+          />
+        )}
+        
         <ClanInfoBubble
           activeBubble={activeBubble}
           containerRect={gameAreaRect}
           onClose={closeBubble}
         />
 
-        <GameModals
-          isGameOver={isGameOver}
-          isMessageVisible={isMessageVisible}
-          message={message}
-          messageType={messageType}
-          score={score}
-          feathers={featherCount}
-          maxStreak={maxStreak}
-          completed={completedCount}
-          total={totalItems}
-          currentRound={currentRound}
-          maxRounds={maxRounds}
-        />
+        {(isGameOver || isMessageVisible || celebration) && (
+          <GameModals />
+        )}
       </div>
     </div>
   );

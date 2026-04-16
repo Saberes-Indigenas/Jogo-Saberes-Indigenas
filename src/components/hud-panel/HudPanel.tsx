@@ -1,49 +1,34 @@
 import { useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
-
 import { DEFAULT_MAX_ROUNDS } from "../../config/gameSession";
-
 import FeatherRack from "./FeatherRack";
 import ProgressIndicator from "./ProgressIndicator";
 import ScoreIndicator from "./ScoreIndicator";
-
+import { useGameStore } from "../../store/useGameStore";
 import "./HudPanel.css";
 
 interface HudPanelProps {
-  score: number;
-  streak: number;
-  maxStreak: number;
-  feathers: number;
-  maxFeathers: number;
-  completed: number;
-  total: number;
-  redCompleted: number;
-  blackCompleted: number;
-  redTotal: number;
-  blackTotal: number;
-  currentRound: number;
-  maxRounds: number;
   stageCenter: { x: number; y: number } | null;
   onClose: () => void;
 }
 
 const HudPanel = ({
-  score,
-  feathers,
-  maxFeathers,
-  completed,
-  total,
-  redCompleted,
-  blackCompleted,
-  redTotal,
-  blackTotal,
-  currentRound,
-  maxRounds,
   stageCenter,
   onClose,
 }: HudPanelProps) => {
-  const progress =
-    total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
+  const score = useGameStore(s => s.score);
+  const feathers = useGameStore(s => s.featherCount);
+  const maxFeathers = useGameStore(s => s.maxFeatherCapacity);
+  const completed = useGameStore(s => s.completedCount);
+  const total = useGameStore(s => s.sessionTotalItems);
+  const redCompleted = useGameStore(s => s.completedByColor.red);
+  const blackCompleted = useGameStore(s => s.completedByColor.black);
+  const redTotal = useGameStore(s => s.sessionTotalByColor.red);
+  const blackTotal = useGameStore(s => s.sessionTotalByColor.black);
+  const currentRound = useGameStore(s => s.currentRound);
+  const maxRounds = useGameStore(s => s.maxRounds);
+
+  const progress = total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
   const panelRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -74,12 +59,8 @@ const HudPanel = ({
     };
   }, [stageCenter]);
 
-  const effectiveMaxRounds =
-    maxRounds && maxRounds > 0 ? maxRounds : DEFAULT_MAX_ROUNDS;
-  const safeCurrentRound = Math.min(
-    Math.max(currentRound, 0),
-    effectiveMaxRounds
-  );
+  const effectiveMaxRounds = maxRounds && maxRounds > 0 ? maxRounds : DEFAULT_MAX_ROUNDS;
+  const safeCurrentRound = Math.min(Math.max(currentRound, 0), effectiveMaxRounds);
 
   const panelVariants = {
     hidden: { opacity: 0, scale: 0.9, x: "-50%", y: "-45%" },
