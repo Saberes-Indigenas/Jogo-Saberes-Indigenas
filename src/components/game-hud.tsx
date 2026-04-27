@@ -1,59 +1,64 @@
 import { useMemo } from "react";
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
+import { useGameStore } from "../store/useGameStore";
 import "../css/GameHud.css";
 
 import villageSvg from "../assets/hud/bororo.svg?raw";
 
 interface GameHudProps {
   stageCenter: { x: number; y: number } | null;
-  isOpen: boolean; // Recebe o estado de visibilidade
-  onToggle: () => void; // Recebe a função para alternar a visibilidade
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-const InlineHudIcon = ({
+function InlineHudIcon({
   svg,
   className = "",
 }: {
   svg: string;
   className?: string;
-}) => (
-  <span
-    aria-hidden="true"
-    role="img"
-    className={`hud-icon ${className}`.trim()}
-    dangerouslySetInnerHTML={{ __html: svg }}
-  />
-);
+}) {
+  return (
+    <span
+      aria-hidden="true"
+      role="img"
+      className={`hud-icon ${className}`.trim()}
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
+}
 
-const VillageIcon = () => (
-  <InlineHudIcon svg={villageSvg} className="hud-icon--village" />
-);
+function VillageIcon() {
+  return <InlineHudIcon svg={villageSvg} className="hud-icon--village" />;
+}
 
-const clampPercentage = (value: number) => Math.min(100, Math.max(0, value));
+function clampPercentage(value: number) {
+  return Math.min(100, Math.max(0, value));
+}
 
-const polarToCartesian = (
+function polarToCartesian(
   centerX: number,
   centerY: number,
   radius: number,
   angleInDegrees: number
-) => {
+) {
   const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
 
   return {
     x: centerX + radius * Math.cos(angleInRadians),
     y: centerY + radius * Math.sin(angleInRadians),
   };
-};
+}
 
-const describeArc = (
+function describeArc(
   centerX: number,
   centerY: number,
   radius: number,
   startAngle: number,
   endAngle: number,
   sweepFlag: 0 | 1
-) => {
+) {
   const start = polarToCartesian(centerX, centerY, radius, startAngle);
   const end = polarToCartesian(centerX, centerY, radius, endAngle);
   const largeArcFlag = Math.abs(endAngle - startAngle) >= 180 ? 1 : 0;
@@ -63,7 +68,7 @@ const describeArc = (
   }
 
   return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${end.x} ${end.y}`;
-};
+}
 
 interface DualProgressRingProps {
   redPercent: number;
@@ -75,7 +80,7 @@ interface DualProgressRingProps {
   children?: ReactNode;
 }
 
-const DualProgressRing = ({
+function DualProgressRing({
   redPercent,
   blackPercent,
   size = 128,
@@ -83,7 +88,7 @@ const DualProgressRing = ({
   trackWidth = strokeWidth + 2,
   className = "",
   children,
-}: DualProgressRingProps) => {
+}: DualProgressRingProps) {
   const radius = useMemo(() => {
     const maxStroke = Math.max(strokeWidth, trackWidth);
     return Math.max(12, (size - maxStroke) / 2);
@@ -136,15 +141,15 @@ const DualProgressRing = ({
           <filter id="hud-earth-texture">
             <feTurbulence
               type="fractalNoise"
-              baseFrequency="0.035" /* Levemente ajustado para um grão mais orgânico */
+              baseFrequency="0.035"
               numOctaves="3"
               seed="10"
               result="noise"
             />
             <feDiffuseLighting
               in="noise"
-              lightingColor="#532804" /* A sua nova cor */
-              surfaceScale="3" /* Aumentado para dar mais profundidade */
+              lightingColor="#532804"
+              surfaceScale="3"
               result="lighting"
             >
               <feDistantLight azimuth="235" elevation="60" />
@@ -155,7 +160,6 @@ const DualProgressRing = ({
               operator="in"
               result="textured"
             />
-            {/* O modo "overlay" funciona melhor com cores escuras, misturando a textura sem escurecer demais */}
             <feBlend in="SourceGraphic" in2="textured" mode="overlay" />
           </filter>
         </defs>
@@ -196,19 +200,14 @@ const DualProgressRing = ({
       <div className="hud-progress-ring__totem">{children}</div>
     </div>
   );
-};
+}
 
-import { useGameStore } from "../store/useGameStore";
+export function GameHud({ stageCenter, isOpen, onToggle }: GameHudProps) {
+  const redCompleted = useGameStore((s) => s.completedByColor.red);
+  const blackCompleted = useGameStore((s) => s.completedByColor.black);
+  const redTotal = useGameStore((s) => s.sessionTotalByColor.red);
+  const blackTotal = useGameStore((s) => s.sessionTotalByColor.black);
 
-const GameHud = ({
-  stageCenter,
-  isOpen,
-  onToggle,
-}: GameHudProps) => {
-  const redCompleted = useGameStore(s => s.completedByColor.red);
-  const blackCompleted = useGameStore(s => s.completedByColor.black);
-  const redTotal = useGameStore(s => s.sessionTotalByColor.red);
-  const blackTotal = useGameStore(s => s.sessionTotalByColor.black);
   const redPercent = useMemo(
     () => (redTotal > 0 ? (redCompleted / redTotal) * 100 : 0),
     [redCompleted, redTotal]
@@ -219,7 +218,6 @@ const GameHud = ({
     [blackCompleted, blackTotal]
   );
 
-  // A lógica de posicionamento do totem permanece a mesma.
   const hudStyle = useMemo(() => {
     if (!stageCenter) {
       return { left: "50%", top: "50%", opacity: 0 };
@@ -232,7 +230,6 @@ const GameHud = ({
   }, [stageCenter]);
 
   return (
-    // A âncora agora contém APENAS o botão.
     <div
       className={`hud-stage-anchor ${isOpen ? "hud-stage-anchor--open" : ""}`}
       style={hudStyle}
@@ -241,7 +238,7 @@ const GameHud = ({
       <motion.button
         type="button"
         className={`hud-totem-button ${isOpen ? "is-open" : ""}`}
-        onClick={onToggle} // Chama a função do componente pai
+        onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls="hud-panel"
         aria-label={
@@ -264,6 +261,4 @@ const GameHud = ({
       </motion.button>
     </div>
   );
-};
-
-export default GameHud;
+}

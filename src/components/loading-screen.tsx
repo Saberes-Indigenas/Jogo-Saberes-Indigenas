@@ -1,6 +1,4 @@
-import React from "react";
-
-const LoadingScreen: React.FC = () => {
+export function LoadingScreen() {
   const groups = ["item1", "item2", "item3"] as const;
 
   return (
@@ -21,6 +19,4 @@ const LoadingScreen: React.FC = () => {
       <p className="game-loader__label">Carregando a aldeia...</p>
     </div>
   );
-};
-
-export default LoadingScreen;
+}

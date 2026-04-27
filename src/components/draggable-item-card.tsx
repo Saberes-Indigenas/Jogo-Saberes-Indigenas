@@ -7,11 +7,10 @@ interface DraggableItemCardProps {
   clanLabel: string;
 }
 
-const DraggableItemCard = ({
+export const DraggableItemCard = memo(function DraggableItemCard({
   item,
   boeName,
-  clanLabel,
-}: DraggableItemCardProps) => {
+}: DraggableItemCardProps) {
   return (
     <>
       <div
@@ -26,16 +25,14 @@ const DraggableItemCard = ({
         )}
         <span className="draggable-item__shine" />
       </div>
-      <div className="">
+      <div>
         <span className="item-name-boe" title={boeName}>
           {boeName}
         </span>
       </div>
-      <span className="item-name-clan" title={clanLabel}>
+      <span className="item-name-clan" title={item.name}>
         {item.name}
       </span>
     </>
   );
-};
-
-export default memo(DraggableItemCard);
+});

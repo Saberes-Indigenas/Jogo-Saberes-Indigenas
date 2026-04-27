@@ -9,15 +9,19 @@ interface FeedbackPulseProps {
   onComplete: () => void;
 }
 
-const FeedbackPulse = ({ x, y, color, onComplete }: FeedbackPulseProps) => {
+export function FeedbackPulse({
+  x,
+  y,
+  color,
+  onComplete,
+}: FeedbackPulseProps) {
   const circleRef = useRef<Konva.Circle>(null);
 
   useEffect(() => {
     if (circleRef.current) {
-      // A animação em si está correta
       const tween = new Konva.Tween({
         node: circleRef.current,
-        scaleX: 1.2, // Aumentei um pouco para o efeito ficar mais visível
+        scaleX: 1.2,
         scaleY: 1.2,
         opacity: 0,
         duration: 0.6,
@@ -27,9 +31,7 @@ const FeedbackPulse = ({ x, y, color, onComplete }: FeedbackPulseProps) => {
 
       tween.play();
     }
-    // MUDANÇA 1: A lista de dependências vazia ([]) garante que a animação
-    // rode apenas uma vez quando o componente é criado, que é exatamente o que queremos.
-  }, []);
+  }, [onComplete]);
 
   const pulseColor = color === "correct" ? "#2ecc71" : "#e74c3c";
 
@@ -42,13 +44,9 @@ const FeedbackPulse = ({ x, y, color, onComplete }: FeedbackPulseProps) => {
       stroke={pulseColor}
       strokeWidth={4}
       listening={false}
-      // MUDANÇA 2: Definimos o estado inicial diretamente nas props.
-      // O círculo já "nasce" pequeno e opaco, pronto para a animação.
       scaleX={0}
       scaleY={0}
       opacity={1}
     />
   );
-};
-
-export default FeedbackPulse;
+}

@@ -1,21 +1,22 @@
-import React, { useMemo, useRef } from "react";
+import { useMemo, useRef, memo } from "react";
+import type { DragEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Item } from "../types";
 import { useGameStore } from "../store/useGameStore";
+import { DraggableItemCard } from "./draggable-item-card";
+import { LearningCard } from "./learning-card";
 import "../css/ItemTray.css";
-import DraggableItemCard from "./DraggableItemCard";
-import LearningCard from "./LearningCard";
 
-const ItemTray = () => {
-  const items = useGameStore(s => s.menuItems);
-  const draggingItemId = useGameStore(s => s.draggingItemId);
-  const spotlightItem = useGameStore(s => s.spotlightItem);
-  const onDragStart = useGameStore(s => s.handleDragStart);
-  const onDragEnd = useGameStore(s => s.handleDragEnd);
+export const ItemTray = memo(function ItemTray() {
+  const items = useGameStore((s) => s.menuItems);
+  const draggingItemId = useGameStore((s) => s.draggingItemId);
+  const spotlightItem = useGameStore((s) => s.spotlightItem);
+  const onDragStart = useGameStore((s) => s.handleDragStart);
+  const onDragEnd = useGameStore((s) => s.handleDragEnd);
 
   const itemRefs = useRef<Map<string, HTMLDivElement | null>>(new Map());
 
-  const handleDragStart = (e: React.DragEvent, item: Item) => {
+  function handleDragStart(e: DragEvent, item: Item) {
     const node = itemRefs.current.get(item.id);
     if (node) {
       const rect = node.getBoundingClientRect();
@@ -32,7 +33,7 @@ const ItemTray = () => {
       }
       onDragStart(e, item, rect);
     }
-  };
+  }
 
   const displayItems = useMemo(
     () =>
@@ -143,6 +144,4 @@ const ItemTray = () => {
       </div>
     </aside>
   );
-};
-
-export default React.memo(ItemTray);
+});

@@ -3,17 +3,21 @@ import type { Item } from "../types";
 import { COLORS } from "../config/colors";
 import "../css/LearningCard.css";
 
-// Ícones simples para representar as metades. Substitua por SVGs mais elaborados se desejar.
-const TugoaregeIcon = () => (
-  <svg viewBox="0 0 24 24" className="clan-symbol">
-    <path d="M12 2 L2 22 L22 22 Z" fill="var(--hud-primary)" />
-  </svg>
-);
-const EceraeIcon = () => (
-  <svg viewBox="0 0 24 24" className="clan-symbol">
-    <circle cx="12" cy="12" r="10" fill="var(--hud-secondary)" />
-  </svg>
-);
+function TugoaregeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="clan-symbol">
+      <path d="M12 2 L2 22 L22 22 Z" fill="var(--hud-primary)" />
+    </svg>
+  );
+}
+
+function EceraeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="clan-symbol">
+      <circle cx="12" cy="12" r="10" fill="var(--hud-secondary)" />
+    </svg>
+  );
+}
 
 interface LearningCardProps {
   item: Item;
@@ -34,11 +38,11 @@ const layoutMotion = {
   },
 } as const;
 
-const LearningCard = ({
+export function LearningCard({
   item,
   layout = "embedded",
   className = "",
-}: LearningCardProps) => {
+}: LearningCardProps) {
   const normalizedColor = item.color?.toLowerCase() ?? "";
   const ClanSymbol =
     normalizedColor.includes(COLORS.PRIMARY_RED) ||
@@ -46,6 +50,7 @@ const LearningCard = ({
       ? TugoaregeIcon
       : EceraeIcon;
   const motionPreset = layoutMotion[layout];
+
   return (
     <motion.article
       className={`learning-card learning-card--${layout} ${className}`.trim()}
@@ -79,6 +84,4 @@ const LearningCard = ({
       </div>
     </motion.article>
   );
-};
-
-export default LearningCard;
+}

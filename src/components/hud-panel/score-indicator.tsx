@@ -1,4 +1,4 @@
-import { BasketIcon } from "./HudIcons";
+import { BasketIcon } from "./hud-icons";
 
 import "../../css/ScoreIndicator.css";
 
@@ -6,7 +6,7 @@ interface ScoreIndicatorProps {
   score: number;
 }
 
-const ScoreIndicator = ({ score }: ScoreIndicatorProps) => {
+export function ScoreIndicator({ score }: ScoreIndicatorProps) {
   const safeScore = Number.isFinite(score) ? score : 0;
 
   return (
@@ -23,6 +23,4 @@ const ScoreIndicator = ({ score }: ScoreIndicatorProps) => {
       </div>
     </article>
   );
-};
-
-export default ScoreIndicator;
+}

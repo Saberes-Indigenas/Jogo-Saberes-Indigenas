@@ -1,30 +1,35 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { RefObject, DragEvent } from "react";
 import { Stage, Layer, Image as KonvaImage } from "react-konva";
 import { useGameStore } from "../store/useGameStore";
-import ClanTarget from "./ClanTarget";
-import FeedbackPulse from "./FeedbackPulse";
-import EnteringOffering from "./EnteringOffering";
+import { ClanTarget } from "./clan-target";
+import { FeedbackPulse } from "./feedback-pulse";
+import { EnteringOffering } from "./entering-offering";
 import ChaoBororo from "../assets/chãoBororo.svg";
 
 interface BororoStageProps {
   onClanClick: (clanId: string) => void;
   onReady?: () => void;
-  gameAreaWrapperRef: React.RefObject<HTMLDivElement | null>;
+  gameAreaWrapperRef: RefObject<HTMLDivElement | null>;
 }
 
-const BororoStage = ({ onClanClick, onReady, gameAreaWrapperRef }: BororoStageProps) => {
-  const clans = useGameStore(s => s.clans);
-  const clanTargets = useGameStore(s => s.clanTargets);
-  const enteringOfferings = useGameStore(s => s.enteringOfferings);
-  const feedbackPulse = useGameStore(s => s.feedbackPulse);
-  const layout = useGameStore(s => s.layout);
-  const clanInventories = useGameStore(s => s.clanInventories);
-  const recentDeliveries = useGameStore(s => s.recentDeliveries);
-  const resetClanAnimationsKey = useGameStore(s => s.resetClanAnimationsKey);
-  const handleDragOver = useGameStore(s => s.handleDragOver);
-  const handleDrop = useGameStore(s => s.handleDrop);
-  const onPulseComplete = useGameStore(s => s.clearFeedbackPulse);
-  const onOfferingComplete = useGameStore(s => s.registerOfferingArrival);
+export function BororoStage({
+  onClanClick,
+  onReady,
+  gameAreaWrapperRef,
+}: BororoStageProps) {
+  const clans = useGameStore((s) => s.clans);
+  const clanTargets = useGameStore((s) => s.clanTargets);
+  const enteringOfferings = useGameStore((s) => s.enteringOfferings);
+  const feedbackPulse = useGameStore((s) => s.feedbackPulse);
+  const layout = useGameStore((s) => s.layout);
+  const clanInventories = useGameStore((s) => s.clanInventories);
+  const recentDeliveries = useGameStore((s) => s.recentDeliveries);
+  const resetClanAnimationsKey = useGameStore((s) => s.resetClanAnimationsKey);
+  const handleDragOver = useGameStore((s) => s.handleDragOver);
+  const handleDrop = useGameStore((s) => s.handleDrop);
+  const onPulseComplete = useGameStore((s) => s.clearFeedbackPulse);
+  const onOfferingComplete = useGameStore((s) => s.registerOfferingArrival);
 
   const clanEntries = Object.entries(clanTargets);
   const clearingRadius = layout.raioPalco * 1.04;
@@ -41,7 +46,7 @@ const BororoStage = ({ onClanClick, onReady, gameAreaWrapperRef }: BororoStagePr
   useEffect(() => {
     let url: string | null = null;
 
-    const loadSvg = async () => {
+    async function loadSvg() {
       try {
         const response = await fetch(ChaoBororo);
         const svgText = await response.text();
@@ -69,7 +74,7 @@ const BororoStage = ({ onClanClick, onReady, gameAreaWrapperRef }: BororoStagePr
         setIsGroundReady(true);
         if (url) URL.revokeObjectURL(url);
       }
-    };
+    }
 
     loadSvg();
 
@@ -86,15 +91,19 @@ const BororoStage = ({ onClanClick, onReady, gameAreaWrapperRef }: BororoStagePr
 
   const svgSize = clearingRadius * 2;
 
-  const handleStageDrop = (e: React.DragEvent) => {
+  function handleStageDrop(e: DragEvent) {
     if (gameAreaWrapperRef.current) {
       const stageRect = gameAreaWrapperRef.current.getBoundingClientRect();
       handleDrop(e, stageRect);
     }
-  };
+  }
 
   return (
-    <main className="game-area" onDragOver={handleDragOver} onDrop={handleStageDrop}>
+    <main
+      className="game-area"
+      onDragOver={handleDragOver}
+      onDrop={handleStageDrop}
+    >
       <Stage
         width={layout.gameAreaWidth}
         height={layout.gameAreaHeight}
@@ -140,7 +149,9 @@ const BororoStage = ({ onClanClick, onReady, gameAreaWrapperRef }: BororoStagePr
             <EnteringOffering
               key={offering.key}
               offering={offering}
-              onComplete={(off) => onOfferingComplete(off.key, off.clanId, off.item)}
+              onComplete={(off) =>
+                onOfferingComplete(off.key, off.clanId, off.item)
+              }
             />
           ))}
 
@@ -157,6 +168,4 @@ const BororoStage = ({ onClanClick, onReady, gameAreaWrapperRef }: BororoStagePr
       </Stage>
     </main>
   );
-};
-
-export default BororoStage;
+}

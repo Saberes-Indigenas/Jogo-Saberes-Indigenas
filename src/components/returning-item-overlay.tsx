@@ -1,6 +1,6 @@
 import { memo, useMemo } from "react";
 import { Stage, Layer } from "react-konva";
-import ReturningItem from "./ReturningItem";
+import { ReturningItem } from "./returning-item";
 import type { ReturningItemState } from "../types";
 
 interface ReturningItemOverlayProps {
@@ -21,12 +21,12 @@ interface ReturningItemOverlayProps {
   onComplete: () => void;
 }
 
-const ReturningItemOverlay = ({
+export const ReturningItemOverlay = memo(function ReturningItemOverlay({
   returningItem,
   layout,
   containerRect,
   onComplete,
-}: ReturningItemOverlayProps) => {
+}: ReturningItemOverlayProps) {
   const pixelRatio = useMemo(() => {
     if (typeof window === "undefined") {
       return 1;
@@ -69,6 +69,4 @@ const ReturningItemOverlay = ({
       </Stage>
     </div>
   );
-};
-
-export default memo(ReturningItemOverlay);
+});

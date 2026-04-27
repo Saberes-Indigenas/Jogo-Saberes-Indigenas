@@ -1,87 +1,30 @@
 import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { AnimatePresence } from "framer-motion";
 import type { Clan, Item } from "../types";
 import { useGameLogic } from "../hooks/useGameLogic";
 import { useGameStore } from "../store/useGameStore";
-import ItemTray from "./ItemTray";
-import BororoStage from "./BororoStage";
-import GameModals from "./GameModals";
-import "../css/GameStage.css";
-import ForestBackground from "./ForestBackground";
-import GameHud from "./GameHud";
-import ClanInfoBubble from "./ClanInfoBubble";
-import ReturningItemOverlay from "./ReturningItemOverlay";
-import LoadingScreen from "./LoadingScreen";
+import { useElementRect } from "../hooks/use-element-rect";
+import { ItemTray } from "./item-tray";
+import { BororoStage } from "./bororo-stage";
+import { GameModals } from "./game-modals";
+import { ForestBackground } from "./forest-background";
+import { GameHud } from "./game-hud";
+import { ClanInfoBubble } from "./clan-info-bubble";
+import { ReturningItemOverlay } from "./returning-item-overlay";
+import { LoadingScreen } from "./loading-screen";
+import { HudPanel } from "./hud-panel/hud-panel";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
-import { AnimatePresence } from "framer-motion";
-import HudPanel from "./hud-panel/HudPanel";
+import "../css/GameStage.css";
 
 interface GameStageProps {
   clans: Clan[];
   initialItems: Item[];
 }
 
-const GameStage = ({ clans, initialItems }: GameStageProps) => {
-  const [gameAreaRect, setGameAreaRect] = useState({
-    width: 0,
-    height: 0,
-    top: 0,
-    left: 0,
-  });
+export function GameStage({ clans, initialItems }: GameStageProps) {
   const gameAreaWrapperRef = useRef<HTMLDivElement>(null);
-  const latestRectRef = useRef(gameAreaRect);
-
-  useEffect(() => {
-    const element = gameAreaWrapperRef.current;
-    if (!element) {
-      return;
-    }
-
-    let rafId: number | null = null;
-
-    const updateRect = () => {
-      if (!element) return;
-      const rect = element.getBoundingClientRect();
-      const nextRect = {
-        width: rect.width,
-        height: rect.height,
-        top: rect.top,
-        left: rect.left,
-      };
-
-      const prevRect = latestRectRef.current;
-      const hasChanged =
-        prevRect.width !== nextRect.width ||
-        prevRect.height !== nextRect.height ||
-        prevRect.top !== nextRect.top ||
-        prevRect.left !== nextRect.left;
-
-      if (hasChanged) {
-        latestRectRef.current = nextRect;
-        setGameAreaRect(nextRect);
-      }
-    };
-
-    const scheduleUpdate = () => {
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-      rafId = requestAnimationFrame(updateRect);
-    };
-
-    const resizeObserver = new ResizeObserver(scheduleUpdate);
-    resizeObserver.observe(element);
-    window.addEventListener("scroll", scheduleUpdate, true);
-    scheduleUpdate();
-
-    return () => {
-      if (rafId !== null) {
-        cancelAnimationFrame(rafId);
-      }
-      resizeObserver.disconnect();
-      window.removeEventListener("scroll", scheduleUpdate, true);
-    };
-  }, []);
+  const gameAreaRect = useElementRect(gameAreaWrapperRef);
 
   const layout = useMemo(() => {
     const gameAreaWidth = gameAreaRect.width;
@@ -97,7 +40,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
       x: gameAreaRect.left + layout.centroX,
       y: gameAreaRect.top + gameAreaRect.height / 2,
     }),
-    [gameAreaRect, layout.centroX] 
+    [gameAreaRect, layout.centroX]
   );
 
   useEffect(() => {
@@ -183,6 +126,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
   );
 
   const chaoFlorestaSize = layout.raioPalco * 5;
+
   return (
     <div className="game-container" aria-busy={!isGameReady}>
       {!isGameReady && (
@@ -197,7 +141,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
         {layout.raioPalco > 0 && (
           <img
             src={chaoBororoFloresta}
-            alt="" 
+            alt=""
             className="chao-floresta-background"
             style={{
               width: chaoFlorestaSize,
@@ -218,22 +162,20 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
           />
           <GameHud
             isOpen={isHudPanelOpen}
-            onToggle={() => setIsHudPanelOpen((prev) => !prev)} 
+            onToggle={() => setIsHudPanelOpen((prev) => !prev)}
             stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
           />
           <AnimatePresence>
             {isHudPanelOpen && (
               <HudPanel
-                key="hud-panel" 
-                onClose={() => setIsHudPanelOpen(false)} 
+                key="hud-panel"
+                onClose={() => setIsHudPanelOpen(false)}
                 stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
               />
             )}
           </AnimatePresence>
 
-          {isGameReady && (
-            <ItemTray />
-          )}
+          {isGameReady && <ItemTray />}
         </div>
         <div className="game-area-wrapper" ref={gameAreaWrapperRef}>
           <BororoStage
@@ -242,7 +184,7 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             gameAreaWrapperRef={gameAreaWrapperRef}
           />
         </div>
-        
+
         {returningItem && (
           <ReturningItemOverlay
             returningItem={returningItem}
@@ -251,19 +193,15 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             onComplete={() => useGameStore.getState().onReturnAnimationComplete()}
           />
         )}
-        
+
         <ClanInfoBubble
           activeBubble={activeBubble}
           containerRect={gameAreaRect}
           onClose={closeBubble}
         />
 
-        {(isGameOver || isMessageVisible || celebration) && (
-          <GameModals />
-        )}
+        {(isGameOver || isMessageVisible || celebration) && <GameModals />}
       </div>
     </div>
   );
-};
-
-export default GameStage;
+}

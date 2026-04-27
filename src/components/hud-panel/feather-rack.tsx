@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import { FEATHER_STREAK_REQUIREMENT } from "../../config/gameSession";
 
-import { FeatherIcon } from "./HudIcons";
+import { FeatherIcon } from "./hud-icons";
 
 import "../../css/FeatherRack.css";
 
@@ -12,7 +12,7 @@ interface FeatherRackProps {
   maxFeathers: number;
 }
 
-const FeatherRack = ({ feathers, maxFeathers }: FeatherRackProps) => {
+export function FeatherRack({ feathers, maxFeathers }: FeatherRackProps) {
   const totalSlots = useMemo(
     () => Math.max(Math.floor(maxFeathers), 0),
     [maxFeathers]
@@ -106,6 +106,4 @@ const FeatherRack = ({ feathers, maxFeathers }: FeatherRackProps) => {
       </ul>
     </article>
   );
-};
-
-export default FeatherRack;
+}

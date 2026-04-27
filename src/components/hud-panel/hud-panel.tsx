@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import { DEFAULT_MAX_ROUNDS } from "../../config/gameSession";
-import FeatherRack from "./FeatherRack";
-import ProgressIndicator from "./ProgressIndicator";
-import ScoreIndicator from "./ScoreIndicator";
+import { FeatherRack } from "./feather-rack";
+import { ProgressIndicator } from "./progress-indicator";
+import { ScoreIndicator } from "./score-indicator";
 import { useGameStore } from "../../store/useGameStore";
 import "../../css/HudPanel.css";
 
@@ -12,34 +12,32 @@ interface HudPanelProps {
   onClose: () => void;
 }
 
-const HudPanel = ({
-  stageCenter,
-  onClose,
-}: HudPanelProps) => {
-  const score = useGameStore(s => s.score);
-  const feathers = useGameStore(s => s.featherCount);
-  const maxFeathers = useGameStore(s => s.maxFeatherCapacity);
-  const completed = useGameStore(s => s.completedCount);
-  const total = useGameStore(s => s.sessionTotalItems);
-  const redCompleted = useGameStore(s => s.completedByColor.red);
-  const blackCompleted = useGameStore(s => s.completedByColor.black);
-  const redTotal = useGameStore(s => s.sessionTotalByColor.red);
-  const blackTotal = useGameStore(s => s.sessionTotalByColor.black);
-  const currentRound = useGameStore(s => s.currentRound);
-  const maxRounds = useGameStore(s => s.maxRounds);
+export function HudPanel({ stageCenter, onClose }: HudPanelProps) {
+  const score = useGameStore((s) => s.score);
+  const feathers = useGameStore((s) => s.featherCount);
+  const maxFeathers = useGameStore((s) => s.maxFeatherCapacity);
+  const completed = useGameStore((s) => s.completedCount);
+  const total = useGameStore((s) => s.sessionTotalItems);
+  const redCompleted = useGameStore((s) => s.completedByColor.red);
+  const blackCompleted = useGameStore((s) => s.completedByColor.black);
+  const redTotal = useGameStore((s) => s.sessionTotalByColor.red);
+  const blackTotal = useGameStore((s) => s.sessionTotalByColor.black);
+  const currentRound = useGameStore((s) => s.currentRound);
+  const maxRounds = useGameStore((s) => s.maxRounds);
 
-  const progress = total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
+  const progress =
+    total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
   const panelRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    function handleClickOutside(event: MouseEvent) {
       if (
         panelRef.current &&
         !panelRef.current.contains(event.target as Node)
       ) {
         onClose();
       }
-    };
+    }
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -59,8 +57,12 @@ const HudPanel = ({
     };
   }, [stageCenter]);
 
-  const effectiveMaxRounds = maxRounds && maxRounds > 0 ? maxRounds : DEFAULT_MAX_ROUNDS;
-  const safeCurrentRound = Math.min(Math.max(currentRound, 0), effectiveMaxRounds);
+  const effectiveMaxRounds =
+    maxRounds && maxRounds > 0 ? maxRounds : DEFAULT_MAX_ROUNDS;
+  const safeCurrentRound = Math.min(
+    Math.max(currentRound, 0),
+    effectiveMaxRounds
+  );
 
   const panelVariants = {
     hidden: { opacity: 0, scale: 0.9, x: "-50%", y: "-45%" },
@@ -152,6 +154,4 @@ const HudPanel = ({
       </motion.section>
     </>
   );
-};
-
-export default HudPanel;
+}

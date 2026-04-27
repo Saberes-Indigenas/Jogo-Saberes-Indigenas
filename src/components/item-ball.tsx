@@ -11,28 +11,26 @@ interface ItemBallProps {
 
 const ITEM_RAIO_VISUAL = 50;
 
-const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
-  // --- Refs e Estados para Animação ---
+export function ItemBall({
+  item,
+  initial_pos,
+  isDraggable = true,
+}: ItemBallProps) {
   const groupRef = useRef<Konva.Group>(null);
   const iconRef = useRef<Konva.Text>(null);
 
-  // Controla se o mouse está sobre o item
   const [isHovered, setIsHovered] = useState(false);
-  // Controla se o item está a ser pressionado
   const [isPressed, setIsPressed] = useState(false);
 
-  // --- Efeito de Sombra Brutalista ---
-  // A sombra muda com base no estado de hover
   const shadowProps = {
     shadowColor: "black",
-    shadowBlur: 0, // Sombra dura, sem desfoque
+    shadowBlur: 0,
     shadowOpacity: 1,
     shadowOffsetX: isHovered ? 10 : 4,
     shadowOffsetY: isHovered ? 10 : 4,
     shadowEnabled: true,
   };
 
-  // --- Animação de Hover (mover e rodar) ---
   useEffect(() => {
     if (groupRef.current) {
       const tween = new Konva.Tween({
@@ -47,7 +45,6 @@ const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
     }
   }, [isHovered, initial_pos]);
 
-  // --- Animação de Pressionar (escala) ---
   useEffect(() => {
     if (groupRef.current) {
       const scale = isPressed ? 0.95 : 1;
@@ -61,12 +58,10 @@ const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
     }
   }, [isPressed]);
 
-  // --- Animação Contínua do Ícone (girar) ---
   useEffect(() => {
     if (!iconRef.current) return;
 
-    // Usamos Konva.Animation para animações contínuas (loop)
-    const angularSpeed = 90; // graus por segundo
+    const angularSpeed = 90;
     const anim = new Konva.Animation((frame) => {
       if (!frame) return;
       const angleDiff = (frame.timeDiff * angularSpeed) / 1000;
@@ -74,14 +69,14 @@ const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
     }, iconRef.current.getLayer());
 
     if (isHovered) {
-      anim.start(); // Inicia a animação em hover
+      anim.start();
     } else {
-      anim.stop(); // Para a animação
-      iconRef.current.rotation(0); // Reseta a rotação
+      anim.stop();
+      iconRef.current.rotation(0);
     }
 
     return () => {
-      anim.stop(); // Limpeza ao desmontar
+      anim.stop();
     };
   }, [isHovered]);
 
@@ -91,7 +86,6 @@ const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
       x={initial_pos.x}
       y={initial_pos.y}
       draggable={isDraggable}
-      // Eventos para controlar os estados de hover e pressionar
       onMouseEnter={() => {
         setIsHovered(true);
         const stage = groupRef.current?.getStage();
@@ -99,7 +93,7 @@ const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
       }}
       onMouseLeave={() => {
         setIsHovered(false);
-        setIsPressed(false); // Garante que o estado de pressionado seja resetado
+        setIsPressed(false);
         const stage = groupRef.current?.getStage();
         if (stage) stage.container().style.cursor = "default";
       }}
@@ -111,7 +105,7 @@ const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
         fill={item.color}
         stroke="#fff"
         strokeWidth={3}
-        {...shadowProps} // Aplica as propriedades da sombra
+        {...shadowProps}
       />
       <Text
         ref={iconRef}
@@ -156,6 +150,4 @@ const ItemBall = ({ item, initial_pos, isDraggable = true }: ItemBallProps) => {
       </Group>
     </Group>
   );
-};
-
-export default ItemBall;
+}

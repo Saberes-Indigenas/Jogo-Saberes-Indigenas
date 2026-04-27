@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
-import type { GameData } from "./types"; // Importando do novo arquivo
-import GameStage from "./components/GameStage"; // Corrigindo a capitalização
-import "./css/App.css"; // Adicione um CSS básico se desejar
+import { useState, useEffect } from "react";
+import type { GameData } from "./types";
+import { GameStage } from "./components/game-stage";
+import "./css/App.css";
 
-const App: React.FC = () => {
+export function App() {
   const [gameData, setGameData] = useState<GameData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
-        // CORREÇÃO: O caminho para arquivos na pasta 'public' é a raiz '/'.
         const response = await fetch("/game-data.json");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -27,10 +26,10 @@ const App: React.FC = () => {
       } finally {
         setIsLoading(false);
       }
-    };
+    }
 
     fetchData();
-  }, []); // O array vazio [] garante que o efeito corre apenas uma vez.
+  }, []);
 
   if (isLoading) {
     return <div>Carregando dados do jogo...</div>;
@@ -49,6 +48,4 @@ const App: React.FC = () => {
       <GameStage clans={gameData.clans} initialItems={gameData.items} />
     </div>
   );
-};
-
-export default App;
+}

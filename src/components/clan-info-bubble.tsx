@@ -36,11 +36,11 @@ const bubbleVariants = {
   },
 };
 
-const ClanInfoBubble = ({
+export function ClanInfoBubble({
   activeBubble,
   containerRect,
   onClose,
-}: ClanInfoBubbleProps) => {
+}: ClanInfoBubbleProps) {
   const bubbleRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<{
     top: number;
@@ -83,18 +83,18 @@ const ClanInfoBubble = ({
   useEffect(() => {
     if (!activeBubble) return;
 
-    const handleKey = (event: KeyboardEvent) => {
+    function handleKey(event: KeyboardEvent) {
       if (event.key === "Escape") {
         onClose();
       }
-    };
+    }
 
-    const handlePointer = (event: PointerEvent) => {
+    function handlePointer(event: PointerEvent) {
       if (!bubbleRef.current) return;
       if (!bubbleRef.current.contains(event.target as Node)) {
         onClose();
       }
-    };
+    }
 
     window.addEventListener("keydown", handleKey);
     document.addEventListener("pointerdown", handlePointer, true);
@@ -172,6 +172,4 @@ const ClanInfoBubble = ({
       </AnimatePresence>
     </div>
   );
-};
-
-export default ClanInfoBubble;
+}

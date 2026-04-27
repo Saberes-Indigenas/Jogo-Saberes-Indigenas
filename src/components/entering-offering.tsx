@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { Group, Circle, Text } from "react-konva";
 import Konva from "konva";
-import type { EnteringOffering as EnteringOfferingState } from "../hooks/useGameLogic";
+import type { EnteringOffering as EnteringOfferingState } from "../store/types";
 
 interface EnteringOfferingProps {
   offering: EnteringOfferingState;
@@ -10,55 +10,48 @@ interface EnteringOfferingProps {
 
 const BASE_RADIUS = 52;
 
-const EnteringOffering = ({ offering, onComplete }: EnteringOfferingProps) => {
-  const groupRef = useRef<Konva.Group>(null); // grupo fixo
-  const textRef = useRef<Konva.Text>(null); // apenas o texto vai girar
+export function EnteringOffering({
+  offering,
+  onComplete,
+}: EnteringOfferingProps) {
+  const groupRef = useRef<Konva.Group>(null);
+  const textRef = useRef<Konva.Text>(null);
 
   const accentColor = useMemo(() => {
     const hueSeed = Math.abs(offering.item.id.length * 37) % 360;
     return `hsl(${hueSeed}, 82%, 64%)`;
   }, [offering.item.id.length]);
 
-  // ================================================================
-  // ===== ANIMAÇÃO =====
-  // ================================================================
   useEffect(() => {
     if (!groupRef.current) return;
 
     const tweens: Konva.Tween[] = [];
     const node = groupRef.current;
 
-    // Começa no tamanho original
     node.scale({ x: 1, y: 1 });
 
-    // --- FASE 1: Crescimento suave ---
     const growTween = new Konva.Tween({
       node,
       duration: 0.3,
       scaleX: 1.5,
       scaleY: 1.5,
-      easing: Konva.Easings.BackEaseOut, // ✅ nome correto
+      easing: Konva.Easings.BackEaseOut,
     });
     tweens.push(growTween);
 
-    // --- FASE 2: Contração / sucção ---
     const shrinkTween = new Konva.Tween({
       node,
       duration: 0.25,
       scaleX: 0,
       scaleY: 0,
-      easing: Konva.Easings.EaseIn, // ✅ nome correto
+      easing: Konva.Easings.EaseIn,
       onFinish: () => onComplete(offering),
     });
     tweens.push(shrinkTween);
 
-    // Encadeamento
     growTween.onFinish = () => shrinkTween.play();
-
-    // Inicia a sequência
     growTween.play();
 
-    // --- ROTAÇÃO DO TEXTO (somente o ícone gira) ---
     if (textRef.current) {
       const textTween = new Konva.Tween({
         node: textRef.current,
@@ -73,9 +66,6 @@ const EnteringOffering = ({ offering, onComplete }: EnteringOfferingProps) => {
     return () => tweens.forEach((t) => t.destroy());
   }, [offering, onComplete]);
 
-  // ================================================================
-  // ===== RENDERIZAÇÃO =====
-  // ================================================================
   return (
     <Group
       ref={groupRef}
@@ -86,7 +76,6 @@ const EnteringOffering = ({ offering, onComplete }: EnteringOfferingProps) => {
       listening={false}
       opacity={0.98}
     >
-      {/* Bola principal */}
       <Circle
         radius={BASE_RADIUS}
         fill={offering.item.color}
@@ -97,7 +86,6 @@ const EnteringOffering = ({ offering, onComplete }: EnteringOfferingProps) => {
         shadowOffset={{ x: 0, y: 6 }}
       />
 
-      {/* Ícone central rotativo */}
       <Text
         ref={textRef}
         text={offering.item.icon}
@@ -113,6 +101,4 @@ const EnteringOffering = ({ offering, onComplete }: EnteringOfferingProps) => {
       />
     </Group>
   );
-};
-
-export default EnteringOffering;
+}

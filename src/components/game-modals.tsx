@@ -50,18 +50,18 @@ const gameOverContentVariants = {
   },
 };
 
-const GameModals = () => {
-  const isGameOver = useGameStore(s => s.isGameOver);
-  const isMessageVisible = useGameStore(s => s.isMessageVisible);
-  const message = useGameStore(s => s.message);
-  const messageType = useGameStore(s => s.messageType);
-  const score = useGameStore(s => s.score);
-  const feathers = useGameStore(s => s.featherCount);
-  const maxStreak = useGameStore(s => s.maxStreak);
-  const completed = useGameStore(s => s.completedCount);
-  const total = useGameStore(s => s.sessionTotalItems);
-  const currentRound = useGameStore(s => s.currentRound);
-  const maxRounds = useGameStore(s => s.maxRounds);
+export function GameModals() {
+  const isGameOver = useGameStore((s) => s.isGameOver);
+  const isMessageVisible = useGameStore((s) => s.isMessageVisible);
+  const message = useGameStore((s) => s.message);
+  const messageType = useGameStore((s) => s.messageType);
+  const score = useGameStore((s) => s.score);
+  const feathers = useGameStore((s) => s.featherCount);
+  const maxStreak = useGameStore((s) => s.maxStreak);
+  const completed = useGameStore((s) => s.completedCount);
+  const total = useGameStore((s) => s.sessionTotalItems);
+  const currentRound = useGameStore((s) => s.currentRound);
+  const maxRounds = useGameStore((s) => s.maxRounds);
 
   const displayMaxRounds = Math.max(maxRounds, 1);
   const displayCompletedRounds = Math.min(
@@ -149,6 +149,4 @@ const GameModals = () => {
       )}
     </AnimatePresence>
   );
-};
-
-export default GameModals;
+}

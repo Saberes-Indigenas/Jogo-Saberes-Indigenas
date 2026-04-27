@@ -8,24 +8,18 @@ interface ProgressCircleProps {
   children?: ReactNode;
 }
 
-const ProgressCircle = ({
+export function ProgressCircle({
   progress,
   size = 240,
   children,
-}: ProgressCircleProps) => {
-  // Limita o progresso entre 0 e 100
+}: ProgressCircleProps) {
   const clampedProgress = Math.max(0, Math.min(100, progress));
-
-  // Calcula o margin-top proporcional ao progresso
-  // Ex: 60% de progresso => marginTop = "-60%"
   const waveOffset = `-${clampedProgress}%`;
 
   return (
     <div className="e-card playing" style={{ width: size, height: size }}>
-      {/* Fundo dividido (opcionalmente pode adicionar background aqui) */}
       <div className="image"></div>
 
-      {/* Waves animadas, mas com altura controlada pelo progresso */}
       <motion.div
         className="wave"
         style={{
@@ -49,6 +43,4 @@ const ProgressCircle = ({
       {children ? <div className="e-card__content">{children}</div> : null}
     </div>
   );
-};
-
-export default ProgressCircle;
+}

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 
-import ProgressCircle from "../ProgressCircle";
+import { ProgressCircle } from "../progress-circle";
 
-import { VillageIcon } from "./HudIcons";
+import { VillageIcon } from "./hud-icons";
 
 import "../../css/ProgressIndicator.css";
 
@@ -19,7 +19,7 @@ interface ProgressIndicatorProps {
   circleSize?: number;
 }
 
-const ProgressIndicator = ({
+export function ProgressIndicator({
   progress,
   completed,
   total,
@@ -30,14 +30,14 @@ const ProgressIndicator = ({
   currentRound,
   maxRounds,
   circleSize = 196,
-}: ProgressIndicatorProps) => {
-  const getProgressLabel = (progressValue: number): string => {
+}: ProgressIndicatorProps) {
+  function getProgressLabel(progressValue: number): string {
     if (progressValue === 100) return "Círculo Completo";
     if (progressValue >= 75) return "Harmonia Próxima";
     if (progressValue >= 50) return "O Círculo se Fortalece";
     if (progressValue >= 25) return "Tecendo as Relações";
     return "Iniciando o Círculo";
-  };
+  }
 
   const displayMaxRounds = Math.max(maxRounds, 1);
   const displayCurrentRound = Math.min(
@@ -101,6 +101,4 @@ const ProgressIndicator = ({
       </div>
     </section>
   );
-};
-
-export default ProgressIndicator;
+}

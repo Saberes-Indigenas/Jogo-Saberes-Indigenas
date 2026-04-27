@@ -1,5 +1,3 @@
-// ClanTarget.tsx
-
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Image as KonvaImage, Text, Group, Circle } from "react-konva";
 import Konva from "konva";
@@ -20,7 +18,7 @@ interface ClanTargetProps {
   onClick: () => void;
 }
 
-const ClanTarget = ({
+export function ClanTarget({
   clanId,
   clanName,
   x,
@@ -31,7 +29,7 @@ const ClanTarget = ({
   deliveryTrigger,
   onClick,
   resetTrigger,
-}: ClanTargetProps) => {
+}: ClanTargetProps) {
   const [image, setImage] = useState<HTMLImageElement | null>(null);
   const [naturalSize, setNaturalSize] = useState({ width: 1, height: 1 });
   const groupRef = useRef<Konva.Group>(null);
@@ -81,17 +79,13 @@ const ClanTarget = ({
     }
   }, [image, hasOfferings]);
 
-  // ==================================================================
-  // ===== INÍCIO DA NOVA LÓGICA DE ANIMAÇÃO DE PULO "CARTOON" =====
-  // ==================================================================
   useEffect(() => {
     if (!deliveryTrigger || !groupRef.current) return;
 
     const groupNode = groupRef.current;
-    const jumpHeight = imageHeight * 0.25; // Quão alto o grupo vai pular
-    const tweens: Konva.Tween[] = []; // Array para guardar os tweens e destruí-los depois
+    const jumpHeight = imageHeight * 0.25;
+    const tweens: Konva.Tween[] = [];
 
-    // 1. Antecipação (achata antes de pular)
     const tweenAnticipation = new Konva.Tween({
       node: groupNode,
       duration: 1,
@@ -101,7 +95,6 @@ const ClanTarget = ({
     });
     tweens.push(tweenAnticipation);
 
-    // 2. O Pulo (sobe e estica)
     const tweenJump = new Konva.Tween({
       node: groupNode,
       duration: 0.8,
@@ -112,37 +105,32 @@ const ClanTarget = ({
     });
     tweens.push(tweenJump);
 
-    // 3. A Queda (volta para a posição original)
     const tweenFall = new Konva.Tween({
       node: groupNode,
       duration: 0.8,
-      y: groupNode.y(), // Volta para o Y original
+      y: groupNode.y(),
       scaleX: 1,
       scaleY: 1,
       easing: Konva.Easings.EaseIn,
     });
     tweens.push(tweenFall);
 
-    // 4. Impacto (achata com força ao aterrissar)
     const tweenImpact = new Konva.Tween({
       node: groupNode,
       duration: 0.7,
       scaleX: 1.2,
       scaleY: 0.8,
       easing: Konva.Easings.EaseOut,
-      yoyo: true, // yoyo aqui faz ele achatar e voltar ao normal rapidamente
+      yoyo: true,
     });
     tweens.push(tweenImpact);
 
-    // Encadeando as animações
     tweenAnticipation.onFinish = () => tweenJump.play();
     tweenJump.onFinish = () => tweenFall.play();
     tweenFall.onFinish = () => tweenImpact.play();
 
-    // Inicia a primeira animação da cadeia
     tweenAnticipation.play();
 
-    // Animação do brilho (pode continuar separada)
     const halo = glowRef.current
       ? new Konva.Tween({
           node: glowRef.current,
@@ -157,14 +145,11 @@ const ClanTarget = ({
     halo?.play();
     if (halo) tweens.push(halo);
 
-    // Função de limpeza: para todos os tweens se o componente desmontar
     return () => {
       tweens.forEach((t) => t.destroy());
     };
-  }, [deliveryTrigger, imageHeight]); // Adicionamos imageHeight como dependência
-  // ================================================================
-  // ===== FIM DA NOVA LÓGICA DE ANIMAÇÃO =====
-  // ================================================================
+  }, [deliveryTrigger, imageHeight]);
+
   useEffect(() => {
     const node = groupRef.current;
     if (!node) return;
@@ -260,6 +245,4 @@ const ClanTarget = ({
       />
     </Group>
   );
-};
-
-export default ClanTarget;
+}
