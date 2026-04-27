@@ -4,7 +4,7 @@ import ProgressCircle from "../ProgressCircle";
 
 import { VillageIcon } from "./HudIcons";
 
-import "./ProgressIndicator.css";
+import "../../css/ProgressIndicator.css";
 
 interface ProgressIndicatorProps {
   progress: number;

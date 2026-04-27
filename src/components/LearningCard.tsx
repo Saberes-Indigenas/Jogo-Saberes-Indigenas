@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import type { Item } from "../types";
+import { COLORS } from "../config/colors";
 import "../css/LearningCard.css";
 
 // Ícones simples para representar as metades. Substitua por SVGs mais elaborados se desejar.
@@ -40,7 +41,7 @@ const LearningCard = ({
 }: LearningCardProps) => {
   const normalizedColor = item.color?.toLowerCase() ?? "";
   const ClanSymbol =
-    normalizedColor.includes("#b52323") ||
+    normalizedColor.includes(COLORS.PRIMARY_RED) ||
     normalizedColor.includes("var(--hud-primary)")
       ? TugoaregeIcon
       : EceraeIcon;

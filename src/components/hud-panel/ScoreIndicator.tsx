@@ -1,6 +1,6 @@
 import { BasketIcon } from "./HudIcons";
 
-import "./ScoreIndicator.css";
+import "../../css/ScoreIndicator.css";
 
 interface ScoreIndicatorProps {
   score: number;

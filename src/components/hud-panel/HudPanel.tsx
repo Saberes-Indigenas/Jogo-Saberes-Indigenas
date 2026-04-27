@@ -5,7 +5,7 @@ import FeatherRack from "./FeatherRack";
 import ProgressIndicator from "./ProgressIndicator";
 import ScoreIndicator from "./ScoreIndicator";
 import { useGameStore } from "../../store/useGameStore";
-import "./HudPanel.css";
+import "../../css/HudPanel.css";
 
 interface HudPanelProps {
   stageCenter: { x: number; y: number } | null;

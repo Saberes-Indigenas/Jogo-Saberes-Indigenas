@@ -144,7 +144,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 20, 10, 0.88);
+  background: rgba(var(--bg-dark-rgb), 0.88);
   backdrop-filter: blur(4px);
   z-index: 200;
 }
@@ -199,7 +199,7 @@ body {
 }
 
 .game-loader__group .game-loader__ball--index-0 {
-  background-color: #b52323;
+  background-color: var(--color-primary-red);
   animation: game-loader-ball-1 1000ms infinite;
 }
 
@@ -209,7 +209,7 @@ body {
 }
 
 .game-loader__group .game-loader__ball--index-2 {
-  background-color: #f5ead3;
+  background-color: var(--hud-sand);
   animation: game-loader-ball-3 1000ms infinite;
 }
 

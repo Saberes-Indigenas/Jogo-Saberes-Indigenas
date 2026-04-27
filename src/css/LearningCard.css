@@ -1,10 +1,5 @@
-/* Paleta base */
-:root {
-  --hud-primary: #b52323;
-  --hud-secondary: #24211a;
-  --hud-sand: #f5ead3;
-  --hud-earth: #ad6856;
-}
+/* Paleta local (agora herdada globalmente) */
+
 
 .learning-card {
   width: 100%;

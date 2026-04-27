@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { GameData } from "./types"; // Importando do novo arquivo
 import GameStage from "./components/GameStage"; // Corrigindo a capitalização
-import "./App.css"; // Adicione um CSS básico se desejar
+import "./css/App.css"; // Adicione um CSS básico se desejar
 
 const App: React.FC = () => {
   const [gameData, setGameData] = useState<GameData | null>(null);

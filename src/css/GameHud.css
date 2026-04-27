@@ -170,7 +170,7 @@
 }
 
 .hud-progress-ring__value--red {
-  stroke: rgba(181, 35, 35, 0.95);
+  stroke: rgba(var(--color-primary-red-rgb), 0.95);
 }
 
 .hud-progress-ring__value--black {

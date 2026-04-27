@@ -5,7 +5,7 @@ import { FEATHER_STREAK_REQUIREMENT } from "../../config/gameSession";
 
 import { FeatherIcon } from "./HudIcons";
 
-import "./FeatherRack.css";
+import "../../css/FeatherRack.css";
 
 interface FeatherRackProps {
   feathers: number;

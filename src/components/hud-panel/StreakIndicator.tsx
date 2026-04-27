@@ -1,6 +1,6 @@
 import { StreakIcon } from "./HudIcons";
 
-import "./StreakIndicator.css";
+import "../../css/StreakIndicator.css";
 
 interface StreakIndicatorProps {
   streak: number;

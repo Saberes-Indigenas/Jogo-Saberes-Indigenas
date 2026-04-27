@@ -5,7 +5,7 @@ import featherSvg from "../../assets/hud/feather.svg?raw";
 import streakSvg from "../../assets/hud/streak.svg?raw";
 import villageSvg from "../../assets/hud/village.svg?raw";
 
-import "./HudIcons.css";
+import "../../css/HudIcons.css";
 
 type InlineHudIconProps = ComponentPropsWithoutRef<"span"> & {
   svg: string;
