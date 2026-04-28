@@ -6,61 +6,75 @@
   display: flex;
   gap: 1.15rem;
   align-items: center;
-  background: linear-gradient(150deg, var(--hud-sand) 0%, #eadcbd 100%);
-  border-radius: 24px;
-  border: 4px solid rgba(40, 21, 8, 0.42);
-  padding: 1.1rem 1.2rem;
-  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.28);
+  background: linear-gradient(165deg, #1f1208 0%, #2d1b0a 100%);
+  border-radius: 28px;
+  border: 4px solid #3d2511;
+  padding: 1.2rem;
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(0, 0, 0, 0.5);
   font-family: "Nunito", sans-serif;
   pointer-events: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.learning-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 .learning-card--floating {
-  box-shadow: 0 16px 0 rgba(40, 18, 6, 0.26),
-    0 28px 46px rgba(0, 0, 0, 0.42);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  border: 4px solid #4a2d14;
 }
 
 .learning-card__figure {
   position: relative;
-  width: 108px;
-  height: 108px;
+  width: 112px;
+  height: 112px;
   border-radius: 20px;
   overflow: hidden;
   display: grid;
   place-items: center;
-  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.25),
-    0 8px 12px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   flex-shrink: 0;
+  border: 3px solid rgba(255, 255, 255, 0.1);
 }
 
 .learning-card__figure img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
 }
 
 .learning-card__icon {
-  font-size: 1.5rem;
-  color: var(--hud-sand);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  font-size: 2.8rem;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
 }
 
 .learning-card__aura {
   position: absolute;
   inset: 4px;
   border-radius: 16px;
-  border: 2px dashed rgba(255, 255, 255, 0.7);
-  animation: auraPulse 2.5s ease-in-out infinite alternate;
+  border: 2px dashed rgba(255, 202, 40, 0.4);
+  animation: auraPulse 3s ease-in-out infinite alternate;
 }
 
 @keyframes auraPulse {
   from {
-    opacity: 0.5;
-    transform: scale(0.96);
+    opacity: 0.3;
+    transform: scale(0.94);
   }
   to {
-    opacity: 1;
-    transform: scale(1);
+    opacity: 0.7;
+    transform: scale(1.02);
   }
 }
 
@@ -68,68 +82,42 @@
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  color: var(--hud-secondary);
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .learning-card__subtitle {
   margin: 0;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--hud-primary);
-  font-size: 0.78rem;
+  color: #ff9800; /* Urucum vibrante */
+  font-size: 0.75rem;
 }
 
 .learning-card__name-boe {
   margin: 0;
-  font-family: "Luckiest Guy", system-ui;
-  font-size: clamp(1rem, 2.8vw, 1.5rem);
-  color: var(--hud-secondary);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  color: #ffca28; /* Feather yellow */
   line-height: 1.1;
-  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.4);
-}
-
-.learning-card__translation {
-  margin: 0;
-  font-weight: 700;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.learning-card__clan {
-  margin: 0.25rem 0 0.4rem;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.learning-card__tip {
-  margin: 0;
-  font-size: 0.9rem;
-  font-style: italic;
-  font-weight: 600;
-  color: rgba(46, 42, 31, 0.75);
+  font-weight: 900;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
 }
 
 .learning-card__footer {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 2px dashed rgba(40, 21, 8, 0.15);
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 2px dashed rgba(255, 255, 255, 0.1);
 }
 
 .clan-symbol {
-  width: 28px;
-  height: 28px;
-}
-
-.learning-card__fact {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(46, 42, 31, 0.85);
-  margin: 0;
+  width: 32px;
+  height: 32px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
 @media (max-width: 1100px) {

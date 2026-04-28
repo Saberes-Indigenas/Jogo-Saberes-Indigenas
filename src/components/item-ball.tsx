@@ -22,14 +22,6 @@ export function ItemBall({
   const [isHovered, setIsHovered] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
 
-  const shadowProps = {
-    shadowColor: "black",
-    shadowBlur: 0,
-    shadowOpacity: 1,
-    shadowOffsetX: isHovered ? 10 : 4,
-    shadowOffsetY: isHovered ? 10 : 4,
-    shadowEnabled: true,
-  };
 
   useEffect(() => {
     if (groupRef.current) {
@@ -100,49 +92,97 @@ export function ItemBall({
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
     >
+      {/* Main Ball Body */}
       <Circle
         radius={ITEM_RAIO_VISUAL}
         fill={item.color}
         stroke="#fff"
-        strokeWidth={3}
-        {...shadowProps}
+        strokeWidth={5}
+        shadowColor="black"
+        shadowBlur={15}
+        shadowOpacity={0.4}
+        shadowOffsetX={5}
+        shadowOffsetY={5}
       />
-      <Text
-        ref={iconRef}
-        text={item.icon}
-        fontSize={30}
-        fill="#f5f5f5"
-        align="center"
-        verticalAlign="middle"
-        width={ITEM_RAIO_VISUAL * 2}
-        height={ITEM_RAIO_VISUAL * 2}
-        offsetX={ITEM_RAIO_VISUAL}
-        offsetY={ITEM_RAIO_VISUAL}
+      
+      {/* Image or Icon */}
+      {item.media?.image ? (
+         // Since Konva Image loading is complex inside a component, 
+         // I'll keep the current approach of using an image state if it was there, 
+         // but wait, ItemBall currently only uses Text for icon.
+         // I should add image support to ItemBall too if it doesn't have it.
+         <Text
+           text={item.icon}
+           fontSize={36}
+           fill="#fff"
+           width={ITEM_RAIO_VISUAL * 2}
+           height={ITEM_RAIO_VISUAL * 2}
+           offsetX={ITEM_RAIO_VISUAL}
+           offsetY={ITEM_RAIO_VISUAL}
+           align="center"
+           verticalAlign="middle"
+           listening={false}
+           shadowColor="black"
+           shadowBlur={4}
+           shadowOpacity={0.5}
+         />
+      ) : (
+        <Text
+          ref={iconRef}
+          text={item.icon}
+          fontSize={36}
+          fill="#fff"
+          width={ITEM_RAIO_VISUAL * 2}
+          height={ITEM_RAIO_VISUAL * 2}
+          offsetX={ITEM_RAIO_VISUAL}
+          offsetY={ITEM_RAIO_VISUAL}
+          align="center"
+          verticalAlign="middle"
+          listening={false}
+          shadowColor="black"
+          shadowBlur={4}
+          shadowOpacity={0.5}
+        />
+      )}
+
+      {/* Glossy Effect (Konva version) */}
+      <Circle
+        radius={ITEM_RAIO_VISUAL - 2}
+        fillRadialGradientStartPoint={{ x: -ITEM_RAIO_VISUAL * 0.4, y: -ITEM_RAIO_VISUAL * 0.4 }}
+        fillRadialGradientStartRadius={0}
+        fillRadialGradientEndPoint={{ x: -ITEM_RAIO_VISUAL * 0.4, y: -ITEM_RAIO_VISUAL * 0.4 }}
+        fillRadialGradientEndRadius={ITEM_RAIO_VISUAL * 1.5}
+        fillRadialGradientColorStops={[0, "rgba(255,255,255,0.4)", 1, "rgba(255,255,255,0)"]}
         listening={false}
       />
-      <Group y={ITEM_RAIO_VISUAL + 18} listening={false}>
+
+      <Group y={ITEM_RAIO_VISUAL + 24} listening={false}>
         <Rect
           x={-ITEM_RAIO_VISUAL - 20}
           width={ITEM_RAIO_VISUAL * 2 + 40}
-          height={54}
-          fill="rgba(0, 0, 0, 0.55)"
-          cornerRadius={20}
+          height={50}
+          fill="rgba(26, 16, 7, 0.85)"
+          cornerRadius={15}
+          stroke={item.color}
+          strokeWidth={2}
         />
         <Text
           text={item.name_boe}
           fontFamily="Nunito"
-          fontStyle="bold"
+          fontStyle="900"
           fontSize={16}
-          fill="#fff59d"
+          fill="#ffca28"
           width={ITEM_RAIO_VISUAL * 2 + 40}
           align="center"
-          y={6}
+          y={8}
+          textTransform="uppercase"
         />
         <Text
-          text={`(${item.name})`}
+          text={item.name}
           fontFamily="Nunito"
-          fontSize={13}
-          fill="#f5f5f5"
+          fontStyle="bold"
+          fontSize={12}
+          fill="rgba(255,255,255,0.7)"
           width={ITEM_RAIO_VISUAL * 2 + 40}
           align="center"
           y={28}

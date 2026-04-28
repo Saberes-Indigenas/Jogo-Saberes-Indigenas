@@ -10,9 +10,11 @@ import { GameModals } from "./game-modals";
 import { ForestBackground } from "./forest-background";
 import { GameHud } from "./game-hud";
 import { ClanInfoBubble } from "./clan-info-bubble";
-import { ReturningItemOverlay } from "./returning-item-overlay";
+import { ReturningItemDom } from "./returning-item-dom";
 import { LoadingScreen } from "./loading-screen";
 import { HudPanel } from "./hud-panel/hud-panel";
+import { EnteringOfferingDom } from "./entering-offering-dom";
+import { CustomDragLayer } from "./custom-drag-layer";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 import "../css/GameStage.css";
@@ -61,6 +63,7 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
   const returningItem = useGameStore((state) => state.returningItem);
   const isGameOver = useGameStore((state) => state.isGameOver);
   const isMessageVisible = useGameStore((state) => state.isMessageVisible);
+  const enteringOfferings = useGameStore((state) => state.enteringOfferings);
   const celebration = useGameStore((state) => state.celebration);
 
   const [isStageReady, setStageReady] = useState(false);
@@ -76,6 +79,16 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
   } | null>(null);
 
   const closeBubble = useCallback(() => setActiveBubble(null), []);
+
+  const handleDragOver = useGameStore((s) => s.handleDragOver);
+  const handleDrop = useGameStore((s) => s.handleDrop);
+
+  const handleStageDrop = useCallback((e: React.DragEvent) => {
+    if (gameAreaWrapperRef.current) {
+      const stageRect = gameAreaWrapperRef.current.getBoundingClientRect();
+      handleDrop(e, stageRect);
+    }
+  }, [handleDrop]);
 
   useEffect(() => {
     if (!activeBubble) return;
@@ -137,6 +150,8 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
       <div
         className={`game-content${isGameReady ? " game-content--visible" : ""}`}
         aria-hidden={!isGameReady}
+        onDragOver={handleDragOver}
+        onDrop={handleStageDrop}
       >
         {layout.raioPalco > 0 && (
           <img
@@ -186,10 +201,8 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
         </div>
 
         {returningItem && (
-          <ReturningItemOverlay
+          <ReturningItemDom
             returningItem={returningItem}
-            layout={layout}
-            containerRect={gameAreaRect}
             onComplete={() => useGameStore.getState().onReturnAnimationComplete()}
           />
         )}
@@ -201,7 +214,17 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
         />
 
         {(isGameOver || isMessageVisible || celebration) && <GameModals />}
+        {enteringOfferings.map((offering) => (
+          <EnteringOfferingDom
+            key={offering.key}
+            offering={offering}
+            onComplete={(off) =>
+              useGameStore.getState().registerOfferingArrival(off.key, off.clanId, off.item)
+            }
+          />
+        ))}
       </div>
+      <CustomDragLayer />
     </div>
   );
 }

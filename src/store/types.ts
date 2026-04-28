@@ -10,11 +10,14 @@ export type EnteringOffering = {
   item: Item;
   startPos: { x: number; y: number };
   endPos: { x: number; y: number };
+  globalStartPos: { x: number; y: number };
+  globalEndPos: { x: number; y: number };
 };
 
 export type DraggedItemInfo = {
   item: Item;
   initialRect: DOMRect;
+  initialMousePos: { x: number; y: number };
 } | null;
 
 export interface LayoutData {

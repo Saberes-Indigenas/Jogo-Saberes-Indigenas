@@ -55,6 +55,10 @@ export function GameModals() {
   const isMessageVisible = useGameStore((s) => s.isMessageVisible);
   const message = useGameStore((s) => s.message);
   const messageType = useGameStore((s) => s.messageType);
+  const spotlightItem = useGameStore((s) => s.spotlightItem);
+  
+  const feedbackIcon = messageType === "success" ? "✨" : messageType === "error" ? "❌" : "🎊";
+
   const score = useGameStore((s) => s.score);
   const feathers = useGameStore((s) => s.featherCount);
   const maxStreak = useGameStore((s) => s.maxStreak);
@@ -74,12 +78,19 @@ export function GameModals() {
       {isMessageVisible && (
         <motion.div
           className={`feedbackMessage ${messageType}`}
+          custom={messageType}
           variants={feedbackVariants}
           initial="initial"
           animate="animate"
           exit="exit"
         >
-          {message}
+          <div className="feedbackMessage__shine" />
+          <div className="feedbackMessage__content">
+            <span className="feedbackMessage__icon">
+              {messageType === "success" && spotlightItem ? spotlightItem.icon : feedbackIcon}
+            </span>
+            <span className="feedbackMessage__text">{message}</span>
+          </div>
         </motion.div>
       )}
 

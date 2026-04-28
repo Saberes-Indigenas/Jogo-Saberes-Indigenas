@@ -135,10 +135,14 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
     setSpotlightItem(null);
   },
 
-  handleDragStart: (_e, item, initialRect) => {
+  handleDragStart: (e, item, initialRect) => {
     set({
       draggingItemId: item.id,
-      draggedItemInfo: { item, initialRect },
+      draggedItemInfo: { 
+        item, 
+        initialRect,
+        initialMousePos: { x: e.clientX, y: e.clientY }
+      },
     });
   },
 
@@ -248,6 +252,12 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
       state.showFeedback(`Você conectou ${item.name_boe} ao clã ${targetClan.name}!`, "success", 1800);
       
       const targetCenterPos = state.clanTargets[targetClan.id];
+      const globalStartPos = { x: e.clientX, y: e.clientY };
+      const globalEndPos = {
+        x: stageRect.left + targetCenterPos.x,
+        y: stageRect.top + targetCenterPos.y,
+      };
+
       set((s) => ({
         feedbackPulse: { ...targetCenterPos, color: "correct", key: Date.now() },
         enteringOfferings: [
@@ -258,6 +268,8 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
             item,
             startPos: dropPos,
             endPos: targetCenterPos,
+            globalStartPos,
+            globalEndPos,
           },
         ]
       }));
@@ -344,11 +356,20 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
         feedbackPulse: { ...dropPos, color: "incorrect", key: Date.now() },
       });
 
-      const endPos = {
-        x: initialRect.left - stageRect.left + initialRect.width / 2,
-        y: initialRect.top - stageRect.top + initialRect.height / 2,
+      const globalStartPos = { x: e.clientX, y: e.clientY };
+      const globalEndPos = {
+        x: initialRect.left + initialRect.width / 2,
+        y: initialRect.top + initialRect.height / 2,
       };
-      set({ returningItem: { item, startPos: dropPos, endPos } });
+      
+      set({ 
+        returningItem: { 
+          item, 
+          startPos: globalStartPos, 
+          endPos: globalEndPos, 
+          initialRect 
+        } 
+      });
     }
     
     set({ draggedItemInfo: null });

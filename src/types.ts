@@ -20,6 +20,7 @@ export type ReturningItemState = {
   item: Item;
   startPos: { x: number; y: number };
   endPos: { x: number; y: number };
+  initialRect: DOMRect;
 } | null;
 
 export interface Clan {

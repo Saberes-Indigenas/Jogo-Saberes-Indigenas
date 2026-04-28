@@ -1,4 +1,19 @@
 import json
+import os
+import unicodedata
+
+def strip_accents(s):
+    """Remove acentos de uma string."""
+    return ''.join(c for c in unicodedata.normalize('NFD', s)
+                  if unicodedata.category(c) != 'Mn')
+
+def clean_for_filename(s):
+    """Limpa a string para usar em nomes de arquivos (sem espaços, sem acentos, TitleCase)."""
+    s = strip_accents(s)
+    # Remove parênteses e outros caracteres que possam ter sobrado
+    s = s.replace("(", "").replace(")", "").replace("/", "").replace(",", "")
+    return s.title().replace(" ", "")
+
 
 # Dados do documento APÊNDICE 4
 data = [
@@ -93,18 +108,7 @@ clan_colors = {
 
 result_json = {"clans": [], "items": []}
 
-item_symbols = {
-    "onça pintada": "🐆", "anta": "🫎", "arara amarelo": "🦜", "paca": "🐀",
-    "jabuti": "🐢", "cobra coral": "🐍", "tatu canastra": "🦔", "dourado": "🐟",
-    "ararapiranga": "🦜", "pato": "🦆", "bugio preto": "🐒", "queixada": "🐗",
-    "coruja": "🦉", "pintado": "🐠", "piranha": "🐟", "urubu": "🦅",
-    "gavião": "🦅", "lobo": "🐺", "papagaio verdadeiro": "🦜", "macaco barriga": "🐒",
-    "lontra": "🦦", "beija flor": "🐦", "jacaré": "🐊", "raposa": "🦊",
-    "sucuri": "🐍", "ema": "🦤", "tucano": "🐦", "capivara": "🦫",
-    "caititu": "🐖", "tamanduá bandeira": "🐜"
-}
-
-# --- LÓGICA CORRIGIDA PARA INCLUIR O NOME BOE ---
+# --- LÓGICA PARA PROCESSAR ITENS E CLÃS ---
 for clan_data in data:
     clan_name_boe = clan_data["clan_name"]
     clan_id_suffix = clan_data["clan_id"]
@@ -132,22 +136,35 @@ for clan_data in data:
 
                 # Passo 2: Formatar ID e determinar atributos
                 item_name_formatted = format_name_for_id(name_portuguese)
-                # O ID do item agora é único, combinando o nome em português formatado e o ID do clã
                 item_id = f"item_{item_name_formatted}_{clan_id_suffix}"
                 
                 color = clan_colors.get(clan_name_boe, "#333333")
-                icon = item_symbols.get(name_portuguese.lower(), "✨")
 
-                # Passo 3: Adicionar o Item (agora incluindo 'name_boe')
+                # Passo 3: Lógica de Imagem
+                # Nome do arquivo: NomePortugues_NomeBoe.webp
+                img_filename = f"{clean_for_filename(name_portuguese)}_{clean_for_filename(name_boe)}.webp"
+                img_path = f"public/animals/{img_filename}"
+                
+                # Verifica se a imagem existe, caso contrário usa a genérica
+                if os.path.exists(img_path):
+                    final_img_path = f"/animals/{img_filename}"
+                else:
+                    final_img_path = "/animals/animal_generico.webp"
+
+                # Passo 4: Adicionar o Item
                 result_json["items"].append({
                     "id": item_id,
-                    "name": name_portuguese,  # Nome em português
-                    "name_boe": name_boe,    # Nome Boe (indígena)
-                    "icon": icon,
+                    "name": name_portuguese,
+                    "name_boe": name_boe,
+                    "icon": "", # Removido emoji conforme solicitado
                     "correct_clan_id": clan_id,
                     "color": color,
-                    "clan": clan_name_boe
+                    "clan": clan_name_boe,
+                    "media": {
+                        "image": final_img_path
+                    }
                 })
+
 
 # Salvar o JSON
 output_path = "public/game-data.json"

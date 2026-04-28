@@ -4,7 +4,6 @@ import { Stage, Layer, Image as KonvaImage } from "react-konva";
 import { useGameStore } from "../store/useGameStore";
 import { ClanTarget } from "./clan-target";
 import { FeedbackPulse } from "./feedback-pulse";
-import { EnteringOffering } from "./entering-offering";
 import ChaoBororo from "../assets/chãoBororo.svg";
 
 interface BororoStageProps {
@@ -20,7 +19,6 @@ export function BororoStage({
 }: BororoStageProps) {
   const clans = useGameStore((s) => s.clans);
   const clanTargets = useGameStore((s) => s.clanTargets);
-  const enteringOfferings = useGameStore((s) => s.enteringOfferings);
   const feedbackPulse = useGameStore((s) => s.feedbackPulse);
   const layout = useGameStore((s) => s.layout);
   const clanInventories = useGameStore((s) => s.clanInventories);
@@ -29,7 +27,6 @@ export function BororoStage({
   const handleDragOver = useGameStore((s) => s.handleDragOver);
   const handleDrop = useGameStore((s) => s.handleDrop);
   const onPulseComplete = useGameStore((s) => s.clearFeedbackPulse);
-  const onOfferingComplete = useGameStore((s) => s.registerOfferingArrival);
 
   const clanEntries = Object.entries(clanTargets);
   const clearingRadius = layout.raioPalco * 1.04;
@@ -145,15 +142,6 @@ export function BororoStage({
             );
           })}
 
-          {enteringOfferings.map((offering) => (
-            <EnteringOffering
-              key={offering.key}
-              offering={offering}
-              onComplete={(off) =>
-                onOfferingComplete(off.key, off.clanId, off.item)
-              }
-            />
-          ))}
 
           {feedbackPulse && (
             <FeedbackPulse
