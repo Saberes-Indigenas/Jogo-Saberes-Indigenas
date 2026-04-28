@@ -1,6 +1,7 @@
 import type { ComponentPropsWithoutRef } from "react";
 
 import basketSvg from "../../assets/hud/basket.svg?raw";
+import basketBackgroundSvg from "../../assets/hud/basket-background.svg?raw";
 import featherSvg from "../../assets/hud/feather.svg?raw";
 import streakSvg from "../../assets/hud/streak.svg?raw";
 import villageSvg from "../../assets/hud/village.svg?raw";
@@ -29,6 +30,15 @@ export function InlineHudIcon({
 
 export function BasketIcon() {
   return <InlineHudIcon svg={basketSvg} className="hud-icon--basket" />;
+}
+
+export function BasketBackgroundIcon() {
+  return (
+    <InlineHudIcon
+      svg={basketBackgroundSvg}
+      className="hud-icon--basket-background"
+    />
+  );
 }
 
 export function FeatherIcon() {

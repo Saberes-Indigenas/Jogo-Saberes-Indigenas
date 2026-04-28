@@ -16,7 +16,6 @@ export const DraggableItemCard = memo(function DraggableItemCard({
     <div className="draggable-item__card-inner">
       <div
         className="draggable-item__figure-wrapper"
-        style={{ borderColor: item.color }}
       >
         <div
           className="draggable-item__figure"

@@ -125,7 +125,7 @@ export function HudPanel({ stageCenter, onClose }: HudPanelProps) {
             className="hud-panel__module--score"
             variants={moduleVariants}
           >
-            <ScoreIndicator score={score} />
+            <ScoreIndicator score={score} maxScore={useGameStore((s) => s.maxUrucumSeeds)} />
           </motion.div>
           <motion.div
             className="hud-panel__module--progress"

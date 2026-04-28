@@ -4,25 +4,22 @@ import { useGameStore } from "../store/useGameStore";
 import { SharedItemBall } from "./shared-item-ball";
 import "../css/CustomDragLayer.css";
 
-export const CustomDragLayer = memo(function CustomDragLayer() {
-  const draggedItemInfo = useGameStore((s) => s.draggedItemInfo);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
+/**
+ * Sub-component to manage its own springs and motion values.
+ * This prevents the "memory" effect where the ball flies in from the last drag position.
+ */
+const DragPreview = ({ itemInfo }: { itemInfo: any }) => {
+  // Initialize with the current mouse position to avoid jumps
+  const x = useMotionValue(itemInfo.initialMousePos.x);
+  const y = useMotionValue(itemInfo.initialMousePos.y);
 
   const springConfig = { damping: 35, stiffness: 500, mass: 0.5 };
   const smoothX = useSpring(x, springConfig);
   const smoothY = useSpring(y, springConfig);
 
   useEffect(() => {
-    if (!draggedItemInfo) return;
-
-    x.set(draggedItemInfo.initialMousePos.x);
-    y.set(draggedItemInfo.initialMousePos.y);
-
     function handleUpdate(e: MouseEvent | DragEvent) {
-      if (e.clientX === 0 && e.clientY === 0) return; // Ignore invalid 0,0 events from some browsers
+      if (e.clientX === 0 && e.clientY === 0) return;
       x.set(e.clientX);
       y.set(e.clientY);
     }
@@ -34,49 +31,61 @@ export const CustomDragLayer = memo(function CustomDragLayer() {
       window.removeEventListener("mousemove", handleUpdate);
       window.removeEventListener("dragover", handleUpdate);
     };
-  }, [draggedItemInfo, x, y]);
+  }, [x, y]);
+
+  return (
+    <motion.div
+      style={{
+        position: "absolute",
+        left: 0,
+        top: 0,
+        x: smoothX,
+        y: smoothY,
+        translateX: "-50%",
+        translateY: "-50%",
+        overflow: "hidden",
+        pointerEvents: "none",
+        zIndex: 1000,
+      }}
+      initial={{
+        width: itemInfo.initialRect.width,
+        height: itemInfo.initialRect.height,
+        borderRadius: "28px",
+        opacity: 0,
+      }}
+      animate={{
+        width: 90,
+        height: 90,
+        borderRadius: "50%",
+        opacity: 1,
+      }}
+      exit={{
+        scale: 0,
+        opacity: 0,
+        transition: { duration: 0.15 }
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 30
+      }}
+    >
+      <SharedItemBall item={itemInfo.item} />
+    </motion.div>
+  );
+};
+
+export const CustomDragLayer = memo(function CustomDragLayer() {
+  const draggedItemInfo = useGameStore((s) => s.draggedItemInfo);
 
   return (
     <div className="custom-drag-layer">
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {draggedItemInfo && (
-          <motion.div
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              x: smoothX,
-              y: smoothY,
-              translateX: "-50%",
-              translateY: "-50%",
-              overflow: "hidden",
-              pointerEvents: "none",
-            }}
-            initial={{
-              width: draggedItemInfo.initialRect.width,
-              height: draggedItemInfo.initialRect.height,
-              borderRadius: "28px",
-              opacity: 0,
-            }}
-            animate={{
-              width: 90,
-              height: 90,
-              borderRadius: "50%",
-              opacity: 1,
-            }}
-            exit={{
-              scale: 0,
-              opacity: 0,
-              transition: { duration: 0.15 }
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 30
-            }}
-          >
-            <SharedItemBall item={draggedItemInfo.item} />
-          </motion.div>
+          <DragPreview 
+            key={draggedItemInfo.item.id} 
+            itemInfo={draggedItemInfo} 
+          />
         )}
       </AnimatePresence>
     </div>
