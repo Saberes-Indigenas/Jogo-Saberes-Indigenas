@@ -17,10 +17,6 @@ export function ScoreIndicator({ score, maxScore }: ScoreIndicatorProps) {
 
   return (
     <article className="hud-module--score" aria-label="Sabedoria acumulada">
-      <div className="hud-module__content">
-        <span className="hud-module__label">Sabedoria</span>
-        <span className="hud-module__hint">Sementes de Urucum (Nonogo)</span>
-      </div>
       <div className="hud-module__icon hud-module__icon--basket-wrapper">
         <div className="basket-background-wrapper">
           <BasketBackgroundIcon />

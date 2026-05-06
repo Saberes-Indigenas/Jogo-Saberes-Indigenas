@@ -5,22 +5,58 @@
   transform: translate(-50%, -50%);
   width: min(92vw, 920px);
   height: min(92vw, 920px);
-  background: #2d1b0a;
-  border-radius: clamp(26px, 4vw, 36px);
-  border: 4px solid #4a2d14;
-  padding: clamp(2rem, 3vw, 2.8rem);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
-  overflow: visible;
-  pointer-events: auto;
-  isolation: isolate;
   max-height: min(80vh, 720px);
 
+  /* Transparent container with no clip-path to allow basket overflow */
+  background: transparent;
+  clip-path: none;
+  overflow: visible;
+
+  padding: clamp(2rem, 3.5vw, 3.2rem);
+  pointer-events: auto;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
-  color: rgba(38, 22, 12, 0.92);
+  color: rgba(255, 255, 255, 0.95);
   z-index: 170;
+
+  /* 3D Drop shadow of the child wavy wood slice */
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.85));
 }
 
+/* Inner Tree Rings Texture layer */
+.hud-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Fully extended to the edges, removing the brown bark border */
+  background: url("../assets/hud/hud-background.jpg") no-repeat center center / cover;
+
+  /* Matching irregular hand-carved shape */
+  clip-path: polygon(4% 8%, 15% 5%, 28% 7%, 42% 4%, 55% 6%, 68% 4%, 82% 7%, 92% 4%, 96% 10%,
+      95% 22%, 97% 35%, 94% 48%, 97% 62%, 94% 75%, 96% 88%, 92% 94%,
+      82% 92%, 68% 95%, 55% 93%, 42% 96%, 28% 93%, 15% 95%, 6% 91%, 4% 82%,
+      6% 68%, 3% 55%, 5% 42%, 3% 28%, 5% 15%);
+
+  z-index: -2;
+}
+
+/* 3D Depth Lighting (Radial Gradient Vignette) */
+.hud-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* Fully extended to the edges, removing the brown bark border */
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.45) 75%, rgba(0, 0, 0, 0.82) 100%);
+
+  clip-path: polygon(4% 8%, 15% 5%, 28% 7%, 42% 4%, 55% 6%, 68% 4%, 82% 7%, 92% 4%, 96% 10%,
+      95% 22%, 97% 35%, 94% 48%, 97% 62%, 94% 75%, 96% 88%, 92% 94%,
+      82% 92%, 68% 95%, 55% 93%, 42% 96%, 28% 93%, 15% 95%, 6% 91%, 4% 82%,
+      6% 68%, 3% 55%, 5% 42%, 3% 28%, 5% 15%);
+
+  z-index: -1;
+  pointer-events: none;
+}
 
 .hud-panel__body {
   position: relative;
@@ -31,17 +67,43 @@
     "score progress feathers";
   height: 100%;
   padding: 0.5rem;
+  overflow: visible;
+  /* Ensure body allows overflow */
 }
 
-.hud-panel__module {
+/* Beautifully clean transparent layouts without frosted rectangles */
+.hud-panel__module--score,
+.hud-panel__module--progress,
+.hud-panel__module--feather {
+  position: relative;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: clamp(1.2rem, 2.5vw, 1.8rem);
+  box-shadow: none;
+  backdrop-filter: none;
   display: flex;
-  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 0;
+  overflow: visible;
+  /* Ensure content allows overflow */
 }
 
+.hud-panel__module--score {
+  grid-area: score;
+  padding: 0 !important;
+  /* Let ScoreIndicator handle padding */
+  overflow: visible;
+  /* To allow the urucum seeds basket to pop out beautifully */
+}
 
 .hud-panel__module--progress {
   grid-area: progress;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 .hud-panel__module--feather {

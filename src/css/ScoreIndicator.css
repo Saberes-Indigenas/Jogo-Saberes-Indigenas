@@ -51,8 +51,7 @@
   clip-path: polygon(0% 15%,
       5% 10%, 15% 12%, 25% 5%, 35% 12%, 45% 8%, 55% 15%, 65% 5%, 75% 12%, 85% 8%, 95% 12%, 100% 15%,
       100% 100%, 0% 100%);
-  /* Shadow at the bottom for depth */
-  box-shadow: inset 0 -20px 40px rgba(0, 0, 0, 0.7);
+  /* Depth effect only at the bottom */
   filter: brightness(0.9) contrast(1.1);
   position: relative;
 }
@@ -61,7 +60,8 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.01) 0%, transparent 80%);
+  /* Very soft shadow strictly at the bottom */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 0%);
   pointer-events: none;
 }
 
