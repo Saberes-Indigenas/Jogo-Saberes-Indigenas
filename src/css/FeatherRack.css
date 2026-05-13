@@ -1,31 +1,56 @@
+.hud-module--feather-rack {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .hud-feather-rack__slots {
   list-style: none;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
-  gap: clamp(0.6rem, 1.2vw, 1.2rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(1.2rem, 2.5vw, 3.5rem);
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .hud-feather-rack__slot {
   position: relative;
-  aspect-ratio: 1 / 2.2;
+  width: clamp(130px, 14vw, 190px); /* Large square container to give the 1:1 SVG maximum canvas space! */
+  aspect-ratio: 1; /* 1:1 ratio matches the SVG's 0 0 20 20 viewBox perfectly, avoiding squishing! */
   display: grid;
   place-items: center;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
+  overflow: visible; /* Let the scaled feather breathe and overflow */
 }
 
 .hud-feather-rack__slot .hud-icon {
   width: 100%;
   height: 100%;
-  color: #ffca28;
+  color: #ffca28; /* Golden color! */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Force all SVG paths to render in gorgeous golden yellow */
+.hud-feather-rack__slot .hud-icon svg path,
+.hud-feather-rack__slot .hud-icon svg g,
+.hud-feather-rack__slot .hud-icon svg polygon,
+.hud-feather-rack__slot .hud-icon svg rect {
+  fill: currentColor !important;
 }
 
 .hud-feather-rack__slot .hud-icon svg {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
+  transform: scale(1.45) translateY(5%); /* Scale up the feather significantly inside its container to be coeso with the basket! */
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.95));
 }

@@ -1,5 +1,6 @@
 import type { GameStoreCreator } from "./types";
 import { shuffleArray, getDistance, getColorKey } from "./utils";
+import { soundManager } from "../utils/soundManager";
 import {
   DEFAULT_MAX_ROUNDS,
   FEATHER_REWARD_MULTIPLIER,
@@ -136,6 +137,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
   },
 
   handleDragStart: (e, item, initialRect) => {
+    soundManager.playDragStart();
     set({
       draggingItemId: item.id,
       draggedItemInfo: { 
@@ -147,6 +149,9 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
   },
 
   handleDragEnd: () => {
+    if (get().draggedItemInfo) {
+      soundManager.playDragEnd();
+    }
     set({ draggingItemId: null, draggedItemInfo: null });
   },
 
@@ -249,6 +254,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
         },
       }));
 
+      soundManager.playSuccess();
       state.showFeedback(`Você conectou ${item.name_boe} ao clã ${targetClan.name}!`, "success", 1800);
       
       const targetCenterPos = state.clanTargets[targetClan.id];
@@ -297,6 +303,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
         });
         
         if (hasGainedFeather) {
+          soundManager.playFeather();
           state.triggerCelebration({
             icon: "🪶",
             label: "Você ganhou uma Pluma do Conhecimento!",
@@ -324,6 +331,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
           get().clearClanDisplays();
           const finishedRound = Math.min(state.currentRound, state.maxRounds);
           const upcomingRound = Math.min(state.currentRound + 1, state.maxRounds);
+          soundManager.playRoundComplete();
           state.showFeedback(`Rodada ${finishedRound} concluída! Prepare-se para novos desafios.`, "roundComplete", 2500);
           
           setTimeout(() => {
@@ -336,6 +344,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
             label: "Você reuniu todo o círculo sagrado!",
             accentColor: "#b39ddb",
           });
+          soundManager.playGameOver();
           set({ currentRound: state.maxRounds });
           setTimeout(() => set({ isGameOver: true }), 500);
         }
@@ -350,6 +359,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
           accentColor: "#80cbc4",
         });
       }
+      soundManager.playError();
       set({ streak: 0 });
       state.showFeedback("Incorreto. Observe as cores do clã e tente novamente.", "error", 1600);
       set({

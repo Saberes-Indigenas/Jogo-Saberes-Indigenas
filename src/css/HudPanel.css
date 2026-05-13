@@ -107,7 +107,7 @@
 }
 
 .hud-panel__module--feather {
-  grid-area: feathers;
+  grid-column: 2 / 4;
 }
 
 

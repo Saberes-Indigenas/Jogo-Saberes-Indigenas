@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
-import { DEFAULT_MAX_ROUNDS } from "../../config/gameSession";
 import { FeatherRack } from "./feather-rack";
-import { ProgressIndicator } from "./progress-indicator";
 import { ScoreIndicator } from "./score-indicator";
 import { useGameStore } from "../../store/useGameStore";
 import "../../css/HudPanel.css";
@@ -16,17 +14,6 @@ export function HudPanel({ stageCenter, onClose }: HudPanelProps) {
   const score = useGameStore((s) => s.score);
   const feathers = useGameStore((s) => s.featherCount);
   const maxFeathers = useGameStore((s) => s.maxFeatherCapacity);
-  const completed = useGameStore((s) => s.completedCount);
-  const total = useGameStore((s) => s.sessionTotalItems);
-  const redCompleted = useGameStore((s) => s.completedByColor.red);
-  const blackCompleted = useGameStore((s) => s.completedByColor.black);
-  const redTotal = useGameStore((s) => s.sessionTotalByColor.red);
-  const blackTotal = useGameStore((s) => s.sessionTotalByColor.black);
-  const currentRound = useGameStore((s) => s.currentRound);
-  const maxRounds = useGameStore((s) => s.maxRounds);
-
-  const progress =
-    total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
   const panelRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -56,13 +43,6 @@ export function HudPanel({ stageCenter, onClose }: HudPanelProps) {
       opacity: 1,
     };
   }, [stageCenter]);
-
-  const effectiveMaxRounds =
-    maxRounds && maxRounds > 0 ? maxRounds : DEFAULT_MAX_ROUNDS;
-  const safeCurrentRound = Math.min(
-    Math.max(currentRound, 0),
-    effectiveMaxRounds
-  );
 
   const panelVariants = {
     hidden: { opacity: 0, scale: 0.9, x: "-50%", y: "-45%" },
@@ -126,23 +106,6 @@ export function HudPanel({ stageCenter, onClose }: HudPanelProps) {
             variants={moduleVariants}
           >
             <ScoreIndicator score={score} maxScore={useGameStore((s) => s.maxUrucumSeeds)} />
-          </motion.div>
-          <motion.div
-            className="hud-panel__module--progress"
-            variants={moduleVariants}
-          >
-            <ProgressIndicator
-              progress={progress}
-              completed={completed}
-              total={total}
-              redCompleted={redCompleted}
-              blackCompleted={blackCompleted}
-              redTotal={redTotal}
-              blackTotal={blackTotal}
-              currentRound={safeCurrentRound}
-              maxRounds={effectiveMaxRounds}
-              circleSize={196}
-            />
           </motion.div>
           <motion.div
             className="hud-panel__module--feather"

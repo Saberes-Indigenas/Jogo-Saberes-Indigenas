@@ -15,6 +15,8 @@ import { LoadingScreen } from "./loading-screen";
 import { HudPanel } from "./hud-panel/hud-panel";
 import { EnteringOfferingDom } from "./entering-offering-dom";
 import { CustomDragLayer } from "./custom-drag-layer";
+import { SoundToggle } from "./sound-toggle";
+import { soundManager } from "../utils/soundManager";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 import "../css/GameStage.css";
@@ -70,6 +72,12 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
   const [isForestReady, setForestReady] = useState(false);
   const [isHudPanelOpen, setIsHudPanelOpen] = useState(false);
   const isGameReady = isStageReady && isForestReady;
+
+  useEffect(() => {
+    if (isGameReady) {
+      soundManager.startAmbient();
+    }
+  }, [isGameReady]);
 
   const [activeBubble, setActiveBubble] = useState<{
     clan: Clan;
@@ -175,6 +183,7 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
             height={window.innerHeight}
             onReady={() => setForestReady(true)}
           />
+          {isGameReady && <SoundToggle />}
           <GameHud
             isOpen={isHudPanelOpen}
             onToggle={() => setIsHudPanelOpen((prev) => !prev)}
