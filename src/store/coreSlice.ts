@@ -1,5 +1,6 @@
 import type { GameStoreCreator } from "./types";
 import { DEFAULT_MAX_ROUNDS } from "../config/gameSession";
+import { COLORS } from "../config/colors";
 
 export const createCoreSlice: GameStoreCreator<import("./types").CoreSlice> = (set, get) => ({
   clans: [],
@@ -49,10 +50,10 @@ export const createCoreSlice: GameStoreCreator<import("./types").CoreSlice> = (s
     const targetRingRadius = layout.raioPalco * 0.75;
     
     const tugoaregeClans = clans.filter(
-      (c) => initialItems.find((i) => i.correct_clan_id === c.id)?.color === "#b52323"
+      (c) => initialItems.find((i) => i.correct_clan_id === c.id)?.color === COLORS.CLAN_TUGOAREGE
     );
     const eceraeClans = clans.filter(
-      (c) => initialItems.find((i) => i.correct_clan_id === c.id)?.color === "#000000"
+      (c) => initialItems.find((i) => i.correct_clan_id === c.id)?.color === COLORS.CLAN_ECERAE
     );
 
     tugoaregeClans.forEach((clan, index) => {

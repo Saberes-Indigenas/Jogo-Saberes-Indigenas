@@ -1,5 +1,6 @@
 import type { GameStoreCreator } from "./types";
 import { shuffleArray, getDistance, getColorKey } from "./utils";
+import { soundManager } from "../utils/soundManager";
 import {
   DEFAULT_MAX_ROUNDS,
   FEATHER_REWARD_MULTIPLIER,
@@ -31,6 +32,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
 
   draggingItemId: null,
   draggedItemInfo: null,
+  hoveredClanId: null,
   returningItem: null,
 
   initGameSession: () => {
@@ -135,21 +137,57 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
     setSpotlightItem(null);
   },
 
-  handleDragStart: (_e, item, initialRect) => {
+  handleDragStart: (e, item, initialRect) => {
+    soundManager.playDragStart();
     set({
       draggingItemId: item.id,
-      draggedItemInfo: { item, initialRect },
+      draggedItemInfo: { 
+        item, 
+        initialRect,
+        initialMousePos: { x: e.clientX, y: e.clientY }
+      },
     });
   },
 
   handleDragEnd: () => {
-    set({ draggingItemId: null, draggedItemInfo: null });
+    if (get().draggedItemInfo) {
+      soundManager.playDragEnd();
+    }
+    set({ draggingItemId: null, draggedItemInfo: null, hoveredClanId: null });
   },
 
-  handleDragOver: (e) => {
+  handleDragOver: (e, stageRect) => {
     e.preventDefault();
     if (e.dataTransfer) {
       e.dataTransfer.dropEffect = "move";
+    }
+
+    const state = get();
+    if (!state.draggedItemInfo) return;
+
+    const pointerPos = {
+      x: e.clientX - stageRect.left,
+      y: e.clientY - stageRect.top,
+    };
+
+    let nearestClanId: string | null = null;
+    let minDist = Infinity;
+    const threshold = state.layout.raioPalco * 0.25;
+
+    Object.keys(state.clanTargets).forEach((clanId) => {
+      const targetPos = state.clanTargets[clanId];
+      if (targetPos) {
+        const d = getDistance(pointerPos, targetPos);
+        if (d < minDist) {
+          minDist = d;
+          nearestClanId = clanId;
+        }
+      }
+    });
+
+    const finalHoverId = minDist < threshold ? nearestClanId : null;
+    if (state.hoveredClanId !== finalHoverId) {
+      set({ hoveredClanId: finalHoverId });
     }
   },
 
@@ -245,9 +283,16 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
         },
       }));
 
+      soundManager.playSuccess();
       state.showFeedback(`Você conectou ${item.name_boe} ao clã ${targetClan.name}!`, "success", 1800);
       
       const targetCenterPos = state.clanTargets[targetClan.id];
+      const globalStartPos = { x: e.clientX, y: e.clientY };
+      const globalEndPos = {
+        x: stageRect.left + targetCenterPos.x,
+        y: stageRect.top + targetCenterPos.y,
+      };
+
       set((s) => ({
         feedbackPulse: { ...targetCenterPos, color: "correct", key: Date.now() },
         enteringOfferings: [
@@ -258,6 +303,8 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
             item,
             startPos: dropPos,
             endPos: targetCenterPos,
+            globalStartPos,
+            globalEndPos,
           },
         ]
       }));
@@ -285,6 +332,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
         });
         
         if (hasGainedFeather) {
+          soundManager.playFeather();
           state.triggerCelebration({
             icon: "🪶",
             label: "Você ganhou uma Pluma do Conhecimento!",
@@ -312,6 +360,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
           get().clearClanDisplays();
           const finishedRound = Math.min(state.currentRound, state.maxRounds);
           const upcomingRound = Math.min(state.currentRound + 1, state.maxRounds);
+          soundManager.playRoundComplete();
           state.showFeedback(`Rodada ${finishedRound} concluída! Prepare-se para novos desafios.`, "roundComplete", 2500);
           
           setTimeout(() => {
@@ -324,6 +373,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
             label: "Você reuniu todo o círculo sagrado!",
             accentColor: "#b39ddb",
           });
+          soundManager.playGameOver();
           set({ currentRound: state.maxRounds });
           setTimeout(() => set({ isGameOver: true }), 500);
         }
@@ -338,19 +388,29 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
           accentColor: "#80cbc4",
         });
       }
+      soundManager.playError();
       set({ streak: 0 });
       state.showFeedback("Incorreto. Observe as cores do clã e tente novamente.", "error", 1600);
       set({
         feedbackPulse: { ...dropPos, color: "incorrect", key: Date.now() },
       });
 
-      const endPos = {
-        x: initialRect.left - stageRect.left + initialRect.width / 2,
-        y: initialRect.top - stageRect.top + initialRect.height / 2,
+      const globalStartPos = { x: e.clientX, y: e.clientY };
+      const globalEndPos = {
+        x: initialRect.left + initialRect.width / 2,
+        y: initialRect.top + initialRect.height / 2,
       };
-      set({ returningItem: { item, startPos: dropPos, endPos } });
+      
+      set({ 
+        returningItem: { 
+          item, 
+          startPos: globalStartPos, 
+          endPos: globalEndPos, 
+          initialRect 
+        } 
+      });
     }
     
-    set({ draggedItemInfo: null });
+    set({ draggedItemInfo: null, hoveredClanId: null });
   },
 });
