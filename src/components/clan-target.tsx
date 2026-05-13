@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import { Image as KonvaImage, Text, Group, Circle } from "react-konva";
 import Konva from "konva";
+import { useGameStore } from "../store/useGameStore";
 
 import ocaDireitaUrl from "../assets/ocaLadoDireito.svg";
 import ocaEsquerdaUrl from "../assets/ocaLadoEsquerdo.svg";
@@ -30,7 +31,9 @@ export function ClanTarget({
   onClick,
   resetTrigger,
 }: ClanTargetProps) {
+  const hoveredClanId = useGameStore((s) => s.hoveredClanId);
   const [image, setImage] = useState<HTMLImageElement | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
   const [naturalSize, setNaturalSize] = useState({ width: 1, height: 1 });
   const groupRef = useRef<Konva.Group>(null);
   const imageRef = useRef<Konva.Image>(null);
@@ -150,6 +153,20 @@ export function ClanTarget({
     };
   }, [deliveryTrigger, imageHeight]);
 
+  const isVisualHovered = isHovered || hoveredClanId === clanId;
+
+  useEffect(() => {
+    const node = groupRef.current;
+    if (!node) return;
+
+    node.to({
+      scaleX: isVisualHovered ? 1.08 : 1,
+      scaleY: isVisualHovered ? 1.08 : 1,
+      duration: 0.2,
+      easing: Konva.Easings.EaseOut,
+    });
+  }, [isVisualHovered]);
+
   useEffect(() => {
     const node = groupRef.current;
     if (!node) return;
@@ -169,10 +186,11 @@ export function ClanTarget({
 
     const container = stage.container();
     const handleEnter = () => {
-      if (!hasOfferings) return;
+      setIsHovered(true);
       container.style.cursor = "pointer";
     };
     const handleLeave = () => {
+      setIsHovered(false);
       container.style.cursor = "default";
     };
 
@@ -183,7 +201,7 @@ export function ClanTarget({
       node.off("mouseleave", handleLeave);
       if (container) container.style.cursor = "default";
     };
-  }, [hasOfferings]);
+  }, []);
 
   return (
     <Group

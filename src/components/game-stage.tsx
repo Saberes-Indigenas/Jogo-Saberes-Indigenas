@@ -186,17 +186,17 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
           {isGameReady && <SoundToggle />}
           <GameHud
             isOpen={isHudPanelOpen}
-            onToggle={() => setIsHudPanelOpen((prev) => !prev)}
+            onToggle={() => {} /* setIsHudPanelOpen((prev) => !prev) */}
             stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
           />
           <AnimatePresence>
-            {isHudPanelOpen && (
+            {/* isHudPanelOpen && (
               <HudPanel
                 key="hud-panel"
                 onClose={() => setIsHudPanelOpen(false)}
                 stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
               />
-            )}
+            ) */}
           </AnimatePresence>
 
           {isGameReady && <ItemTray />}

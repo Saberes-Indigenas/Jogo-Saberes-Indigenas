@@ -96,9 +96,15 @@ data = [
     }
 ]
 
+# Configurações de caminhos
+CLANS_ASSETS_DIR = "src/assets/clans"
+GENERIC_IMAGE = "/animals/animal_generico.webp"
+
 def format_name_for_id(name):
     """Formata o nome em português para uso em IDs, removendo espaços e caracteres especiais."""
-    return name.lower().replace(" ", "_").replace("(", "").replace(")", "").replace("/", "").replace(",", "")
+    # Remove acentos e caracteres especiais para IDs consistentes
+    s = strip_accents(name).lower()
+    return s.replace(" ", "_").replace("(", "").replace(")", "").replace("/", "").replace(",", "").replace("-", "_")
 
 clan_colors = {
     "PAIWOE": "#b52323", "APIBOREGE": "#b52323", "BOE ETUIEDAGAMAGE": "#b52323",
@@ -109,69 +115,110 @@ clan_colors = {
 result_json = {"clans": [], "items": []}
 
 # --- LÓGICA PARA PROCESSAR ITENS E CLÃS ---
-for clan_data in data:
-    clan_name_boe = clan_data["clan_name"]
-    clan_id_suffix = clan_data["clan_id"]
+
+# 1. Mapear dados existentes para busca
+all_hardcoded_items = []
+for clan_entry in data:
+    c_name = clan_entry["clan_name"]
+    c_id_suffix = clan_entry["clan_id"]
+    if "data" in clan_entry:
+        for cat, items in clan_entry["data"].items():
+            for it in items:
+                parts = it.split('(')
+                b_name = parts[0].strip()
+                p_name = parts[1].replace(')', '').strip() if len(parts) > 1 else b_name
+                all_hardcoded_items.append({
+                    "boe": b_name,
+                    "port": p_name,
+                    "clean_boe": clean_for_filename(b_name),
+                    "clean_port": clean_for_filename(p_name),
+                    "clan": c_name,
+                    "clan_id_suffix": c_id_suffix
+                })
+
+# 2. Processar Clãs
+import re
+
+for clan_entry in data:
+    clan_name = clan_entry["clan_name"]
+    clan_id_suffix = clan_entry["clan_id"]
     clan_id = f"clan_{clan_id_suffix}"
-    
-    # Adiciona o Clã
-    result_json["clans"].append({"id": clan_id, "name": clan_name_boe})
+    result_json["clans"].append({"id": clan_id, "name": clan_name})
 
-    if "data" in clan_data and clan_data["data"]:
-        for category_name_boe, items_list in clan_data["data"].items():
-            for item_full_name in items_list:
-                
-                # Passo 1: Separar o nome Boe (antes do parênteses) e o nome em português (dentro do parênteses)
-                parts = item_full_name.split('(')
-                
-                # O nome Boe é a parte antes do parênteses
-                name_boe = parts[0].strip() 
-                
-                # O nome em português é a parte dentro do parênteses
-                if len(parts) > 1:
-                    name_portuguese = parts[1].replace(')', '').strip()
+    clan_folder = os.path.join(CLANS_ASSETS_DIR, clan_name)
+    color = clan_colors.get(clan_name, "#333333")
+
+    if clan_name == "PAIWOE":
+        # Caso especial PAIWOE: Mantém itens do hardcoded com imagem genérica
+        for item_info in [i for i in all_hardcoded_items if i["clan"] == clan_name]:
+            item_id = f"item_{format_name_for_id(item_info['port'])}_{item_info['clan_id_suffix']}"
+            result_json["items"].append({
+                "id": item_id,
+                "name": item_info["port"],
+                "name_boe": item_info["boe"],
+                "icon": "",
+                "correct_clan_id": clan_id,
+                "color": color,
+                "clan": clan_name,
+                "media": {
+                    "image": GENERIC_IMAGE
+                }
+            })
+    elif os.path.exists(clan_folder):
+        # Outros clãs: Apenas se houver imagem
+        for filename in os.listdir(clan_folder):
+            if filename.lower().endswith(".webp"):
+                # Tenta extrair nomes do arquivo: Boe_Port.webp
+                name_parts = filename.replace(".webp", "").split("_")
+                if len(name_parts) >= 2:
+                    file_boe_clean = name_parts[0]
+                    file_port_clean = name_parts[1]
                 else:
-                    # Se não houver parênteses, usamos o nome Boe como nome em português (fallback)
-                    name_portuguese = name_boe 
+                    file_boe_clean = name_parts[0]
+                    file_port_clean = name_parts[0]
 
-                # Passo 2: Formatar ID e determinar atributos
-                item_name_formatted = format_name_for_id(name_portuguese)
-                item_id = f"item_{item_name_formatted}_{clan_id_suffix}"
+                # Tenta casar com o hardcoded para pegar nomes bonitos (com acento/espaço)
+                match = None
+                for h_item in all_hardcoded_items:
+                    if h_item["clan"] == clan_name:
+                        if (h_item["clean_boe"] == file_boe_clean and h_item["clean_port"] == file_port_clean) or \
+                           (h_item["clean_boe"] == file_port_clean and h_item["clean_port"] == file_boe_clean):
+                            match = h_item
+                            break
                 
-                color = clan_colors.get(clan_name_boe, "#333333")
-
-                # Passo 3: Lógica de Imagem
-                # Nome do arquivo: NomePortugues_NomeBoe.webp
-                img_filename = f"{clean_for_filename(name_portuguese)}_{clean_for_filename(name_boe)}.webp"
-                img_path = f"public/animals/{img_filename}"
-                
-                # Verifica se a imagem existe, caso contrário usa a genérica
-                if os.path.exists(img_path):
-                    final_img_path = f"/animals/{img_filename}"
+                if match:
+                    name_boe = match["boe"]
+                    name_port = match["port"]
                 else:
-                    final_img_path = "/animals/animal_generico.webp"
+                    # Se não achar, usa os nomes do arquivo tentando separar camelCase
+                    def split_camel(s):
+                        return re.sub(r'([a-z])([A-Z])', r'\1 \2', s)
+                    name_boe = split_camel(file_boe_clean)
+                    name_port = split_camel(file_port_clean)
 
-                # Passo 4: Adicionar o Item
+                item_id = f"item_{format_name_for_id(name_port)}_{clan_id_suffix}"
+                
+                # Caminho da imagem: usando o caminho relativo para src/assets
+                final_img_path = f"/src/assets/clans/{clan_name}/{filename}"
+
                 result_json["items"].append({
                     "id": item_id,
-                    "name": name_portuguese,
+                    "name": name_port,
                     "name_boe": name_boe,
-                    "icon": "", # Removido emoji conforme solicitado
+                    "icon": "",
                     "correct_clan_id": clan_id,
                     "color": color,
-                    "clan": clan_name_boe,
+                    "clan": clan_name,
                     "media": {
                         "image": final_img_path
                     }
                 })
 
-
 # Salvar o JSON
 output_path = "public/game-data.json"
 with open(output_path, "w", encoding="utf-8") as json_file:
-    # ensure_ascii=False garante que caracteres especiais (como emojis e acentos) são escritos corretamente
     json.dump(result_json, json_file, ensure_ascii=False, indent=2)
 
-print(f"Arquivo '{output_path}' atualizado com todos os clãs e itens únicos, incluindo o nome BOE!")
-print("\n--- Amostra do Conteúdo JSON Atualizado (Primeiros 1000 caracteres) ---")
-print(json.dumps(result_json, ensure_ascii=False, indent=2)[:1000] + "\n...")
+print(f"Arquivo '{output_path}' atualizado!")
+print(f"Total de clãs: {len(result_json['clans'])}")
+print(f"Total de itens: {len(result_json['items'])}")

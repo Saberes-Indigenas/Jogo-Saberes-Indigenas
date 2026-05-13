@@ -78,11 +78,6 @@ export function GameHud({ stageCenter, isOpen, onToggle }: GameHudProps) {
           <span
             className="hud-totem-button__icon"
             aria-hidden="true"
-            style={{
-              opacity: 0.25 + 0.75 * (progress / 100),
-              transform: `scale(${0.85 + 0.15 * (progress / 100)})`,
-              transition: "opacity 0.5s ease, transform 0.5s ease",
-            }}
           >
             <VillageIcon />
           </span>

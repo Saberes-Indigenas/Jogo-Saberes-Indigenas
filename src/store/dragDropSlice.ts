@@ -32,6 +32,7 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
 
   draggingItemId: null,
   draggedItemInfo: null,
+  hoveredClanId: null,
   returningItem: null,
 
   initGameSession: () => {
@@ -152,13 +153,41 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
     if (get().draggedItemInfo) {
       soundManager.playDragEnd();
     }
-    set({ draggingItemId: null, draggedItemInfo: null });
+    set({ draggingItemId: null, draggedItemInfo: null, hoveredClanId: null });
   },
 
-  handleDragOver: (e) => {
+  handleDragOver: (e, stageRect) => {
     e.preventDefault();
     if (e.dataTransfer) {
       e.dataTransfer.dropEffect = "move";
+    }
+
+    const state = get();
+    if (!state.draggedItemInfo) return;
+
+    const pointerPos = {
+      x: e.clientX - stageRect.left,
+      y: e.clientY - stageRect.top,
+    };
+
+    let nearestClanId: string | null = null;
+    let minDist = Infinity;
+    const threshold = state.layout.raioPalco * 0.25;
+
+    Object.keys(state.clanTargets).forEach((clanId) => {
+      const targetPos = state.clanTargets[clanId];
+      if (targetPos) {
+        const d = getDistance(pointerPos, targetPos);
+        if (d < minDist) {
+          minDist = d;
+          nearestClanId = clanId;
+        }
+      }
+    });
+
+    const finalHoverId = minDist < threshold ? nearestClanId : null;
+    if (state.hoveredClanId !== finalHoverId) {
+      set({ hoveredClanId: finalHoverId });
     }
   },
 
@@ -382,6 +411,6 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
       });
     }
     
-    set({ draggedItemInfo: null });
+    set({ draggedItemInfo: null, hoveredClanId: null });
   },
 });

@@ -22,9 +22,10 @@ export function SharedItemBall({ item, scale = 1, className = "" }: SharedItemBa
     >
       <div className="shared-item-ball__figure-inner">
         {hasImage ? (
-          <div 
+          <img 
             className="shared-item-ball__image" 
-            style={{ backgroundImage: `url(${item.media?.image})` }}
+            src={item.media?.image || undefined}
+            alt=""
           />
         ) : (
           <span className="shared-item-ball__icon">{item.icon}</span>

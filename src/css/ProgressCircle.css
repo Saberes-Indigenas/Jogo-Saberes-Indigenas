@@ -1,7 +1,7 @@
 .e-card {
   margin: 0;
-  background: rgba(14, 7, 2, 0.45); /* Soft, dark background so empty state looks carved */
-  box-shadow: 0px 8px 28px -9px rgba(0,0,0,0.45), inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  background: transparent;
+  box-shadow: none;
   position: relative;
   border-radius: 50%;
   overflow: hidden;

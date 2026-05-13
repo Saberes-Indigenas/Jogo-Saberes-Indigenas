@@ -98,7 +98,12 @@ export function BororoStage({
   return (
     <main
       className="game-area"
-      onDragOver={handleDragOver}
+      onDragOver={(e) => {
+        if (gameAreaWrapperRef.current) {
+          const stageRect = gameAreaWrapperRef.current.getBoundingClientRect();
+          handleDragOver(e, stageRect);
+        }
+      }}
       onDrop={handleStageDrop}
     >
       <Stage

@@ -84,6 +84,7 @@ export interface DragDropSlice {
 
   draggingItemId: string | null;
   draggedItemInfo: DraggedItemInfo;
+  hoveredClanId: string | null;
   returningItem: ReturningItemState;
 
   // Actions
@@ -92,7 +93,7 @@ export interface DragDropSlice {
 
   handleDragStart: (e: React.DragEvent, item: Item, initialRect: DOMRect) => void;
   handleDragEnd: () => void;
-  handleDragOver: (e: React.DragEvent) => void;
+  handleDragOver: (e: React.DragEvent, stageRect: DOMRect) => void;
   handleDrop: (e: React.DragEvent, stageRect: DOMRect) => void;
 
   registerOfferingArrival: (entryKey: number, clanId: string, item: Item) => void;

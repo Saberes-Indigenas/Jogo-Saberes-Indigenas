@@ -7,7 +7,7 @@
   transform: translateY(-50%);
   width: clamp(20rem, 24vw, 23.5rem);
   max-width: min(92vw, 360px);
-  max-height: calc(100vh - 4.5rem);
+  height: min(780px, calc(100vh - 4rem));
   padding: 1.8rem 1.4rem;
   border-radius: 36px;
   border: 8px solid #3d2511;
@@ -36,104 +36,60 @@
 .item-tray__inner {
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.2rem;
   width: 100%;
   height: 100%;
   position: relative;
   z-index: 1;
 }
 
-.item-tray__spotlight {
-  min-height: 10.5rem;
-  display: flex;
-  align-items: stretch;
-}
-
-.item-tray__spotlight-placeholder {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 1.4rem;
-  border-radius: 24px;
-  border: 2px dashed rgba(255, 202, 40, 0.3);
-  background: rgba(0, 0, 0, 0.25);
-  color: #ffca28;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
-  text-align: center;
-}
-
-.item-tray__spotlight-placeholder h3 {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #ffca28;
-}
-
-.item-tray__spotlight-placeholder p {
-  margin: 0;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
-  line-height: 1.4;
-}
-
 .item-tray__header {
   text-align: center;
   color: #ffca28;
-}
-
-.item-tray__header h2 {
-  margin: 0;
-  font-size: 1.75rem;
-  letter-spacing: 0.08em;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+  padding-bottom: 0.5rem;
 }
 
 .item-tray__header p {
-  margin: 0.45rem 0 0;
-  font-size: 0.9rem;
+  margin: 0;
+  font-size: 0.95rem;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.4;
 }
 
+/* New Container for Drag Scroll */
+.item-tray__list-container {
+  flex: 1;
+  width: 100%;
+  overflow: hidden; /* Important for framer-motion drag */
+  position: relative;
+  cursor: grab;
+}
+
+.item-tray__list-container:active {
+  cursor: grabbing;
+}
+
 .item-tray__list {
-  flex: 1 1 auto;
-  overflow-y: auto;
-  padding-right: 0.35rem;
   display: flex;
   flex-direction: column;
-  gap: 0.95rem;
-}
-
-.item-tray__list::-webkit-scrollbar {
-  width: 10px;
-}
-
-.item-tray__list::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.18);
-  border-radius: 999px;
-}
-
-.item-tray__list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #ffca28, #ff9800);
-  border-radius: 999px;
+  gap: 1rem;
+  padding: 0.5rem 0 2rem;
+  width: 100%;
 }
 
 .draggable-item {
   display: block;
   padding: 0;
-  border-radius: 28px;
+  border-radius: 24px;
   background: #2d1b0a;
-  /* Fundo escuro tipo Genipapo */
   border: 4px solid #4a2d14;
   cursor: grab;
   overflow: hidden;
   position: relative;
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  flex-shrink: 0;
+  touch-action: none; /* Prevents browser scroll conflicts */
 }
 
 .draggable-item:active {
@@ -143,23 +99,27 @@
 .draggable-item__card-inner {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 1.1rem;
+  gap: 1rem;
   align-items: center;
-  padding: 0.8rem 1.1rem;
+  padding: 0.7rem 1rem;
   position: relative;
   z-index: 2;
 }
 
-
-.draggable-item__figure-wrapper {
-  position: relative;
+.draggable-item__handle-hint {
+  position: absolute;
+  top: 50%;
+  right: 0.8rem;
+  transform: translateY(-50%);
+  color: rgba(255, 202, 40, 0.3);
+  pointer-events: none;
 }
 
 .draggable-item__figure {
   position: relative;
-  width: 86px;
-  height: 86px;
-  border-radius: 18px;
+  width: 78px;
+  height: 78px;
+  border-radius: 16px;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -171,63 +131,32 @@
   object-fit: cover;
 }
 
-
-
-.item-icon {
-  font-size: 2.8rem;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
-}
-
-.draggable-item__info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  min-width: 0;
-}
-
-.draggable-item__info-header {
-  display: flex;
-  flex-direction: column;
-}
-
 .item-name-boe {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 900;
   color: #ffca28;
-  /* Amarelo vibrante das penas */
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
   line-height: 1;
-  letter-spacing: -0.02em;
 }
 
 .item-name-clan {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 800;
-  color: rgba(255, 255, 255, 0.65);
-  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.6);
   font-style: italic;
   margin-top: 0.2rem;
 }
 
 .item-clan-badge {
   display: inline-block;
-  padding: 0.3rem 0.8rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 10px;
+  font-size: 0.7rem;
   font-weight: 900;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-
-@media (max-width: 1400px) {
-  .item-tray {
-    width: clamp(19rem, 26vw, 30.5rem);
-    padding: 1.4rem 1.1rem;
-  }
+  margin-top: 0.4rem;
 }
 
 @media (max-width: 1100px) {
@@ -235,38 +164,7 @@
     position: static;
     transform: none;
     width: min(520px, 92vw);
-    max-height: none;
-    padding: 1.5rem 1.25rem;
-    border-radius: 28px;
-    border: 6px solid rgba(94, 50, 15, 0.82);
-    margin: 0 auto 1.4rem;
-  }
-
-  .item-tray::before {
-    inset: 10px;
-    border-radius: 22px;
-  }
-
-  .item-tray__spotlight {
-    min-height: unset;
-  }
-
-  .item-tray__spotlight-placeholder {
-    align-items: center;
-    text-align: center;
-  }
-}
-
-@media (max-width: 768px) {
-  .item-tray {
-    padding: 1.3rem 1rem;
-  }
-
-  .item-tray__header h2 {
-    font-size: 1.55rem;
-  }
-
-  .item-tray__spotlight-placeholder {
-    padding: 1.1rem;
+    height: 520px;
+    margin: 0 auto 1rem;
   }
 }
