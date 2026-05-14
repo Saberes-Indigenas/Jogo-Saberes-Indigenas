@@ -14,7 +14,6 @@ import { ReturningItemDom } from "./returning-item-dom";
 import { LoadingScreen } from "./loading-screen";
 import { EnteringOfferingDom } from "./entering-offering-dom";
 import { CustomDragLayer } from "./custom-drag-layer";
-import { SoundToggle } from "./sound-toggle";
 import { SettingsToggle } from "./settings-toggle";
 import { soundManager } from "../utils/soundManager";
 
@@ -189,7 +188,6 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
             height={layout.gameAreaHeight}
             onReady={() => setForestReady(true)}
           />
-          {isGameReady && <SoundToggle />}
           {isGameReady && <SettingsToggle />}
           <GameHud
             isOpen={false}

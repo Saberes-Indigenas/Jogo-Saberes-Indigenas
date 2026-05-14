@@ -1,4 +1,5 @@
 import { Howl, Howler } from "howler";
+import ambientSound from "../assets/sounds/ambient/ambient_sound.mp3";
 
 type SoundType =
   | "click"
@@ -14,7 +15,7 @@ type SoundType =
 class SoundManager {
   private muted: boolean = false;
   private globalVolume: number = 0.8;
-  private howls: Record<Exclude<SoundType, "ambient">, any>;
+  private howls: Record<Exclude<SoundType, "ambient">, any> = {} as any;
   private ambientHowl: any = null;
   private audioCtx: AudioContext | null = null;
 
@@ -28,10 +29,21 @@ class SoundManager {
     feather: ["/src/assets/sounds/game/feather.mp3", "/sounds/game/feather.mp3"],
     roundComplete: ["/src/assets/sounds/game/round-complete.mp3", "/sounds/game/round-complete.mp3"],
     gameOver: ["/src/assets/sounds/game/game-over.mp3", "/sounds/game/game-over.mp3"],
-    ambient: ["/src/assets/sounds/ambient/forest-ambient.mp3", "/sounds/ambient/forest-ambient.mp3"],
+    ambient: [ambientSound],
   };
 
   constructor() {
+    // Desbloquear o Howler no primeiro clique do usuário (necessário em muitos navegadores)
+    const unlock = () => {
+      if (!this.muted) {
+        this.startAmbient();
+      }
+      window.removeEventListener("click", unlock);
+      window.removeEventListener("touchstart", unlock);
+    };
+    window.addEventListener("click", unlock);
+    window.addEventListener("touchstart", unlock);
+
     // Carregar estado de mute do localStorage
     const savedMuted = localStorage.getItem("jogo_saberes_muted");
     this.muted = savedMuted === "true";
@@ -41,7 +53,11 @@ class SoundManager {
     this.globalVolume = savedVolume ? parseFloat(savedVolume) : 0.8;
     Howler.volume(this.globalVolume);
 
-    // Inicializar os objetos Howl para efeitos de som
+    // Inicializar os objetos Howl
+    this.createAllHowls();
+  }
+
+  private createAllHowls() {
     this.howls = {
       click: this.createHowl("click"),
       dragStart: this.createHowl("dragStart"),
@@ -61,13 +77,16 @@ class SoundManager {
       src: this.soundPaths[type],
       html5: type === "ambient", // Usar HTML5 Audio para músicas longas
       loop: loop,
-      volume: type === "ambient" ? 0.35 : 0.8,
-      onloaderror: () => {
-        // Ignora silenciosamente no carregamento inicial, pois usaremos fallback sintetizado
-        console.log(`[SoundManager] Arquivo .mp3 para "${type}" não encontrado. Usando sintetizador fallback.`);
+      volume: type === "ambient" ? 1.0 : 0.8,
+      onload: () => {
+        if (type === "ambient") console.log("[SoundManager] Ambient sound loaded successfully.");
       },
-      onplayerror: () => {
-        console.log(`[SoundManager] Erro ao tocar "${type}". Usando sintetizador fallback.`);
+      onloaderror: (_id: any, err: any) => {
+        console.error(`[SoundManager] Erro ao carregar "${type}":`, err);
+      },
+      onplayerror: (_id: any, err: any) => {
+        console.error(`[SoundManager] Erro ao tocar "${type}":`, err);
+        Howler.unload(); 
       }
     });
   }
@@ -395,17 +414,22 @@ class SoundManager {
    * Inicia a reprodução do som ambiente (música de floresta em loop)
    */
   public startAmbient() {
+    console.log("[SoundManager] startAmbient chamado. Muted:", this.muted, "GlobalVolume:", this.globalVolume);
     if (this.muted) return;
     
     if (this.ambientHowl) {
       if (!this.ambientHowl.playing()) {
         try {
-          this.ambientHowl.play();
+          const id = this.ambientHowl.play();
+          console.log("[SoundManager] Ambient play() executado. ID:", id);
         } catch (e) {
-          // Fallback silencioso para áudio de ambiente se não houver arquivo
-          console.log("[SoundManager] Sem arquivo de música de fundo carregado.");
+          console.error("[SoundManager] Erro ao tentar tocar ambient:", e);
         }
+      } else {
+        console.log("[SoundManager] Ambient já está tocando.");
       }
+    } else {
+      console.warn("[SoundManager] ambientHowl não existe ainda.");
     }
   }
 
