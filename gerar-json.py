@@ -148,24 +148,8 @@ for clan_entry in data:
     clan_folder = os.path.join(CLANS_ASSETS_DIR, clan_name)
     color = clan_colors.get(clan_name, "#333333")
 
-    if clan_name == "PAIWOE":
-        # Caso especial PAIWOE: Mantém itens do hardcoded com imagem genérica
-        for item_info in [i for i in all_hardcoded_items if i["clan"] == clan_name]:
-            item_id = f"item_{format_name_for_id(item_info['port'])}_{item_info['clan_id_suffix']}"
-            result_json["items"].append({
-                "id": item_id,
-                "name": item_info["port"],
-                "name_boe": item_info["boe"],
-                "icon": "",
-                "correct_clan_id": clan_id,
-                "color": color,
-                "clan": clan_name,
-                "media": {
-                    "image": GENERIC_IMAGE
-                }
-            })
-    elif os.path.exists(clan_folder):
-        # Outros clãs: Apenas se houver imagem
+    if os.path.exists(clan_folder):
+        # Todos os clãs: Apenas se houver imagem ou se for um clã processado por pasta
         for filename in os.listdir(clan_folder):
             if filename.lower().endswith(".webp"):
                 # Tenta extrair nomes do arquivo: Boe_Port.webp

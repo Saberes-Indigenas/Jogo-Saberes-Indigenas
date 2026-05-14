@@ -66,6 +66,8 @@ export interface UiSlice {
   isMessageVisible: boolean;
   feedbackPulse: PulseState;
   spotlightItem: Item | null;
+  showPortugueseName: boolean;
+  showClanBadge: boolean;
   celebration: RewardCelebration | null;
 
   showFeedback: (msg: string, type: MessageType, duration?: number) => void;
@@ -73,6 +75,8 @@ export interface UiSlice {
   triggerCelebration: (data: Omit<RewardCelebration, "id">) => void;
   clearCelebration: () => void;
   setSpotlightItem: (item: Item | null) => void;
+  toggleShowPortugueseName: () => void;
+  toggleShowClanBadge: () => void;
 }
 
 // Slice 3: Drag Drop & Inventory State

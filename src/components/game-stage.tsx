@@ -12,10 +12,10 @@ import { GameHud } from "./game-hud";
 import { ClanInfoBubble } from "./clan-info-bubble";
 import { ReturningItemDom } from "./returning-item-dom";
 import { LoadingScreen } from "./loading-screen";
-import { HudPanel } from "./hud-panel/hud-panel";
 import { EnteringOfferingDom } from "./entering-offering-dom";
 import { CustomDragLayer } from "./custom-drag-layer";
 import { SoundToggle } from "./sound-toggle";
+import { SettingsToggle } from "./settings-toggle";
 import { soundManager } from "../utils/soundManager";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
@@ -70,7 +70,6 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
 
   const [isStageReady, setStageReady] = useState(false);
   const [isForestReady, setForestReady] = useState(false);
-  const [isHudPanelOpen, setIsHudPanelOpen] = useState(false);
   const isGameReady = isStageReady && isForestReady;
 
   useEffect(() => {
@@ -88,8 +87,15 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
 
   const closeBubble = useCallback(() => setActiveBubble(null), []);
 
-  const handleDragOver = useGameStore((s) => s.handleDragOver);
+  const handleDragOverStore = useGameStore((s) => s.handleDragOver);
   const handleDrop = useGameStore((s) => s.handleDrop);
+
+  const handleStageDragOver = useCallback((e: React.DragEvent) => {
+    if (gameAreaWrapperRef.current) {
+      const stageRect = gameAreaWrapperRef.current.getBoundingClientRect();
+      handleDragOverStore(e, stageRect);
+    }
+  }, [handleDragOverStore]);
 
   const handleStageDrop = useCallback((e: React.DragEvent) => {
     if (gameAreaWrapperRef.current) {
@@ -158,7 +164,7 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
       <div
         className={`game-content${isGameReady ? " game-content--visible" : ""}`}
         aria-hidden={!isGameReady}
-        onDragOver={handleDragOver}
+        onDragOver={handleStageDragOver}
         onDrop={handleStageDrop}
       >
         {layout.raioPalco > 0 && (
@@ -179,24 +185,19 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
           <ForestBackground
             stageCenter={backgroundCenter}
             stageRadius={layout.raioPalco}
-            width={window.innerWidth}
-            height={window.innerHeight}
+            width={layout.gameAreaWidth}
+            height={layout.gameAreaHeight}
             onReady={() => setForestReady(true)}
           />
           {isGameReady && <SoundToggle />}
+          {isGameReady && <SettingsToggle />}
           <GameHud
-            isOpen={isHudPanelOpen}
-            onToggle={() => {} /* setIsHudPanelOpen((prev) => !prev) */}
+            isOpen={false}
+            onToggle={() => {}}
             stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
           />
           <AnimatePresence>
-            {/* isHudPanelOpen && (
-              <HudPanel
-                key="hud-panel"
-                onClose={() => setIsHudPanelOpen(false)}
-                stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
-              />
-            ) */}
+            {/* O painel de informações foi desativado a pedido do usuário */}
           </AnimatePresence>
 
           {isGameReady && <ItemTray />}

@@ -19,16 +19,16 @@
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   max-width: 60px;
   overflow: hidden;
+  pointer-events: auto; /* Garante que o componente seja clicável mesmo dentro do overlay */
 }
 
-/* Revela o slider expandindo o container suavemente no hover */
-.sound-toggle-container:hover {
+.sound-toggle-container.is-open {
   max-width: 220px;
   padding: 6px 14px 6px 6px;
   background: rgba(35, 22, 12, 0.85);
   border-color: rgba(230, 180, 120, 0.35);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4),
-              0 0 15px rgba(230, 180, 120, 0.1);
+    0 0 15px rgba(230, 180, 120, 0.1);
 }
 
 .sound-toggle-button {
@@ -77,11 +77,11 @@
   opacity: 0;
   visibility: hidden;
   transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
-              opacity 0.2s ease,
-              visibility 0.2s ease;
+    opacity 0.2s ease,
+    visibility 0.2s ease;
 }
 
-.sound-toggle-container:hover .volume-slider-wrapper {
+.sound-toggle-container.is-open .volume-slider-wrapper {
   width: 100px;
   opacity: 1;
   visibility: visible;
@@ -162,25 +162,26 @@
 
 .sound-wave-bar:nth-child(1) {
   height: 5px;
-  animation: pulse-wave-subtle 1s ease-in-out infinite alternate;
+  animation: pulse-wave-sound-toggle 1s ease-in-out infinite alternate;
 }
 
 .sound-wave-bar:nth-child(2) {
   height: 10px;
-  animation: pulse-wave-subtle 1.4s ease-in-out infinite alternate;
+  animation: pulse-wave-sound-toggle 1.4s ease-in-out infinite alternate;
   animation-delay: 0.2s;
 }
 
 .sound-wave-bar:nth-child(3) {
   height: 7px;
-  animation: pulse-wave-subtle 1.2s ease-in-out infinite alternate;
+  animation: pulse-wave-sound-toggle 1.2s ease-in-out infinite alternate;
   animation-delay: 0.4s;
 }
 
-@keyframes pulse-wave-subtle {
+@keyframes pulse-wave-sound-toggle {
   0% {
     transform: scaleY(0.5);
   }
+
   100% {
     transform: scaleY(1.1);
   }
