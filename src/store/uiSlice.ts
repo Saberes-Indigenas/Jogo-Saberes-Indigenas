@@ -9,6 +9,8 @@ export const createUiSlice: GameStoreCreator<import("./types").UiSlice> = (set) 
   isMessageVisible: false,
   feedbackPulse: null,
   spotlightItem: null,
+  showPortugueseName: true,
+  showClanBadge: true,
   celebration: null,
 
   showFeedback: (msg, type, duration = 2000) => {
@@ -53,5 +55,13 @@ export const createUiSlice: GameStoreCreator<import("./types").UiSlice> = (set) 
 
   setSpotlightItem: (item) => {
     set({ spotlightItem: item });
+  },
+
+  toggleShowPortugueseName: () => {
+    set((state) => ({ showPortugueseName: !state.showPortugueseName }));
+  },
+
+  toggleShowClanBadge: () => {
+    set((state) => ({ showClanBadge: !state.showClanBadge }));
   },
 });

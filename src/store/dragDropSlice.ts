@@ -4,7 +4,6 @@ import { soundManager } from "../utils/soundManager";
 import {
   DEFAULT_MAX_ROUNDS,
   FEATHER_REWARD_MULTIPLIER,
-  FEATHER_STREAK_REQUIREMENT,
   URUCUM_SEED_BASE_REWARD,
   calculateMaxUrucumSeeds,
   getFeatherCapacity,
@@ -124,7 +123,19 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
     });
 
     if (!canCreateNextBatch || newBatch.length === 0) {
-      set({ isGameOver: true });
+      console.log("[DragDrop] LAST ROUND FINISHED (inside loadNextBatch). Triggering Game Over.");
+      get().clearClanDisplays();
+      get().triggerCelebration({
+        icon: "🌈",
+        label: "Você reuniu todo o círculo sagrado!",
+        accentColor: "#b39ddb",
+      });
+      soundManager.playGameOver();
+      set({ currentRound: get().maxRounds });
+      setTimeout(() => {
+        console.log("[DragDrop] Setting isGameOver: true");
+        set({ isGameOver: true });
+      }, 1000);
       return;
     }
 
@@ -284,7 +295,6 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
       }));
 
       soundManager.playSuccess();
-      state.showFeedback(`Você conectou ${item.name_boe} ao clã ${targetClan.name}!`, "success", 1800);
       
       const targetCenterPos = state.clanTargets[targetClan.id];
       const globalStartPos = { x: e.clientX, y: e.clientY };
@@ -321,76 +331,45 @@ export const createDragDropSlice: GameStoreCreator<import("./types").DragDropSli
 
       playPronunciation(item);
 
-      // Feather logic
-      if (newStreak > 0 && newStreak % FEATHER_STREAK_REQUIREMENT === 0) {
-        let hasGainedFeather = false;
-        set((s) => {
-          const tentativeCount = s.featherCount + 1;
-          const cappedCount = s.maxFeatherCapacity > 0 ? Math.min(tentativeCount, s.maxFeatherCapacity) : tentativeCount;
-          hasGainedFeather = cappedCount > s.featherCount;
-          return { featherCount: cappedCount };
-        });
-        
-        if (hasGainedFeather) {
-          soundManager.playFeather();
-          state.triggerCelebration({
-            icon: "🪶",
-            label: "Você ganhou uma Pluma do Conhecimento!",
-            accentColor: "#ffe082",
-          });
-        }
-      } else if (newStreak === 1) {
-        state.triggerCelebration({
-          icon: "🔥",
-          label: "Sequência iniciada! Continue firme!",
-          accentColor: "#ffb74d",
-        });
-      }
+      // A lógica de contagem de plumas e streaks continua em background,
+      // mas os avisos visuais foram removidos a pedido do usuário.
 
       const newMenuItems = state.menuItems.filter((i) => i.id !== item.id);
       set({ menuItems: newMenuItems, draggingItemId: null });
 
       // Check if round is over
+      console.log("[DragDrop] newMenuItems length:", newMenuItems.length);
       if (newMenuItems.length === 0) {
-        const hasRemainingItems = Array.from(state.remainingItemsByClan.values()).some(
+        const hasRemainingItems = Array.from(get().remainingItemsByClan.values()).some(
           (arr) => arr.length > 0
         );
         
+        console.log("[DragDrop] hasRemainingItems (from get()):", hasRemainingItems);
+
         if (hasRemainingItems) {
           get().clearClanDisplays();
-          const finishedRound = Math.min(state.currentRound, state.maxRounds);
           const upcomingRound = Math.min(state.currentRound + 1, state.maxRounds);
           soundManager.playRoundComplete();
-          state.showFeedback(`Rodada ${finishedRound} concluída! Prepare-se para novos desafios.`, "roundComplete", 2500);
           
           setTimeout(() => {
             get().loadNextBatch(get().remainingItemsByClan, upcomingRound);
           }, 2500);
         } else {
+          console.log("[DragDrop] LAST ROUND FINISHED. Triggering Game Over.");
           get().clearClanDisplays();
-          state.triggerCelebration({
-            icon: "🌈",
-            label: "Você reuniu todo o círculo sagrado!",
-            accentColor: "#b39ddb",
-          });
           soundManager.playGameOver();
           set({ currentRound: state.maxRounds });
-          setTimeout(() => set({ isGameOver: true }), 500);
+          setTimeout(() => {
+            console.log("[DragDrop] Setting isGameOver: true");
+            set({ isGameOver: true });
+          }, 1000);
         }
       }
 
     } else {
       // ERROR LOGIC
-      if (state.streak > 2) {
-        state.triggerCelebration({
-          icon: "💧",
-          label: "Respire fundo e tente novamente!",
-          accentColor: "#80cbc4",
-        });
-      }
       soundManager.playError();
       set({ streak: 0 });
-      state.showFeedback("Incorreto. Observe as cores do clã e tente novamente.", "error", 1600);
       set({
         feedbackPulse: { ...dropPos, color: "incorrect", key: Date.now() },
       });

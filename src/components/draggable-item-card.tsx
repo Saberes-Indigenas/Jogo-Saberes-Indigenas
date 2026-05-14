@@ -1,5 +1,6 @@
 import { memo } from "react";
 import type { Item } from "../types";
+import { useGameStore } from "../store/useGameStore";
 
 interface DraggableItemCardProps {
   item: Item;
@@ -12,6 +13,9 @@ export const DraggableItemCard = memo(function DraggableItemCard({
   boeName,
   clanLabel,
 }: DraggableItemCardProps) {
+  const showPortugueseName = useGameStore((s) => s.showPortugueseName);
+  const showClanBadge = useGameStore((s) => s.showClanBadge);
+
   return (
     <div className="draggable-item__card-inner">
       <div
@@ -34,15 +38,19 @@ export const DraggableItemCard = memo(function DraggableItemCard({
           <span className="item-name-boe" title={boeName}>
             {boeName}
           </span>
-          <span className="item-name-clan" title={clanLabel}>
-            {item.name}
-          </span>
+          {showPortugueseName && (
+            <span className="item-name-clan" title={clanLabel}>
+              {item.name}
+            </span>
+          )}
         </header>
-        <div className="draggable-item__info-footer">
-          <div className="item-clan-badge" style={{ backgroundColor: item.color }}>
-            {clanLabel}
+        {showClanBadge && (
+          <div className="draggable-item__info-footer">
+            <div className="item-clan-badge" style={{ backgroundColor: item.color }}>
+              {clanLabel}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

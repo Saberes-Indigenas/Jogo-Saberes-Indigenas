@@ -7,6 +7,7 @@ import "../css/SoundToggle.css";
 export function SoundToggle() {
   const [isMuted, setIsMuted] = useState(soundManager.isMuted());
   const [volume, setVolume] = useState(soundManager.getVolume());
+  const [isOpen, setIsOpen] = useState(false);
 
   // Garante sincronia inicial com o localStorage/gerenciador
   useEffect(() => {
@@ -15,6 +16,12 @@ export function SoundToggle() {
   }, []);
 
   const handleToggleMute = () => {
+    // Se estiver fechado, apenas abre. Se estiver aberto, muta/desmuta.
+    if (!isOpen) {
+      setIsOpen(true);
+      return;
+    }
+
     const newMuted = !isMuted;
     soundManager.setMuted(newMuted);
     setIsMuted(newMuted);
@@ -22,7 +29,6 @@ export function SoundToggle() {
     if (!newMuted) {
       soundManager.playClick();
       soundManager.startAmbient();
-      // Restaurar volume para um valor audível se estiver zerado ao desmutar
       if (volume === 0) {
         soundManager.setVolume(0.5);
         setVolume(0.5);
@@ -46,7 +52,7 @@ export function SoundToggle() {
   };
 
   return (
-    <div className="sound-toggle-container">
+    <div className={`sound-toggle-container ${isOpen ? "is-open" : ""}`}>
       <motion.button
         type="button"
         onClick={handleToggleMute}
@@ -54,9 +60,6 @@ export function SoundToggle() {
         aria-label={isMuted ? "Ativar som do jogo" : "Silenciar som do jogo"}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20 }}
       >
         <AnimatePresence mode="wait">
           {isMuted ? (
@@ -68,13 +71,12 @@ export function SoundToggle() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ duration: 0.15 }}
             >
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
               <line x1="23" y1="9" x2="17" y2="15" />
@@ -89,13 +91,12 @@ export function SoundToggle() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ duration: 0.15 }}
             >
               <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
               <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
@@ -105,27 +106,45 @@ export function SoundToggle() {
         </AnimatePresence>
       </motion.button>
 
-      {/* Controle deslizante que aparece ao passar o mouse */}
-      <div className="volume-slider-wrapper">
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.05"
-          value={isMuted ? 0 : volume}
-          onChange={handleVolumeChange}
-          className="volume-slider"
-          aria-label="Volume"
-        />
-      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            className="volume-slider-wrapper"
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 120, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+          >
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={isMuted ? 0 : volume}
+              onChange={handleVolumeChange}
+              className="volume-slider"
+              aria-label="Volume"
+            />
+            
+            <button 
+              className="sound-close-btn" 
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(false);
+              }}
+            >
+              ×
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Ondas sonoras animadas ao lado do botão */}
-      {!isMuted && volume > 0 && (
+      {!isMuted && volume > 0 && !isOpen && (
         <motion.div 
           className="sound-waves"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.8, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.8 }}
+          exit={{ opacity: 0 }}
         >
           <div className="sound-wave-bar" />
           <div className="sound-wave-bar" />
@@ -135,3 +154,5 @@ export function SoundToggle() {
     </div>
   );
 }
+
+

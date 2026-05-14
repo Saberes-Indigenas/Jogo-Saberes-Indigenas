@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useGameStore } from "../store/useGameStore";
+import { RewardCelebration } from "./reward-celebration";
 import "../css/GameModal.css";
 
 const feedbackVariants = {
@@ -56,46 +57,16 @@ export function GameModals() {
   const message = useGameStore((s) => s.message);
   const messageType = useGameStore((s) => s.messageType);
   const spotlightItem = useGameStore((s) => s.spotlightItem);
-  
-  const feedbackIcon = messageType === "success" ? "✨" : messageType === "error" ? "❌" : "🎊";
+  const celebration = useGameStore((s) => s.celebration);
+  const clearCelebration = useGameStore((s) => s.clearCelebration);
 
-  const score = useGameStore((s) => s.score);
-  const feathers = useGameStore((s) => s.featherCount);
-  const maxStreak = useGameStore((s) => s.maxStreak);
-  const completed = useGameStore((s) => s.completedCount);
-  const total = useGameStore((s) => s.sessionTotalItems);
-  const currentRound = useGameStore((s) => s.currentRound);
-  const maxRounds = useGameStore((s) => s.maxRounds);
-
-  const displayMaxRounds = Math.max(maxRounds, 1);
-  const displayCompletedRounds = Math.min(
-    currentRound > 0 ? currentRound : displayMaxRounds,
-    displayMaxRounds
-  );
+  console.log(`[GameModals] Render -> isGameOver: ${isGameOver}, isMessageVisible: ${isMessageVisible}, celebration: ${!!celebration}`);
 
   return (
-    <AnimatePresence>
-      {isMessageVisible && (
+    <AnimatePresence mode="wait">
+      {isGameOver ? (
         <motion.div
-          className={`feedbackMessage ${messageType}`}
-          custom={messageType}
-          variants={feedbackVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-        >
-          <div className="feedbackMessage__shine" />
-          <div className="feedbackMessage__content">
-            <span className="feedbackMessage__icon">
-              {messageType === "success" && spotlightItem ? spotlightItem.icon : feedbackIcon}
-            </span>
-            <span className="feedbackMessage__text">{message}</span>
-          </div>
-        </motion.div>
-      )}
-
-      {isGameOver && (
-        <motion.div
+          key="game-over-screen"
           className="gameOverScreen"
           variants={gameOverScreenVariants}
           initial="initial"
@@ -106,58 +77,48 @@ export function GameModals() {
             className="gameOverContent"
             variants={gameOverContentVariants}
           >
-            <motion.h1
-              whileHover={{ scale: 1.05, rotate: [0, -2, 2, -2, 0] }}
-              transition={{ duration: 0.5 }}
-            >
-              🎉 Parabéns! 🎉
+            <motion.h1 whileHover={{ scale: 1.05 }}>
+              Ritual Concluído
             </motion.h1>
-            <motion.p>
-              Você concluiu as {maxRounds} rodadas do ritual Bororo! Compartilhe
-              o que aprendeu com sua aldeia.
-            </motion.p>
-            <motion.ul
-              className="gameOverStats"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <li>
-                <span>Total de pontos</span>
-                <strong>{score.toLocaleString("pt-BR")}</strong>
-              </li>
-              <li>
-                <span>Rodadas concluídas</span>
-                <strong>
-                  {displayCompletedRounds}/{displayMaxRounds}
-                </strong>
-              </li>
-              <li>
-                <span>Plumas conquistadas</span>
-                <strong>{feathers}</strong>
-              </li>
-              <li>
-                <span>Maior sequência</span>
-                <strong>{maxStreak}</strong>
-              </li>
-              <li>
-                <span>Itens conectados</span>
-                <strong>
-                  {completed}/{total}
-                </strong>
-              </li>
-            </motion.ul>
+
             <motion.button
               onClick={() => window.location.reload()}
-              whileHover={{ scale: 1.1, rotate: -2 }}
-              whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
               Jogar Novamente
             </motion.button>
           </motion.div>
         </motion.div>
-      )}
+      ) : celebration ? (
+        <RewardCelebration 
+          key="reward-celebration"
+          celebration={celebration} 
+          onDismiss={clearCelebration} 
+        />
+      ) : isMessageVisible ? (
+        <motion.div
+          key="feedback-message"
+          className={`feedbackMessage ${messageType}`}
+          custom={messageType}
+          variants={feedbackVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          <div className="feedbackMessage__shine" />
+          <div className="feedbackMessage__content">
+            <span className="feedbackMessage__icon">
+              {messageType === "success" && spotlightItem?.media?.image ? (
+                <img src={spotlightItem.media.image} alt="" style={{ width: 44, height: 44, objectFit: "contain" }} />
+              ) : (
+                <div className={`feedback-dot ${messageType}`} />
+              )}
+            </span>
+            <span className="feedbackMessage__text">{message}</span>
+          </div>
+        </motion.div>
+      ) : null}
     </AnimatePresence>
   );
 }
