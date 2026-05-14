@@ -18,18 +18,13 @@ def clean_for_filename(s):
 # Dados do documento APÊNDICE 4
 data = [
     {
-        "clan_name": "BOE ETUIEDAGAMAGE",
-        "clan_id": "boe_etuiedagamage",
+        "clan_name": "AROROE",
+        "clan_id": "aroroe",
         "data": {
             "KIEGE": ["Nabure (ararapiranga)", "Batagaje (biguá)", "Korao (papagaio verdadeiro)", "Bakuguma (gavião requinta)", "Metugo (pomba)", "Turubare (pato)", "Kanao Kigadureu", "Mano (gavião)", "Tamigi (anhuma)"],
             "BAREGE": ["Jugo (queixada)", "Jui (caititu)", "Okwa (lobinho)", "Ipocereu (papa mel)", "Meridabo (furão)", "Moribo (cachorro do mato)", "Kudobo (quati)", "Ipie (ariranha)", "Jomo (lontra)", "Ierarai (mão pelada)", "Aokurumodu (lontra)"],
             "AWAGE": ["Bakorororeu (cobra coral)", "Arori (cobra coral)", "Aroro (larva de borboleta)", "Aroro Ekureu (lavra de borboleta amarelo)", "Aroro Ewagureu"]
         }
-    },
-    {
-        "clan_name": "AROROE",
-        "clan_id": "aroroe",
-        "data": {}
     },
     {
         "clan_name": "IWAGUDUDOGE",
@@ -107,7 +102,7 @@ def format_name_for_id(name):
     return s.replace(" ", "_").replace("(", "").replace(")", "").replace("/", "").replace(",", "").replace("-", "_")
 
 clan_colors = {
-    "PAIWOE": "#b52323", "APIBOREGE": "#b52323", "BOE ETUIEDAGAMAGE": "#b52323",
+    "PAIWOE": "#b52323", "APIBOREGE": "#b52323",
     "IWAGUDUDOGE": "#b52323", "AROROE": "#b52323", "BAKORO ECERAE": "#000000",
     "BOKODORI ECERAE": "#000000", "KIE": "#000000", "BADOJEBA": "#000000"
 }
