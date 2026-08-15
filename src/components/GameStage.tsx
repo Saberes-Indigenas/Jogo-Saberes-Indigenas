@@ -11,6 +11,7 @@ import GameHud from "./GameHud";
 import ClanInfoBubble from "./ClanInfoBubble";
 import ReturningItemOverlay from "./ReturningItemOverlay";
 import LoadingScreen from "./LoadingScreen";
+import MacroClanIndicators from "./MacroClanIndicators";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 import { AnimatePresence } from "framer-motion";
@@ -256,6 +257,10 @@ const GameStage = ({ clans, initialItems }: GameStageProps) => {
             width={window.innerWidth}
             height={window.innerHeight}
             onReady={() => setForestReady(true)}
+          />
+          <MacroClanIndicators
+            stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
+            stageRadius={layout.raioPalco}
           />
           <GameHud
             redCompleted={completedByColor.red}

@@ -1,0 +1,76 @@
+.macro-clan-indicators {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: block;
+  z-index: 12;
+  font-family: 'Nunito', sans-serif;
+  color: #f8f3e6;
+}
+
+.macro-clan-indicator {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: clamp(1.4rem, 1.2rem + 0.6vw, 2rem) clamp(1.1rem, 0.9rem + 0.4vw, 1.6rem);
+  border-radius: 2.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.macro-clan-indicator--west {
+  background: linear-gradient(145deg, rgba(36, 84, 58, 0.92), rgba(18, 42, 32, 0.92));
+}
+
+.macro-clan-indicator--east {
+  background: linear-gradient(35deg, rgba(94, 62, 30, 0.95), rgba(137, 90, 44, 0.9));
+}
+
+.macro-clan-indicator__direction {
+  font-size: clamp(0.75rem, 0.65rem + 0.35vw, 1rem);
+  font-weight: 700;
+  opacity: 0.75;
+  letter-spacing: 0.28em;
+}
+
+.macro-clan-indicator__title {
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: 0.32em;
+  text-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+}
+
+.macro-clan-indicator__caption {
+  font-size: clamp(0.72rem, 0.66rem + 0.3vw, 1rem);
+  font-weight: 600;
+  opacity: 0.8;
+  text-align: center;
+  line-height: 1.3;
+  letter-spacing: 0.18em;
+}
+
+.macro-clan-indicator__divider {
+  width: clamp(24px, 12px + 4vw, 64px);
+  height: 2px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 1024px) {
+  .macro-clan-indicator {
+    border-radius: 2.2rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .macro-clan-indicator {
+    display: none;
+  }
+}
