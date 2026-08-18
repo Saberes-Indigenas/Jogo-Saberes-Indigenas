@@ -1,0 +1,73 @@
+/* Arquivo: src/css/SunIndicator.css */
+
+.sun-indicator {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sun-indicator__svg {
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(0 0 20px rgba(255, 202, 40, 0.55));
+}
+
+.sun-indicator__rays {
+  transform-origin: 50px 50px;
+  animation: sun-indicator-spin 90s linear infinite;
+}
+
+.sun-indicator__ray {
+  fill: #ffca28;
+  opacity: 0.85;
+}
+
+.sun-indicator__core {
+  fill: #ffca28;
+  stroke: #f57f17;
+  stroke-width: 3;
+  animation: sun-indicator-pulse 3.2s ease-in-out infinite;
+  transform-origin: 50px 50px;
+}
+
+.sun-indicator__glint {
+  fill: rgba(255, 255, 255, 0.55);
+}
+
+@keyframes sun-indicator-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sun-indicator-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 768px) {
+  .sun-indicator {
+    top: 6px;
+  }
+
+  .sun-indicator__svg {
+    width: 64px;
+    height: 64px;
+  }
+}

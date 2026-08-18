@@ -1,0 +1,67 @@
+/* Arquivo: src/css/CompassRose.css */
+
+.compass-rose {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  pointer-events: none;
+  user-select: none;
+}
+
+.compass-rose__svg {
+  width: 104px;
+  height: 104px;
+  filter: drop-shadow(0 5px 0 #1f1208) drop-shadow(0 10px 16px rgba(0, 0, 0, 0.45));
+}
+
+.compass-rose__ring {
+  fill: #3d2511;
+  stroke: #5d3a1a;
+  stroke-width: 4;
+}
+
+.compass-rose__face {
+  fill: #f5ead3;
+  stroke: #5d3a1a;
+  stroke-width: 2;
+}
+
+.compass-rose__tick {
+  stroke: #ad6856;
+  stroke-width: 1.5;
+}
+
+.compass-rose__needle-north {
+  fill: #b52323;
+}
+
+.compass-rose__needle-south {
+  fill: #2f2614;
+}
+
+.compass-rose__pin {
+  fill: #ffca28;
+  stroke: #5d3a1a;
+  stroke-width: 2;
+}
+
+.compass-rose__label {
+  font-family: "Luckiest Guy", cursive;
+  font-size: 11px;
+  fill: #3d2511;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+@media (max-width: 768px) {
+  .compass-rose {
+    bottom: 12px;
+    right: 12px;
+  }
+
+  .compass-rose__svg {
+    width: 74px;
+    height: 74px;
+  }
+}

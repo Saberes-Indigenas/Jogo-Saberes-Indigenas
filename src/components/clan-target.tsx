@@ -19,6 +19,62 @@ interface ClanTargetProps {
   onClick: () => void;
 }
 
+interface HutLayoutEntry {
+  key: string;
+  scale: number;
+  offsetX: number; // múltiplo da largura da casa principal
+  offsetY: number; // múltiplo da largura da casa principal (negativo = mais "atrás")
+  opacity: number;
+  shadowBlur: number;
+}
+
+// Pequeno hash estável a partir do id do clã, só para variar levemente a
+// disposição das casinhas de aldeia pra aldeia sem ficar tudo idêntico.
+function makeSeededRandom(seedText: string) {
+  let seed = 0;
+  for (let i = 0; i < seedText.length; i += 1) {
+    seed = (seed * 31 + seedText.charCodeAt(i)) >>> 0;
+  }
+  return (max: number) => {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    return (seed % 1000) / 1000 * max;
+  };
+}
+
+// Cada clã não é representado por uma oca isolada, e sim por um pequeno
+// agrupamento: casinhas menores/mais translúcidas "atrás" dão profundidade,
+// e a casa principal (maior, na frente) continua sendo o alvo visual central.
+function buildHutCluster(clanId: string): HutLayoutEntry[] {
+  const rand = makeSeededRandom(clanId);
+
+  return [
+    {
+      key: "back-left",
+      scale: 0.48 + rand(0.06),
+      offsetX: -(0.3 + rand(0.06)),
+      offsetY: -(0.34 + rand(0.08)),
+      opacity: 0.82,
+      shadowBlur: 8,
+    },
+    {
+      key: "back-right",
+      scale: 0.42 + rand(0.06),
+      offsetX: 0.34 + rand(0.07),
+      offsetY: -(0.42 + rand(0.1)),
+      opacity: 0.78,
+      shadowBlur: 8,
+    },
+    {
+      key: "main",
+      scale: 1,
+      offsetX: 0,
+      offsetY: 0,
+      opacity: 1,
+      shadowBlur: 18,
+    },
+  ];
+}
+
 export function ClanTarget({
   clanId,
   clanName,
@@ -36,7 +92,7 @@ export function ClanTarget({
   const [isHovered, setIsHovered] = useState(false);
   const [naturalSize, setNaturalSize] = useState({ width: 1, height: 1 });
   const groupRef = useRef<Konva.Group>(null);
-  const imageRef = useRef<Konva.Image>(null);
+  const hutsGroupRef = useRef<Konva.Group>(null);
   const glowRef = useRef<Konva.Circle>(null);
   const textRef = useRef<Konva.Text>(null);
 
@@ -64,17 +120,21 @@ export function ClanTarget({
     return () => img.removeEventListener("load", handleLoad);
   }, [selectedImageUrl]);
 
-  const targetRadius = stageRadius * 0.12;
-  const baseWidth = targetRadius * 2.6;
+  const targetRadius = stageRadius * 0.105;
+  const baseWidth = targetRadius * 2.3;
   const aspectRatio = naturalSize.width / naturalSize.height;
   const imageWidth = baseWidth;
   const imageHeight = imageWidth / aspectRatio;
-  const imageOffsetY = imageHeight * 0.65;
-  const fontSize = targetRadius * 0.4;
+  // Fonte do nome do clã desacoplada do tamanho da oca: precisa continuar
+  // grande e legível mesmo com a casa reduzida.
+  const fontSize = targetRadius * 0.55;
+  const labelWidth = targetRadius * 3.2;
+
+  const hutCluster = useMemo(() => buildHutCluster(clanId), [clanId]);
 
   useEffect(() => {
-    if (image && imageRef.current && textRef.current) {
-      imageRef.current.cache();
+    if (image && hutsGroupRef.current && textRef.current) {
+      hutsGroupRef.current.cache();
       textRef.current.cache();
     }
     if (hasOfferings && glowRef.current) {
@@ -216,7 +276,7 @@ export function ClanTarget({
       {hasOfferings && (
         <Circle
           ref={glowRef}
-          radius={targetRadius * 1.18}
+          radius={targetRadius * 1.5}
           fillRadialGradientColorStops={[
             0,
             "rgba(255, 241, 179, 0.85)",
@@ -231,25 +291,36 @@ export function ClanTarget({
         />
       )}
       {image && (
-        <KonvaImage
-          ref={imageRef}
-          image={image}
-          width={imageWidth}
-          height={imageHeight}
-          offsetX={imageWidth / 2}
-          offsetY={imageOffsetY}
-          shadowColor="rgba(0,0,0,0.55)"
-          shadowBlur={18}
-          shadowOpacity={0.7}
-          shadowOffset={{ x: 0, y: 10 }}
-        />
+        <Group ref={hutsGroupRef}>
+          {hutCluster.map((hut) => {
+            const hutWidth = imageWidth * hut.scale;
+            const hutHeight = imageHeight * hut.scale;
+            return (
+              <KonvaImage
+                key={hut.key}
+                image={image}
+                x={hut.offsetX * baseWidth}
+                y={hut.offsetY * baseWidth}
+                width={hutWidth}
+                height={hutHeight}
+                offsetX={hutWidth / 2}
+                offsetY={hutHeight * 0.65}
+                opacity={hut.opacity}
+                shadowColor="rgba(0,0,0,0.55)"
+                shadowBlur={hut.shadowBlur}
+                shadowOpacity={0.7}
+                shadowOffset={{ x: 0, y: hut.key === "main" ? 10 : 6 }}
+              />
+            );
+          })}
+        </Group>
       )}
       <Text
         ref={textRef}
         text={clanName}
-        x={-targetRadius * 1}
-        y={targetRadius * 1.15}
-        width={targetRadius * 2}
+        x={-labelWidth / 2}
+        y={targetRadius * 1.2}
+        width={labelWidth}
         align="center"
         fontSize={fontSize}
         fontStyle="bold"

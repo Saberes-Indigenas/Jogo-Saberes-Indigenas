@@ -15,6 +15,8 @@ import { LoadingScreen } from "./loading-screen";
 import { EnteringOfferingDom } from "./entering-offering-dom";
 import { CustomDragLayer } from "./custom-drag-layer";
 import { SettingsToggle } from "./settings-toggle";
+import { SunIndicator } from "./sun-indicator";
+import { CompassRose } from "./compass-rose";
 import { soundManager } from "../utils/soundManager";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
@@ -33,8 +35,10 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
     const gameAreaWidth = gameAreaRect.width;
     const gameAreaHeight = gameAreaRect.height;
     const centroX = gameAreaWidth * 0.62;
-    const centroY = gameAreaHeight / 2;
-    const raioPalco = Math.min(gameAreaWidth, gameAreaHeight) * 0.45;
+    // Aldeia deslocada um pouco para baixo e com raio menor, abrindo espaço
+    // no topo para o Sol e para novos elementos de cena futuros.
+    const centroY = gameAreaHeight * 0.56;
+    const raioPalco = Math.min(gameAreaWidth, gameAreaHeight) * 0.37;
     return { gameAreaWidth, gameAreaHeight, centroX, centroY, raioPalco };
   }, [gameAreaRect]);
 
@@ -189,6 +193,8 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
             onReady={() => setForestReady(true)}
           />
           {isGameReady && <SettingsToggle />}
+          {isGameReady && <SunIndicator centerX={backgroundCenter.x} />}
+          {isGameReady && <CompassRose />}
           <GameHud
             isOpen={false}
             onToggle={() => {}}

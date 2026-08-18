@@ -47,7 +47,7 @@ export const createCoreSlice: GameStoreCreator<import("./types").CoreSlice> = (s
     if (clans.length === 0 || initialItems.length === 0 || layout.raioPalco === 0) return;
 
     const newTargets: { [key: string]: { x: number; y: number } } = {};
-    const targetRingRadius = layout.raioPalco * 0.75;
+    const targetRingRadius = layout.raioPalco * 0.82;
     
     const tugoaregeClans = clans.filter(
       (c) => initialItems.find((i) => i.correct_clan_id === c.id)?.color === COLORS.CLAN_TUGOAREGE

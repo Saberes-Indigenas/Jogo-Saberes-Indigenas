@@ -65,10 +65,12 @@ export const createGroundParticleRing = (
 };
 
 export const STATIC_FOREST_ASSETS: StaticAsset[] = [
-  { id: 1, type: "PIECE_FOREST", variant: 0, angle: 20, distance: 1.7, size: 1.5, rotation: 20, zIndex: 10 },
-  { id: 2, type: "PIECE_FOREST", variant: 1, angle: 75, distance: 1.5, size: 2.6, rotation: -5, zIndex: 10 },
-  { id: 100, type: "PIECE_FOREST", variant: 3, angle: 110, distance: 1.3, size: 1.5, rotation: -5, zIndex: 10 },
-  { id: 3, type: "PIECE_FOREST", variant: 2, angle: 150, distance: 1.5, size: 1.7, rotation: 35, isFlipped: true, zIndex: 10 },
+  // id 1 (PIECE_FOREST em angle 20) foi removida: tampava o texto da oca de APIBOREGE.
+  // Trio de peças da parte de baixo: afastado o suficiente para não tampar
+  // as ocas de PAIWOE/BAKORO ECERAE, mas ainda encostando na borda da clareira.
+  { id: 2, type: "PIECE_FOREST", variant: 1, angle: 75, distance: 1.8, size: 2.6, rotation: -5, zIndex: 10 },
+  { id: 100, type: "PIECE_FOREST", variant: 3, angle: 110, distance: 1.6, size: 1.5, rotation: -5, zIndex: 10 },
+  { id: 3, type: "PIECE_FOREST", variant: 2, angle: 150, distance: 1.75, size: 1.7, rotation: 35, isFlipped: true, zIndex: 10 },
   { id: 4, type: "PIECE_FOREST", variant: 0, angle: 210, distance: 1.6, size: 1.3, rotation: 90, isFlipped: true, zIndex: 10 },
   { id: 5, type: "PIECE_FOREST", variant: 1, angle: 240, distance: 1.2, size: 1.4, rotation: 5, zIndex: 10 },
   { id: 6, type: "PIECE_FOREST", variant: 2, angle: 290, distance: 1.3, size: 1.4, rotation: -15, zIndex: 10 },
