@@ -87,7 +87,7 @@ class SoundManager {
       onloaderror: (_id: any, err: any) => {
         console.warn(`[SoundManager] Aviso ao carregar "${type}" (pode ser ignorado se for sintetizado):`, err);
       },
-      onplayerror: (id: any, err: any) => {
+      onplayerror: (id: any, _err: any) => {
         // Ignora erros de autoplay (comum em navegadores modernos antes do primeiro clique)
         console.warn(`[SoundManager] Aguardando interação do usuário para tocar "${type}".`);
         const targetHowl = type === "ambient" ? this.ambientHowl : this.howls[type as Exclude<SoundType, "ambient">];

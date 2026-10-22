@@ -92,7 +92,7 @@ data = [
 ]
 
 # Configurações de caminhos
-CLANS_ASSETS_DIR = "src/assets/clans"
+CLANS_ASSETS_DIR = "public/clans"
 GENERIC_IMAGE = "/animals/animal_generico.webp"
 
 def format_name_for_id(name):
@@ -177,8 +177,8 @@ for clan_entry in data:
 
                 item_id = f"item_{format_name_for_id(name_port)}_{clan_id_suffix}"
                 
-                # Caminho da imagem: usando o caminho relativo para src/assets
-                final_img_path = f"/src/assets/clans/{clan_name}/{filename}"
+                # Caminho da imagem: servida da pasta public/ (entra no build)
+                final_img_path = f"/clans/{clan_name}/{filename}"
 
                 result_json["items"].append({
                     "id": item_id,
