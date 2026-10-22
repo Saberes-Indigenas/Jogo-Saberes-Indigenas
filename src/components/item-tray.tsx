@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState, useEffect, memo } from "react";
 import type { DragEvent, PointerEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import type { Item } from "../types";
+import type { DragPointerEvent } from "../store/types";
 import { useGameStore } from "../store/useGameStore";
 import { DraggableItemCard } from "./draggable-item-card";
 import "../css/ItemTray.css";
@@ -12,6 +13,8 @@ export const ItemTray = memo(function ItemTray() {
   const returningItem = useGameStore((s) => s.returningItem);
   const onDragStart = useGameStore((s) => s.handleDragStart);
   const onDragEnd = useGameStore((s) => s.handleDragEnd);
+  const onDragOver = useGameStore((s) => s.handleDragOver);
+  const onDrop = useGameStore((s) => s.handleDrop);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -30,14 +33,51 @@ export const ItemTray = memo(function ItemTray() {
     }
   }, [items]);
 
-  const handlePointerDown = (e: PointerEvent) => {
-    pointerStartPos.current = { x: e.clientX, y: e.clientY, time: Date.now() };
-    // We always start as draggable. The PointerMove will downgrade it only if a vertical intent is clear.
-    (e.currentTarget as HTMLElement).setAttribute('draggable', 'true');
+  // The list only scrolls when we start it: a vertical gesture on a card, or a
+  // press on the empty space of the list (see handleListPointerDown).
+  const listDragControls = useDragControls();
+  const isScrollingList = useRef(false);
+  // Touch drag (no native drag-and-drop on phones): "pending" until the intent is clear.
+  const touchDrag = useRef<{ item: Item; active: boolean } | null>(null);
+
+  const handleListPointerDown = (e: PointerEvent) => {
+    if ((e.target as HTMLElement).closest(".draggable-item")) return;
+    listDragControls.start(e);
   };
+
+  const handlePointerDown = (e: PointerEvent, item: Item) => {
+    pointerStartPos.current = { x: e.clientX, y: e.clientY, time: Date.now() };
+    isScrollingList.current = false;
+
+    if (e.pointerType === "mouse") {
+      // We always start as draggable. The PointerMove will downgrade it only if a vertical intent is clear.
+      (e.currentTarget as HTMLElement).setAttribute('draggable', 'true');
+      touchDrag.current = null;
+    } else {
+      // Long press on touch would start the browser's own drag: we handle it ourselves.
+      (e.currentTarget as HTMLElement).setAttribute('draggable', 'false');
+      touchDrag.current = { item, active: false };
+    }
+  };
+
+  const toDragEvent = (e: PointerEvent): DragPointerEvent => ({
+    clientX: e.clientX,
+    clientY: e.clientY,
+    preventDefault: () => {},
+  });
+
+  const getStageRect = () =>
+    document.querySelector(".game-area-wrapper")?.getBoundingClientRect() ?? null;
 
   const handlePointerMove = (e: PointerEvent) => {
     if (e.buttons !== 1) return;
+
+    const drag = touchDrag.current;
+    if (drag?.active) {
+      const stageRect = getStageRect();
+      if (stageRect) onDragOver(toDragEvent(e), stageRect);
+      return;
+    }
 
     const deltaX = Math.abs(e.clientX - pointerStartPos.current.x);
     const deltaY = Math.abs(e.clientY - pointerStartPos.current.y);
@@ -50,11 +90,45 @@ export const ItemTray = memo(function ItemTray() {
     // We use a 1.4 ratio to allow for some horizontal wobble while scrolling.
     if (deltaY > deltaX * 1.4 && deltaY > 8) {
       (e.currentTarget as HTMLElement).setAttribute('draggable', 'false');
-    } 
-    // 3. If they move horizontally, we ensure draggable is true.
-    else if (deltaX > deltaY && deltaX > 5) {
-      (e.currentTarget as HTMLElement).setAttribute('draggable', 'true');
+      touchDrag.current = null;
+      if (!isScrollingList.current) {
+        isScrollingList.current = true;
+        listDragControls.start(e);
+      }
     }
+    // 3. If they move horizontally, we ensure draggable is true (mouse) or pick up the item (touch).
+    else if (deltaX > deltaY && deltaX > 5 && !isScrollingList.current) {
+      if (!drag) {
+        (e.currentTarget as HTMLElement).setAttribute('draggable', 'true');
+        return;
+      }
+      const node = itemRefs.current.get(drag.item.id);
+      if (!node) return;
+      drag.active = true;
+      onDragStart(toDragEvent(e), drag.item, node.getBoundingClientRect());
+    }
+  };
+
+  const handlePointerUp = (e: PointerEvent) => {
+    const drag = touchDrag.current;
+    touchDrag.current = null;
+    if (!drag?.active) return;
+
+    // Released back over the tray: just put the item back, like a cancelled drag.
+    const trayRect = containerRef.current?.closest(".item-tray")?.getBoundingClientRect();
+    const isOverTray =
+      trayRect &&
+      e.clientX >= trayRect.left && e.clientX <= trayRect.right &&
+      e.clientY >= trayRect.top && e.clientY <= trayRect.bottom;
+
+    const stageRect = getStageRect();
+    if (!isOverTray && stageRect) onDrop(toDragEvent(e), stageRect);
+    onDragEnd();
+  };
+
+  const handlePointerCancel = () => {
+    if (touchDrag.current?.active) onDragEnd();
+    touchDrag.current = null;
   };
 
   const handleNativeDragStart = (e: DragEvent, item: Item) => {
@@ -103,11 +177,17 @@ export const ItemTray = memo(function ItemTray() {
             </p>
           </header>
 
-          <div className="item-tray__list-container" ref={containerRef}>
+          <div
+            className="item-tray__list-container"
+            ref={containerRef}
+            onPointerDown={handleListPointerDown}
+          >
             <motion.div
               ref={listRef}
               className="item-tray__list"
               drag="y"
+              dragListener={false}
+              dragControls={listDragControls}
               dragConstraints={constraints}
               dragElastic={0.1}
               dragTransition={{ bounceStiffness: 600, bounceDamping: 40 }}
@@ -128,8 +208,10 @@ export const ItemTray = memo(function ItemTray() {
                       }}
                       className="draggable-item"
                       style={{ borderColor: item.color }}
-                      onPointerDown={handlePointerDown}
+                      onPointerDown={(e) => handlePointerDown(e, item)}
                       onPointerMove={handlePointerMove}
+                      onPointerUp={handlePointerUp}
+                      onPointerCancel={handlePointerCancel}
                       draggable="true"
                       onDragStartCapture={(e) => handleNativeDragStart(e, item)}
                       onDragEnd={onDragEnd}

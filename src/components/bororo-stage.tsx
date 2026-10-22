@@ -126,6 +126,13 @@ export function BororoStage({
             />
           )}
 
+          {/*
+            Os marcos redondos entre os clãs da esquerda e da direita agora
+            são elementos de DOM (ver VillageBoundaryMarker em GameStage),
+            renderizados por cima da floresta — não fazem mais parte deste
+            Stage do Konva.
+          */}
+
           {clanEntries.map(([clanId, pos]) => {
             const clan = clans.find((c) => c.id === clanId);
             if (!clan) return null;
@@ -142,7 +149,7 @@ export function BororoStage({
                 resetTrigger={resetClanAnimationsKey}
                 hasOfferings={inventory.length > 0}
                 deliveryTrigger={recentDeliveries[clan.id] ?? 0}
-                onClick={() => onClanClick(clan.id)}
+                onClanClick={onClanClick}
               />
             );
           })}

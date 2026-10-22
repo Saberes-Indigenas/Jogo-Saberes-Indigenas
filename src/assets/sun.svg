@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 128 128"
+   aria-hidden="true"
+   role="img"
+   class="iconify iconify--noto"
+   preserveAspectRatio="xMidYMid meet"
+   version="1.1"
+   id="svg11"
+   sodipodi:docname="sun.svg"
+   inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs11" />
+  <sodipodi:namedview
+     id="namedview11"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.69738406"
+     inkscape:cx="361.35039"
+     inkscape:cy="471.04604"
+     inkscape:window-width="1920"
+     inkscape:window-height="998"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg11" />
+  <path
+     d="M126.99 80.89L108.1 64.13l.06-.3L127 47.14l-24.83-5.09l-.07-.12l8-24.05l-24.02 8.02l-.12-.08L80.86 1L64.01 20.03h-.02L47.11 1.01l-5.08 24.88l-.06.03l-24.07-8.04l8 24.05c-.04.04-.07.09-.11.13L1.01 47.11l19 16.87l-.01.05L1 80.86l24.89 5.11l.02.04l-8.02 24.11l24.05-8.03l.1.08l5.1 24.83l16.84-19.01h.05l16.87 19l5.07-24.86l.07-.04l24.09 8.02l-8.02-24.03l.07-.12l24.81-5.07z"
+     fill="#ffb300"
+     id="path1" />
+  <radialGradient
+     id="IconifyId17ecdb2904d178eab20564"
+     cx="64"
+     cy="64"
+     r="75.481"
+     gradientUnits="userSpaceOnUse">
+    <stop
+       offset=".556"
+       stop-color="#ffb604"
+       id="stop1" />
+    <stop
+       offset=".691"
+       stop-color="#fec61b"
+       id="stop2" />
+    <stop
+       offset=".822"
+       stop-color="#fdd835"
+       id="stop3" />
+  </radialGradient>
+  <path
+     d="M126.99 80.89L108.1 64.13l.06-.3L127 47.14l-24.83-5.09l-.07-.12l8-24.05l-24.02 8.02l-.12-.08L80.86 1L64.01 20.03h-.02L47.11 1.01l-5.08 24.88l-.06.03l-24.07-8.04l8 24.05c-.04.04-.07.09-.11.13L1.01 47.11l19 16.87l-.01.05L1 80.86l24.89 5.11l.02.04l-8.02 24.11l24.05-8.03l.1.08l5.1 24.83l16.84-19.01h.05l16.87 19l5.07-24.86l.07-.04l24.09 8.02l-8.02-24.03l.07-.12l24.81-5.07z"
+     fill="url(#IconifyId17ecdb2904d178eab20564)"
+     id="path3" />
+  <circle
+     cx="64"
+     cy="64"
+     r="42.46"
+     fill="#ffb300"
+     id="circle3" />
+  <radialGradient
+     id="IconifyId17ecdb2904d178eab20565"
+     cx="66.147"
+     cy="100.924"
+     r="66.57"
+     gradientTransform="matrix(1,0,0,1.0876,-128,-136.844)"
+     gradientUnits="userSpaceOnUse">
+    <stop
+       offset=".694"
+       stop-color="#ffb604"
+       id="stop4" />
+    <stop
+       offset=".849"
+       stop-color="#fec61b"
+       id="stop5" />
+    <stop
+       offset="1"
+       stop-color="#fdd835"
+       id="stop6" />
+  </radialGradient>
+  <circle
+     cx="-64"
+     cy="-64"
+     r="42.459999"
+     fill="url(#IconifyId17ecdb2904d178eab20565)"
+     id="circle6"
+     style="fill:url(#IconifyId17ecdb2904d178eab20565)"
+     transform="scale(-1)" />
+  <radialGradient
+     id="IconifyId17ecdb2904d178eab20566"
+     cx="-1858.159"
+     cy="139.608"
+     r="15.525"
+     gradientTransform="matrix(-.7447 -.3192 -.3117 .736 -1297.374 -633.673)"
+     gradientUnits="userSpaceOnUse">
+    <stop
+       offset="0"
+       stop-color="#ef6c00"
+       id="stop8" />
+    <stop
+       offset="1"
+       stop-color="#ef6c00"
+       stop-opacity="0"
+       id="stop9" />
+  </radialGradient>
+  <radialGradient
+     id="IconifyId17ecdb2904d178eab20567"
+     cx="200.244"
+     cy="-2.317"
+     r="15.525"
+     gradientTransform="matrix(.7447 -.3192 .3117 .736 -63.29 127.89)"
+     gradientUnits="userSpaceOnUse">
+    <stop
+       offset="0"
+       stop-color="#ef6c00"
+       id="stop10" />
+    <stop
+       offset="1"
+       stop-color="#ef6c00"
+       stop-opacity="0"
+       id="stop11" />
+  </radialGradient>
+</svg>

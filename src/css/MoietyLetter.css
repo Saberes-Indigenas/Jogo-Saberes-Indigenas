@@ -1,0 +1,17 @@
+/* Arquivo: src/css/MoietyLetter.css */
+
+.moiety-letter {
+  position: fixed;
+  z-index: 55; /* mesma camada dos marcos: acima da floresta, abaixo do HUD */
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+  /* Nunito 700 no lugar da Luckiest Guy: mesma família do corpo do HUD e
+     bem menos encorpada que a fonte de título. */
+  font-family: var(--hud-font-body), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: rgba(255, 244, 222, 0.88);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.45), 0 0 12px rgba(0, 0, 0, 0.2);
+}

@@ -65,15 +65,18 @@
   filter: none;
 }
 
+/* O botão é exatamente a caixa da cabana central: assim ela fica centrada no
+   meio da aldeia (a âncora usa translate(-50%,-50%)). A proporção é a mesma
+   do PNG recortado (1534x787), então não sobra espaço vazio na caixa. */
 .hud-totem-button {
   pointer-events: auto;
   border: none;
   background: none;
+  padding: 0;
   position: relative;
-  width: clamp(180px, 22vw, 260px);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
+  display: block;
+  width: var(--totem-icon-w, 190px);
+  aspect-ratio: 1534 / 787;
   cursor: default;
   filter: none;
   transition: filter 0.25s ease;
@@ -81,6 +84,16 @@
 
 .hud-totem-button.is-open {
   filter: none;
+}
+
+/* O círculo "Bororo" fica pendurado abaixo da oca, fora da caixa do botão —
+   assim aumentar a oca não desloca o centro dela. O brilho pulsante fica
+   dentro deste invólucro, atrás só do círculo. */
+.hud-totem-button__circle-wrap {
+  position: absolute;
+  top: calc(100% + var(--totem-gap, 12px));
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .hud-totem-button__pulse {
@@ -96,6 +109,7 @@
   filter: blur(10px);
   pointer-events: none;
   animation: totem-pulse 4s infinite ease-in-out;
+  will-change: transform, opacity;
 }
 
 @keyframes totem-pulse {
@@ -109,39 +123,22 @@
   }
 }
 
+/* A cabana central (PNG já recortado no limite da arte) preenche o botão. */
 .hud-totem-button__icon {
-  width: clamp(100px, 11.5vw, 145px); /* Aumentado proporcionalmente */
-  height: clamp(100px, 11.5vw, 145px);
-  display: grid;
-  place-items: center;
-  color: rgb(35, 22, 16);
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35));
 }
 
-.hud-totem-button__icon svg {
-  width: 120px;
-  height: 120px;
-  filter: none;
-}
-
+/* A palavra "Bororo" fica escrita dentro do círculo que enche. */
 .hud-totem-button__label {
-  position: absolute;
-  bottom: -1.3rem;
-  left: 50%;
-  transform: translateX(-50%) rotate(-2deg);
-  padding: 0.35rem 1.1rem;
-  border-radius: 999px;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 233, 176, 0.94) 0%,
-    rgba(255, 180, 108, 0.9) 45%,
-    rgba(205, 102, 42, 0.95) 100%
-  );
   font-family: var(--hud-font-heading);
-  color: rgba(51, 27, 7, 0.94);
-  letter-spacing: 0.08em;
+  font-size: calc(var(--totem-circle, 96px) * 0.19);
+  color: rgba(255, 244, 222, 0.98);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  text-shadow: none;
-  filter: none;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55), 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .hud-totem-button__score {
@@ -207,17 +204,10 @@
 }
 
 
-@media (max-width: 768px) {
-  .hud-totem-button {
-    width: clamp(140px, 28vw, 180px);
-  }
-}
+/* Sem media queries de tamanho aqui: a oca, o círculo e a palavra "Bororo"
+   já escalam com o raio da aldeia (variáveis --totem-* vindas do GameHud). */
 
 @media (max-width: 520px) {
-  .hud-totem-button__label {
-    font-size: 0.9rem;
-  }
-
   .hud-totem-button__score {
     font-size: 0.8rem;
   }

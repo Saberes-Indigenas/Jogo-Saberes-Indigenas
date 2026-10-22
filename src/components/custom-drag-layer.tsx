@@ -18,7 +18,7 @@ const DragPreview = ({ itemInfo }: { itemInfo: any }) => {
   const smoothY = useSpring(y, springConfig);
 
   useEffect(() => {
-    function handleUpdate(e: MouseEvent | DragEvent) {
+    function handleUpdate(e: MouseEvent | DragEvent | PointerEvent) {
       if (e.clientX === 0 && e.clientY === 0) return;
       x.set(e.clientX);
       y.set(e.clientY);
@@ -26,10 +26,13 @@ const DragPreview = ({ itemInfo }: { itemInfo: any }) => {
 
     window.addEventListener("mousemove", handleUpdate, { passive: true });
     window.addEventListener("dragover", handleUpdate, { passive: true });
-    
+    // Toque não gera mousemove nem dragover durante o arraste.
+    window.addEventListener("pointermove", handleUpdate, { passive: true });
+
     return () => {
       window.removeEventListener("mousemove", handleUpdate);
       window.removeEventListener("dragover", handleUpdate);
+      window.removeEventListener("pointermove", handleUpdate);
     };
   }, [x, y]);
 

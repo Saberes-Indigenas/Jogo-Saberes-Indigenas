@@ -31,6 +31,7 @@
   left: -60%;
   top: 100%; /* Start at the bottom of the card */
   border-radius: 42%;
+  will-change: transform;
 }
 
 .playing .wave {

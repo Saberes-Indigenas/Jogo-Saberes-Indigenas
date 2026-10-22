@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import type { GameData } from "./types";
-import { GameStage } from "./components/game-stage";
-import "./css/App.css";
+import { GameStage } from "./components/game-stage";import "./css/App.css";
 
 export function App() {
   const [gameData, setGameData] = useState<GameData | null>(null);

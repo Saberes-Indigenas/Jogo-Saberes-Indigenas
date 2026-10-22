@@ -1,0 +1,72 @@
+/* Tamanhos em vmin: a página pode estar em escala de celular (em pé) ou na
+   "tela virtual" de PC (deitado), e vmin acompanha os dois casos. */
+.mobile-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5vmin;
+  padding: 6vmin;
+  text-align: center;
+  font-family: "Nunito", sans-serif;
+  color: var(--hud-sand);
+  background: radial-gradient(circle at 50% 40%, rgb(21, 58, 22) 0%, rgb(11, 31, 11) 100%);
+}
+
+.mobile-gate__phone {
+  position: relative;
+  width: 14vmin;
+  height: 24vmin;
+  border: 1.4vmin solid var(--hud-sand);
+  border-radius: 3vmin;
+  animation: mobile-gate-rotate 2.4s ease-in-out infinite;
+}
+
+.mobile-gate__phone-screen {
+  position: absolute;
+  inset: 1.4vmin;
+  border-radius: 1vmin;
+  background: var(--color-primary-red);
+  opacity: 0.85;
+}
+
+.mobile-gate__title {
+  margin: 0;
+  font-size: 7vmin;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.mobile-gate__hint {
+  margin: 0;
+  font-size: 4.6vmin;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.mobile-gate__button {
+  padding: 3.2vmin 7vmin;
+  border: 0.8vmin solid #3d2511;
+  border-radius: 999px;
+  background: var(--color-primary-red);
+  color: #fff;
+  font-family: inherit;
+  font-size: 5.2vmin;
+  font-weight: 900;
+  box-shadow: 0 1.2vmin 0 rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.mobile-gate__button:active {
+  transform: translateY(0.8vmin);
+  box-shadow: 0 0.4vmin 0 rgba(0, 0, 0, 0.5);
+}
+
+@keyframes mobile-gate-rotate {
+  0%, 25% { transform: rotate(0deg); }
+  50%, 75% { transform: rotate(-90deg); }
+  100% { transform: rotate(0deg); }
+}

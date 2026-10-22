@@ -1,0 +1,42 @@
+/* Arquivo: src/css/VillageBoundaryMarker.css */
+
+.village-boundary-marker {
+  position: fixed;
+  z-index: 55; /* acima da floresta (.fg-overlay = 50), abaixo do HUD */
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  user-select: none;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(
+    circle at 35% 32%,
+    #c9a06a 0%,
+    #8a5a34 55%,
+    #4a2d17 100%
+  );
+  border: clamp(2px, 0.5vw, 4px) solid #3d2511;
+}
+
+.village-boundary-marker__highlight {
+  position: absolute;
+  top: 16%;
+  left: 16%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.village-boundary-marker__label {
+  position: relative;
+  font-family: "Luckiest Guy", cursive;
+  color: rgba(255, 244, 222, 0.98);
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: calc(var(--marker-size, 72px) * 0.2);
+  text-align: center;
+  line-height: 1.05;
+  padding: 0 8%;
+}

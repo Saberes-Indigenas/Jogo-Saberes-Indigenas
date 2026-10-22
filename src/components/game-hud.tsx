@@ -1,39 +1,26 @@
 import { useMemo } from "react";
+import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { useGameStore } from "../store/useGameStore";
 import { ProgressCircle } from "./progress-circle";
 import "../css/GameHud.css";
 
-import villageSvg from "../assets/hud/bororo.svg?raw";
+import bororoImg from "../assets/hud/bororo.png";
 
 interface GameHudProps {
   stageCenter: { x: number; y: number } | null;
+  /** Raio da aldeia (layout.raioPalco) — os elementos centrais escalam com ele. */
+  stageRadius: number;
   isOpen: boolean;
   onToggle: () => void;
 }
 
-function InlineHudIcon({
-  svg,
-  className = "",
-}: {
-  svg: string;
-  className?: string;
-}) {
-  return (
-    <span
-      aria-hidden="true"
-      role="img"
-      className={`hud-icon ${className}`.trim()}
-      dangerouslySetInnerHTML={{ __html: svg }}
-    />
-  );
-}
-
-function VillageIcon() {
-  return <InlineHudIcon svg={villageSvg} className="hud-icon--village" />;
-}
-
-export function GameHud({ stageCenter, isOpen, onToggle }: GameHudProps) {
+export function GameHud({
+  stageCenter,
+  stageRadius,
+  isOpen,
+  onToggle,
+}: GameHudProps) {
   const redCompleted = useGameStore((s) => s.completedByColor.red);
   const blackCompleted = useGameStore((s) => s.completedByColor.black);
   const redTotal = useGameStore((s) => s.sessionTotalByColor.red);
@@ -46,16 +33,40 @@ export function GameHud({ stageCenter, isOpen, onToggle }: GameHudProps) {
     return total > 0 ? Math.min(100, Math.round((completed / total) * 100)) : 0;
   }, [completed, total]);
 
+  /*
+    Tamanhos proporcionais ao raio da aldeia, para o conjunto central escalar
+    junto com ela em qualquer tela. As casas dos clãs ficam a 82% do raio e
+    ocupam ~12% dele, então o miolo livre vai até ~0,70 do raio: a oca (60%
+    do raio de largura) mais o círculo (30%) terminam em ~0,57.
+    O gap é pequeno porque o viewBox do SVG já tem ~5,5% de área vazia
+    embaixo da oca, que sozinha já afasta o círculo.
+  */
+  const totem = useMemo(
+    () => ({
+      iconWidth: stageRadius * 0.42,
+      circleSize: stageRadius * 0.25,
+      gap: stageRadius * 0.01,
+    }),
+    [stageRadius]
+  );
+
   const hudStyle = useMemo(() => {
+    const sizes = {
+      "--totem-icon-w": `${totem.iconWidth}px`,
+      "--totem-circle": `${totem.circleSize}px`,
+      "--totem-gap": `${totem.gap}px`,
+    } as CSSProperties;
+
     if (!stageCenter) {
-      return { left: "50%", top: "50%", opacity: 0 };
+      return { ...sizes, left: "50%", top: "50%", opacity: 0 };
     }
     return {
+      ...sizes,
       left: `${stageCenter.x}px`,
       top: `${stageCenter.y}px`,
       opacity: 1,
     };
-  }, [stageCenter]);
+  }, [stageCenter, totem]);
 
   return (
     <div
@@ -73,15 +84,23 @@ export function GameHud({ stageCenter, isOpen, onToggle }: GameHudProps) {
           isOpen ? "Fechar painel da jornada" : "Abrir painel da jornada"
         }
       >
-        <span className="hud-totem-button__pulse" aria-hidden="true" />
-        <ProgressCircle progress={progress} size={196}>
-          <span
-            className="hud-totem-button__icon"
-            aria-hidden="true"
-          >
-            <VillageIcon />
-          </span>
-        </ProgressCircle>
+        {/*
+          A oca (ícone) preenche o botão e fica centrada no meio da aldeia.
+          O círculo "Bororo" — que cresce e enche conforme o progresso — é um
+          elemento separado, pendurado logo abaixo dela.
+        */}
+        <img
+          src={bororoImg}
+          alt=""
+          aria-hidden="true"
+          className="hud-totem-button__icon"
+        />
+        <span className="hud-totem-button__circle-wrap">
+          <span className="hud-totem-button__pulse" aria-hidden="true" />
+          <ProgressCircle progress={progress} size={totem.circleSize}>
+            <span className="hud-totem-button__label">Bororo</span>
+          </ProgressCircle>
+        </span>
       </motion.button>
     </div>
   );

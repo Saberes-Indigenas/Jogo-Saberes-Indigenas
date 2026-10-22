@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef, memo } from "react";
 import { Image as KonvaImage, Text, Group, Circle } from "react-konva";
 import Konva from "konva";
 import { useGameStore } from "../store/useGameStore";
+import { stageTuning } from "../utils/mobileViewport";
 
 import ocaDireitaUrl from "../assets/ocaLadoDireito.svg";
 import ocaEsquerdaUrl from "../assets/ocaLadoEsquerdo.svg";
@@ -16,7 +17,10 @@ interface ClanTargetProps {
   hasOfferings: boolean;
   deliveryTrigger: number;
   resetTrigger: number;
-  onClick: () => void;
+  // Recebe o clanId e chama a função estável do pai diretamente — evita que
+  // o componente pai precise criar uma closure nova por clã a cada render,
+  // o que quebraria a memoização abaixo.
+  onClanClick: (clanId: string) => void;
 }
 
 interface HutLayoutEntry {
@@ -75,7 +79,7 @@ function buildHutCluster(clanId: string): HutLayoutEntry[] {
   ];
 }
 
-export function ClanTarget({
+export const ClanTarget = memo(function ClanTarget({
   clanId,
   clanName,
   x,
@@ -84,7 +88,7 @@ export function ClanTarget({
   centerX,
   hasOfferings,
   deliveryTrigger,
-  onClick,
+  onClanClick,
   resetTrigger,
 }: ClanTargetProps) {
   const hoveredClanId = useGameStore((s) => s.hoveredClanId);
@@ -120,27 +124,34 @@ export function ClanTarget({
     return () => img.removeEventListener("load", handleLoad);
   }, [selectedImageUrl]);
 
-  const targetRadius = stageRadius * 0.105;
+  const targetRadius = stageRadius * stageTuning.hutRadius;
   const baseWidth = targetRadius * 2.3;
   const aspectRatio = naturalSize.width / naturalSize.height;
   const imageWidth = baseWidth;
   const imageHeight = imageWidth / aspectRatio;
   // Fonte do nome do clã desacoplada do tamanho da oca: precisa continuar
   // grande e legível mesmo com a casa reduzida.
-  const fontSize = targetRadius * 0.55;
-  const labelWidth = targetRadius * 3.2;
+  const fontSize = targetRadius * stageTuning.hutFont;
+  const labelWidth = targetRadius * stageTuning.labelWidth;
 
   const hutCluster = useMemo(() => buildHutCluster(clanId), [clanId]);
 
+  // Re-rasterizar (cache) o cluster de casinhas e o texto só quando a
+  // imagem realmente muda — nunca a cada entrega/hasOfferings, senão o
+  // grupo inteiro é re-cacheado toda vez que qualquer item chega no clã,
+  // travando a animação de entrega bem no momento em que ela mais importa.
   useEffect(() => {
     if (image && hutsGroupRef.current && textRef.current) {
       hutsGroupRef.current.cache();
       textRef.current.cache();
     }
+  }, [image]);
+
+  useEffect(() => {
     if (hasOfferings && glowRef.current) {
       glowRef.current.cache();
     }
-  }, [image, hasOfferings]);
+  }, [hasOfferings]);
 
   useEffect(() => {
     if (!deliveryTrigger || !groupRef.current) return;
@@ -268,8 +279,8 @@ export function ClanTarget({
       ref={groupRef}
       x={x}
       y={y}
-      onClick={() => hasOfferings && onClick()}
-      onTap={() => hasOfferings && onClick()}
+      onClick={() => hasOfferings && onClanClick(clanId)}
+      onTap={() => hasOfferings && onClanClick(clanId)}
       listening
       name={`clan-target-${clanId}`}
     >
@@ -306,6 +317,9 @@ export function ClanTarget({
                 offsetX={hutWidth / 2}
                 offsetY={hutHeight * 0.65}
                 opacity={hut.opacity}
+                // Só a casa principal precisa participar do hit-test do
+                // Konva (hover/click do cluster); as de trás são decoração.
+                listening={hut.key === "main"}
                 shadowColor="rgba(0,0,0,0.55)"
                 shadowBlur={hut.shadowBlur}
                 shadowOpacity={0.7}
@@ -334,4 +348,4 @@ export function ClanTarget({
       />
     </Group>
   );
-}
+});

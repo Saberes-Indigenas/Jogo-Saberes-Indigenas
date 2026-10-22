@@ -1,0 +1,30 @@
+/* Só no modo celular (jogo dentro da moldura, ver utils/mobileViewport.ts).
+   A tela inteira aparece reduzida, então textos e cards precisam ser maiores. */
+
+html.mobile-embed {
+  font-size: 125%;
+}
+
+html.mobile-embed .item-tray {
+  width: 27rem;
+  max-width: none;
+  padding: 1.6rem 1.2rem;
+}
+
+html.mobile-embed .item-tray__header p {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+html.mobile-embed .draggable-item__figure {
+  width: 6.5rem;
+  height: 6.5rem;
+}
+
+html.mobile-embed .item-name-clan {
+  font-size: 0.95rem;
+}
+
+html.mobile-embed .item-clan-badge {
+  font-size: 0.85rem;
+}

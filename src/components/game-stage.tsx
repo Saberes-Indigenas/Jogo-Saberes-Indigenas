@@ -17,7 +17,10 @@ import { CustomDragLayer } from "./custom-drag-layer";
 import { SettingsToggle } from "./settings-toggle";
 import { SunIndicator } from "./sun-indicator";
 import { CompassRose } from "./compass-rose";
+import { VillageBoundaryMarker } from "./village-boundary-marker";
+import { MoietyLetter } from "./moiety-letter";
 import { soundManager } from "../utils/soundManager";
+import { stageTuning } from "../utils/mobileViewport";
 
 import chaoBororoFloresta from "../assets/chãoBororoFloresta.svg";
 import "../css/GameStage.css";
@@ -37,17 +40,32 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
     const centroX = gameAreaWidth * 0.62;
     // Aldeia deslocada um pouco para baixo e com raio menor, abrindo espaço
     // no topo para o Sol e para novos elementos de cena futuros.
-    const centroY = gameAreaHeight * 0.56;
-    const raioPalco = Math.min(gameAreaWidth, gameAreaHeight) * 0.37;
+    const centroY = gameAreaHeight * stageTuning.centerY;
+    const raioPalco = Math.min(gameAreaWidth, gameAreaHeight) * stageTuning.radius;
     return { gameAreaWidth, gameAreaHeight, centroX, centroY, raioPalco };
   }, [gameAreaRect]);
 
+  // Centro da imagem de fundo da floresta (chãoBororoFloresta) e do halo
+  // do body — a arte já é desenhada para casar com o centro geométrico da
+  // área de jogo, então usa 50% da altura (não o centroY da aldeia).
   const backgroundCenter = useMemo(
     () => ({
       x: gameAreaRect.left + layout.centroX,
       y: gameAreaRect.top + gameAreaRect.height / 2,
     }),
     [gameAreaRect, layout.centroX]
+  );
+
+  // Centro real da roda de clãs no Stage do Konva (layout.centroY, deslocado
+  // para baixo para abrir espaço pro Sol) — usado só pelos elementos que
+  // precisam se alinhar com a aldeia em si (totem central, marcos de
+  // divisa), não com a imagem de fundo.
+  const villageCenter = useMemo(
+    () => ({
+      x: gameAreaRect.left + layout.centroX,
+      y: gameAreaRect.top + layout.centroY,
+    }),
+    [gameAreaRect, layout.centroX, layout.centroY]
   );
 
   useEffect(() => {
@@ -193,12 +211,51 @@ export function GameStage({ clans, initialItems }: GameStageProps) {
             onReady={() => setForestReady(true)}
           />
           {isGameReady && <SettingsToggle />}
-          {isGameReady && <SunIndicator centerX={backgroundCenter.x} />}
+          {isGameReady && (
+            <SunIndicator
+              centerX={villageCenter.x}
+              stageRadius={layout.raioPalco}
+            />
+          )}
           {isGameReady && <CompassRose />}
+          {isGameReady && layout.raioPalco > 0 && (
+            <>
+              <VillageBoundaryMarker
+                x={villageCenter.x}
+                y={villageCenter.y - layout.raioPalco * 0.97}
+                size={layout.raioPalco * 0.22}
+              >
+                Mano
+              </VillageBoundaryMarker>
+              <VillageBoundaryMarker
+                x={villageCenter.x}
+                y={villageCenter.y + layout.raioPalco * 0.97}
+                size={layout.raioPalco * 0.22}
+              >
+                Aije Mugo
+              </VillageBoundaryMarker>
+
+              {/* Metades da aldeia: Ecerae à esquerda, Tugarége à direita
+                  (é assim que recalculateClanTargets distribui os clãs). */}
+              <MoietyLetter
+                x={villageCenter.x - layout.raioPalco * 0.45}
+                y={villageCenter.y}
+                size={layout.raioPalco * 0.2}
+                letter="E"
+              />
+              <MoietyLetter
+                x={villageCenter.x + layout.raioPalco * 0.45}
+                y={villageCenter.y}
+                size={layout.raioPalco * 0.2}
+                letter="T"
+              />
+            </>
+          )}
           <GameHud
             isOpen={false}
             onToggle={() => {}}
-            stageCenter={layout.raioPalco > 0 ? backgroundCenter : null}
+            stageCenter={layout.raioPalco > 0 ? villageCenter : null}
+            stageRadius={layout.raioPalco}
           />
           <AnimatePresence>
             {/* O painel de informações foi desativado a pedido do usuário */}

@@ -14,24 +14,28 @@ export function CompassRose() {
             <line
               key={angle}
               x1="50"
-              y1="15"
+              y1="12"
               x2="50"
-              y2="20"
+              y2="21"
               className="compass-rose__tick"
               transform={`rotate(${angle} 50 50)`}
             />
           ))}
         </g>
 
-        {/* Agulha compacta: ponta norte (vermelha) e sul (escura) não alcançam os rótulos */}
-        <polygon points="50,36 54,50 46,50" className="compass-rose__needle-north" />
-        <polygon points="50,64 54,50 46,50" className="compass-rose__needle-south" />
-        <circle cx="50" cy="50" r="3.5" className="compass-rose__pin" />
+        {/*
+          Agulha: como o Sol fica fixo no topo da tela (não representa o
+          leste), o norte do mapa aponta para a esquerda em vez de para
+          cima — ponta norte (vermelha) à esquerda, sul (escura) à direita.
+        */}
+        <polygon points="31,50 50,43 50,57" className="compass-rose__needle-north" />
+        <polygon points="69,50 50,43 50,57" className="compass-rose__needle-south" />
+        <circle cx="50" cy="50" r="5" className="compass-rose__pin" />
 
-        <text x="50" y="19" className="compass-rose__label">N</text>
-        <text x="50" y="83" className="compass-rose__label">S</text>
-        <text x="17" y="51" className="compass-rose__label">O</text>
-        <text x="83" y="51" className="compass-rose__label">L</text>
+        <text x="17" y="51" className="compass-rose__label">N</text>
+        <text x="83" y="51" className="compass-rose__label">S</text>
+        <text x="50" y="83" className="compass-rose__label">O</text>
+        <text x="50" y="19" className="compass-rose__label">L</text>
       </svg>
     </div>
   );

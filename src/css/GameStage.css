@@ -8,6 +8,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
+  /* Sem "puxar para atualizar" nem rolagem elástica no celular. */
+  overscroll-behavior: none;
   background: radial-gradient(
     circle at var(--cx, 50%) var(--cy, 50%),    /* verde escuro natural */
     rgb(21, 58, 22) 1%,     /* verde muito escuro nas bordas */
@@ -22,6 +24,8 @@ body {
   display: flex;
   width: 100vw;
   height: 100vh;
+  /* No celular, 100vh inclui a área atrás da barra do navegador. */
+  height: 100dvh;
   align-items: stretch;
   justify-content: flex-start;
   overflow: hidden;

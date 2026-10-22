@@ -80,6 +80,12 @@ export interface UiSlice {
 }
 
 // Slice 3: Drag Drop & Inventory State
+// O arraste vem do drag-and-drop nativo (mouse) ou de pointer events (toque,
+// que não tem drag-and-drop nativo no celular): só a posição é usada.
+export type DragPointerEvent = Pick<React.DragEvent, "clientX" | "clientY" | "preventDefault"> & {
+  dataTransfer?: DataTransfer | null;
+};
+
 export interface DragDropSlice {
   remainingItemsByClan: Map<string, Item[]>;
   clanInventories: Map<string, Item[]>;
@@ -95,10 +101,10 @@ export interface DragDropSlice {
   initGameSession: () => void;
   loadNextBatch: (currentItemsByClan: Map<string, Item[]>, nextRound?: number) => void;
 
-  handleDragStart: (e: React.DragEvent, item: Item, initialRect: DOMRect) => void;
+  handleDragStart: (e: DragPointerEvent, item: Item, initialRect: DOMRect) => void;
   handleDragEnd: () => void;
-  handleDragOver: (e: React.DragEvent, stageRect: DOMRect) => void;
-  handleDrop: (e: React.DragEvent, stageRect: DOMRect) => void;
+  handleDragOver: (e: DragPointerEvent, stageRect: DOMRect) => void;
+  handleDrop: (e: DragPointerEvent, stageRect: DOMRect) => void;
 
   registerOfferingArrival: (entryKey: number, clanId: string, item: Item) => void;
   onReturnAnimationComplete: () => void;
